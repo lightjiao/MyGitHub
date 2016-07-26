@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files>
+<!--说明: 
+    @filecode       : 必须严格从0递增且为数字, 不允许重复;  
+    @filename       : 在界面选择框中显示的名称;  
+    @firstlinecount : 第一行是否为总行数信息 1-是, 0-否;
+    
+    字段配置信息参照已有的保持格式不变即可
+    其他信息暂时没有作用
+-->
+  <file filecode = '0' filename='核算明细' parentnode = '金手指' parsetype = '1' firstlinecount = '1'>
+    <column column-name ='发生日期'        column-lenght = '8'   column-type ='C'/> 
+    <column column-name ='分中心'          column-lenght = '9'   column-type ='C'/> 
+    <column column-name ='客户名称'        column-lenght = '60'  column-type ='C'/> 
+    <column column-name ='交易帐号'        column-lenght = '20'  column-type ='C'/> 
+    <column column-name ='基金帐号'        column-lenght = '12'  column-type ='C'/> 
+    <column column-name ='基金代码'        column-lenght = '6'   column-type ='C'/> 
+    <column column-name ='发生金额'        column-lenght = '16'  column-type ='N'/> 
+    <column column-name ='发生额标识'      column-lenght = '2'   column-type ='C'/> 
+    <column column-name ='收款人银行编号'  column-lenght = '3'   column-type ='C'/> 
+    <column column-name ='收款人帐户名称'  column-lenght = '100' column-type ='C'/> 
+    <column column-name ='收款人银行名称'  column-lenght = '60'  column-type ='C'/> 
+    <column column-name ='收款人银行帐号'  column-lenght = '28'  column-type ='C'/> 
+    <column column-name ='申请编号'        column-lenght = '24'  column-type ='C'/> 
+    <column column-name ='币种'            column-lenght = '3'   column-type ='C'/> 
+    <column column-name ='网点'            column-lenght = '9'   column-type ='C'/> 
+    <column column-name ='资金方式'        column-lenght = '1'   column-type ='C'/> 
+    <column column-name ='联行号'          column-lenght = '12'  column-type ='C'/> 
+    <column column-name ='银行帐户编号'    column-lenght = '3'   column-type ='C'/> 
+    <column column-name ='机器日期时间'    column-lenght = '14'  column-type ='C'/> 
+    <column column-name ='客户类别'        column-lenght = '1'   column-type ='C'/> 
+    <column column-name ='业务辅助代码'    column-lenght = '2'   column-type ='C'/> 
+    <column column-name ='划款状态'        column-lenght = '1'   column-type ='C'/> 
+    <column column-name ='保留字段'        column-lenght = '200' column-type ='C'/> 
+  </file>
+  
+  <file filecode = '1' filename='核算汇总' parentnode =  '金手指' parsetype = '1' firstlinecount = '1'>
+    <column column-name ='发生额标识'      column-lenght = '2'   column-type ='C'/> 
+    <column column-name ='基金代码'        column-lenght = '6'   column-type ='C'/> 
+    <column column-name ='发生金额'        column-lenght = '16'  column-type ='N'/> 
+    <column column-name ='币种'            column-lenght = '3'   column-type ='C'/> 
+    <column column-name ='分中心'          column-lenght = '9'   column-type ='C'/> 
+    <column column-name ='网点'            column-lenght = '9'   column-type ='C'/> 
+
+  </file>  
+  <file filecode = '2' filename='银行账户' parentnode = '金手指' parsetype = '1' firstlinecount = '1'>   
+    <column column-name ='交易帐号'        column-lenght = '20'  column-type ='C'/> 
+    <column column-name ='基金帐号'        column-lenght = '12'  column-type ='C'/> 
+    <column column-name ='客户名称'        column-lenght = '60'  column-type ='C'/> 
+    <column column-name ='银行编号'        column-lenght = '3'   column-type ='C'/> 
+    <column column-name ='银行账号'        column-lenght = '28'  column-type ='C'/>    
+    <column column-name ='银行户名'        column-lenght = '100'  column-type ='C'/> 
+    <column column-name ='银行名称'        column-lenght = '60'  column-type ='C'/> 
+    <column column-name ='联行号'          column-lenght = '12'  column-type ='C'/> 
+    <column column-name ='操作网点'        column-lenght = '9'   column-type ='C'/>    
+    <column column-name ='省份代码'        column-lenght = '3'   column-type ='C'/> 
+    <column column-name ='城市代码'        column-lenght = '8'   column-type ='C'/> 
+    <column column-name ='保留字段'        column-lenght = '200'  column-type ='C'/> 
+  </file>    
+  
+  
+  <file filecode = '3' filename='申购' parentnode =  'TA文件-2.6' parsetype = '2' firstlinecount = '0'>
+    <column column-name ='序号' column-lenght = '2' column-type ='C'/> 
+    <column column-name ='日期' column-lenght = '8' column-type ='C'/> 
+    <column column-name ='基金名称' column-lenght = '12' column-type ='C'/> 
+    <column column-name ='基金代码' column-lenght = '6' column-type ='C'/> 
+    <column column-name ='销售商代码' column-lenght = '3' column-type ='C'/>    
+    <column column-name ='销售商名称' column-lenght = '36' column-type ='C'/> 
+    <column column-name ='申购总额' column-lenght = '16' column-type ='N'/> 
+    <column column-name ='交收金额'  column-lenght = '16' column-type ='N'/> 
+    <column column-name ='交易费用' column-lenght = '16' column-type ='N'/>    
+    <column column-name ='印花税' column-lenght = '16' column-type ='N'/> 
+    <column column-name ='过户费' column-lenght = '16' column-type ='N'/> 
+    <column column-name ='成交份额' column-lenght = '16' column-type ='N'/>
+    <column column-name ='份额类别' column-lenght = '1' column-type ='C'/> 
+    <column column-name ='份额级别' column-lenght = '1' column-type ='C'/>  
+  </file>
+  
+    <file filecode = '4' filename='注册机构' parentnode =  '浦发对账单' parsetype = '3' firstlinecount = '0'>
+    <column column-name ='流水号' column-lenght = '50' column-type ='C'/> 
+    <column column-name ='TA代码' column-lenght = '15' column-type ='C'/> 
+    <column column-name ='TA名称' column-lenght = '90' column-type ='C'/> 
+    <column column-name ='TA账号' column-lenght = '32' column-type ='C'/> 
+    <column column-name ='TA开户银行名称' column-lenght = '256' column-type ='C'/>    
+    <column column-name ='TA开户银行联行号' column-lenght = '12' column-type ='A'/> 
+    <column column-name ='金额' column-lenght = '18' column-type ='N'/> 
+    <column column-name ='销售机构手续费'  column-lenght = '18' column-type ='N'/> 
+    <column column-name ='资金划付日期' column-lenght = '8' column-type ='A'/>    
+    <column column-name ='监管行资金划付结果' column-lenght = '1' column-type ='A'/> 
+    <column column-name ='监管行详细划付信息' column-lenght = '256' column-type ='C'/> 
+    <column column-name ='实际资金划付日期' column-lenght = '8' column-type ='C'/>
+  </file>
+  
+  <file filecode = '5' filename='投资者' parentnode = '浦发对账单' parsetype = '3' firstlinecount = '0'>
+    <column column-name ='流水号' column-lenght = '50' column-type ='C'/> 
+    <column column-name ='会员编号' column-lenght = '32' column-type ='C'/> 
+    <column column-name ='投资者账户名称' column-lenght = '90' column-type ='C'/> 
+    <column column-name ='投资者银行账号' column-lenght = '32' column-type ='C'/> 
+    <column column-name ='开户银行名称' column-lenght = '256' column-type ='C'/>    
+    <column column-name ='开户银行联行号' column-lenght = '12' column-type ='A'/> 
+    <column column-name ='金额' column-lenght = '18' column-type ='N'/> 
+    <column column-name ='资金划付日期'  column-lenght = '8' column-type ='A'/> 
+    <column column-name ='备注' column-lenght = '1000' column-type ='C'/>    
+    <column column-name ='监管行资金划付结果' column-lenght = '1' column-type ='A'/> 
+    <column column-name ='监管行详细划付信息' column-lenght = '256' column-type ='C'/> 
+    <column column-name ='实际资金划付日期' column-lenght = '8' column-type ='C'/>
+  </file>
+</files>
