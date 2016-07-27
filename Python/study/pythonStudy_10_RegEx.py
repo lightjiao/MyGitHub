@@ -50,5 +50,3 @@ print(re_email.match('someone@gmail.com').groups())
 print(re_email.match('bill.gates@microsoft.com').groups())
 print(re_email.match('<Tom Paris> tom@voyager.org').groups())
 
-
-
