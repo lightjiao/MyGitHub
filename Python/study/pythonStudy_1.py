@@ -109,5 +109,3 @@ def now():
 
 
 now()
-
-print(int('8.0'))

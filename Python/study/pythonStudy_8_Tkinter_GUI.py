@@ -37,9 +37,9 @@ class Application(Tk):
             self.checkbutton_1 = Checkbutton(self, text= '隐身登录', variable = self.checkbutton_1_var)
             self.checkbutton_1.grid(columnspan = 2, sticky = W)
 
-            self.headPhoto = PhotoImage(file= './Data/pic.gif')
-            self.imgLabel  = Label(self, image= self.headPhoto)
-            self.imgLabel.grid(row= 0, column= 2, columnspan= 2, rowspan= 2, sticky= W+E+N+S, padx= 5, pady= 5)
+            #self.headPhoto = PhotoImage(file= './Data/pic.gif')
+            #self.imgLabel  = Label(self, image= self.headPhoto)
+            #self.imgLabel.grid(row= 0, column= 2, columnspan= 2, rowspan= 2, sticky= W+E+N+S, padx= 5, pady= 5)
 
             self.button_1 = Button(self, text= '  登录  ').grid(row= 2, column= 2)
             self.button_2 = Button(self, text= '  取消  ', command= self.quit).grid(row= 2, column= 3)

@@ -27,10 +27,10 @@ def SAX_main():
     Handler = SAXxmlHandler()
     parser.setContentHandler(Handler)
 
-    parser.parse("接口文件配置.xml")
+    parser.parse("../Data/config.xml")
 
 def DOM_main():
-    dom = xml.dom.minidom.parse('接口文件配置.xml')
+    dom = xml.dom.minidom.parse('../Data/config.xml')
     root = dom.documentElement
     bb = root.getElementsByTagName('file')
     for n in bb:
