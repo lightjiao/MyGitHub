@@ -26,65 +26,79 @@ def firstnum(n):
     return n
 
 
+################################################################################################################################
+################################################################################################################################
+################################################################################################################################
 
 #问题二
 #编写一个在1，2，…，9（顺序不能变）数字之间插入+或-或什么都不插入，使得计算结果总是 100 的程序，并输出所有的可能性。例如：1 + 2 + 34 – 5 + 67 – 8 + 9 = 100。
 def sumToHundred():
-    #分为两步，一、生成所有的 数字 排列组合的list；二、不断尝试其中的+ -号的情况
-    pass
+    #思路一（失败）  分为两步，一、生成所有的 数字 排列组合的list；二、不断尝试其中的+ -号的情况
+    #思路二（定义一个长度为17 的数组）每个数字之间的链接有三种情况 + - 或者空
+    lNUmlist = []
+    num = 1
+    for i in range(0, 17):
+        if(i % 2 == 0):
+            lNUmlist.append(str(num))
+            num += 1
+        else:
+            lNUmlist.append("")
 
-#获取所有数字的排列组合的 list嵌套list
-#这可以写成 一个递归函数
-def getAllNumCombination(paramlist):
-    lAllCombination = []
+    lAllNumCombination = []
+    get100(lNUmlist, 1, 16, lNUmlist, lAllNumCombination)
+    return lAllNumCombination
 
-    if len(paramlist) == 1:
-        return paramlist
-    elif len(paramlist) == 2:
-        return [paramlist, paramlist[0]*10 + paramlist[1]]
-    elif len(paramlist) == 3:
-        pass
+#获取所有的组合
+def get100(data1, count, times, data2, lAllNumCombination):
+    if count >= times:
+        if calculate100(data2) == 100:
+            lAllNumCombination.append(data2)
+            #print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), data2) + ' = 100')
+        return
 
-    return lAllCombination
+    temp1 = list(data2)
+    temp2 = list(data2)
+    temp3 = list(data2)
+
+    temp1[count] = '+'
+    temp2[count] = '-'
+    temp3[count] = ''
+    count += 2
+
+    get100(data1, count, times, temp1, lAllNumCombination)
+    get100(data1, count, times, temp2, lAllNumCombination)
+    get100(data1, count, times, temp3, lAllNumCombination)
 
 
-#根据给定的数字list，算出所有能算出100 的组合
-def getSumToHundred(paramlist):
-    pass
+#根据入参的组合计算结果
+def calculate100(paramlist):
+    sum = 0
+    tempnum  = 0
+    bitCount = 0
+    for i, value in enumerate(reversed(paramlist)):
+        if value == '+':
+            sum += tempnum
+            tempnum  = 0
+            bitCount = 0
 
-###################################################test code
-def list_1_index(paramlist):
-    return paramlist
+        elif value == '-':
+            sum -= tempnum
+            tempnum = 0
+            bitCount = 0
 
-def list_2_index(paramlist):
-    lTemplist = []
-    lTemplist.append(paramlist)
-    lTemplist.append([paramlist[0]*10+paramlist[1]])
-    return lTemplist
+        elif value == '':
+            bitCount += 1
 
-def list_3_index(paramlist):
-    lTemplist = []
-    for i, index in enumerate(paramlist):
-        if i == 0:
-            continue
-        lTemplist = list_2_index()
+        else:
+            tempnum += math.pow(10, bitCount) * int(value)
 
-    lTemplist_1 = list_2_index(paramlist[0:2])
-    for index in lTemplist_1:
-        index.insert(2,paramlist[2])
-
-    lTemplist_2 = list_2_index(paramlist[1:])
-    for index in lTemplist_2:
-        index.insert(0, paramlist[0])
-
-    return lTemplist_1 + lTemplist_2
-
-def list_4_index(paramlist):
-    for i, value in enumerate(paramlist):
-        pass
-    pass
+    sum += tempnum
+    return sum
 
 
 
 if __name__ == '__main__':
-    print(list_3_index([3,4,5]))
+    for value in sumToHundred():
+        print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), value) + ' = 100')
+    #print(sumToHundred())
+
