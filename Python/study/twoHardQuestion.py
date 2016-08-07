@@ -5,10 +5,10 @@ import math
 from functools import reduce
 
 #问题一
-#编写一个能将给定非负整数列表中的数字排列成最大数字的函数。例如，给定[50，2，1,9]，最大数字为 95021。
+#编写一个能将给定非负整数列表中的数字排列成最大数字的函数。例如，给定[50, 2, 1, 9]，最大数字为 95021。
 def maxNumCombination(paramlist):
     if(reduce(lambda x, y: x and y, map(lambda n: (isinstance(n, int)) and (n >= 0) and (n == math.trunc(n)), paramlist))):
-        return int(reduce(lambda x, y: x + y, map(str, sorted(paramlist, key = firstnum, reverse = True))))
+        return int(reduce(lambda x, y: x + y, map(str, sorted(paramlist, key = lambda n:float(reduce(lambda x, y: (x if x.find('.') > 0 else (x + '.')) + y, str(n))), reverse = True))))
     else:
         raise AttributeError('入参必须是数组，且元素必须是正整数')
 
@@ -18,8 +18,10 @@ def maxNumCombination(paramlist):
     #num   = reduce(lambda x, y: x + y, lTemp)
     #return int(num)
 
-#将给定数字全都表示成 1.23的形式再比较大小
-#可不可以将这个小函数写成 匿名函数 或者 有没有比较高阶的表达？？？？？？
+    #补充，其中key = firstnum 改写成了 key = lambda n: float(reduce(lambda x, y: (x if x.find('.') > 0 else (x + '.')) + y, str(n)))
+    #是将数字转化成为 1.23 的形式再去比较
+
+#原来的firstnum函数
 def firstnum(n):
     while n > 9:
         n = n / 10
@@ -46,6 +48,10 @@ def sumToHundred():
 
     lAllNumCombination = []
     get100(lNUmlist, 1, 16, lNUmlist, lAllNumCombination)
+
+    for value in sumToHundred():
+        print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), value) + ' = 100')
+
     return lAllNumCombination
 
 #获取所有的组合
@@ -96,9 +102,12 @@ def calculate100(paramlist):
     return sum
 
 
+#第二个问题的第二种解法（非递归）
+
+
 
 if __name__ == '__main__':
-    for value in sumToHundred():
-        print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), value) + ' = 100')
-    #print(sumToHundred())
+    pass
+
+
 
