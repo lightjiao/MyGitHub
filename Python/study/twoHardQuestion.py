@@ -47,36 +47,36 @@ def sumToHundred():
             lNUmlist.append("")
 
     lAllNumCombination = []
-    get100(lNUmlist, 1, 16, lNUmlist, lAllNumCombination)
+    get100(1, 16, lNUmlist, lAllNumCombination)
 
-    for value in sumToHundred():
+    for value in lAllNumCombination:
         print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), value) + ' = 100')
 
     return lAllNumCombination
 
 #获取所有的组合
-def get100(data1, count, times, data2, lAllNumCombination):
+def get100(count, times, data, lAllNumCombination):
     if count >= times:
-        if calculate100(data2) == 100:
-            lAllNumCombination.append(data2)
-            #print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), data2) + ' = 100')
+        if calculate100(data) == 100:
+            lAllNumCombination.append(data)
+            #print(reduce(lambda x, y: x + (' ' + y + ' ' if y == '+' or y == '-' else y), data) + ' = 100')
         return
 
-    temp1 = list(data2)
-    temp2 = list(data2)
-    temp3 = list(data2)
+    temp1 = list(data)
+    temp2 = list(data)
+    temp3 = list(data)
 
     temp1[count] = '+'
     temp2[count] = '-'
     temp3[count] = ''
     count += 2
 
-    get100(data1, count, times, temp1, lAllNumCombination)
-    get100(data1, count, times, temp2, lAllNumCombination)
-    get100(data1, count, times, temp3, lAllNumCombination)
+    get100(count, times, temp1, lAllNumCombination)
+    get100(count, times, temp2, lAllNumCombination)
+    get100(count, times, temp3, lAllNumCombination)
 
 
-#根据入参的组合计算结果
+#根据入参的组合计算结果, @param paramlist:[1,+,2, ,3,-,4,...,-,89]
 def calculate100(paramlist):
     sum = 0
     tempnum  = 0
@@ -102,12 +102,14 @@ def calculate100(paramlist):
     return sum
 
 
-#第二个问题的第二种解法（非递归）
-
-
-
-if __name__ == '__main__':
+#第二个问题的第二种解法（非递归） ############################################################
+#思路-循环给出所有的符号组合 然后计算
+def sumToHundred_whthNoRecur():
     pass
 
+#入参是一个类似于[+,-, ,+]的list
+def calculate100_2(paramlist):
+    pass
 
-
+if __name__ == '__main__':
+    sumToHundred()
