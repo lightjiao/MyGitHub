@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging; logging.basicConfig(level=logging.INFO)
+from logging import log
 
 import asyncio, os, json, time
 from datetime import datetime
@@ -10,23 +11,27 @@ from aiohttp import web
 
 import aiomysql
 
+
+#创建连接池
 @asyncio.coroutine
 def create_pool(loop, **kw):
     logging.info('create database connection pool ...')
     global __pool
     __pool = yield from aiomysql.create_pool(
-        host       = kw.get('host', 'localhost'),
-        port       = kw.get('port', 3306),
+        host       = kw.get('host',      'localhost'),
+        port       = kw.get('port',      3306),
         user       = kw['user'],
         password   = kw['password'],
         db         = kw['db'],
-        charset    = kw.get('charset', 'utf8'),
+        charset    = kw.get('charset',   'utf8'),
         autocommit = kw.get('autocommit', True),
-        maxsize    = kw.get('maxsize', 10),
-        minsize    = kw.get('minsize', 1),
+        maxsize    = kw.get('maxsize',   10),
+        minsize    = kw.get('minsize',   1),
         loop       = loop
     )
 
+
+#Select 语句
 @asyncio.coroutine
 def select(sql, args, size = None):
     log(sql, args)
@@ -42,6 +47,8 @@ def select(sql, args, size = None):
         logging.info('row returned: %s' % len(rs))
         return rs
 
+#Insert, Update, Delete
+#要执行INSERT、UPDATE、DELETE语句，可以定义一个通用的execute()函数，因为这3种SQL的执行都需要相同的参数，以及返回一个整数表示影响的行数：
 @asyncio.coroutine
 def execute(sql, args):
     log(sql) # log(sql, args)
@@ -146,7 +153,7 @@ class Model(dict, metaclass = ModelMetaclass):
         args.append(self.getValueOrDefault(self.__primary_key__))
         rows = yield from execute(self.__insert__, args)
         if rows != 1:
-            logging.warn('faild to insert record: affected rows: %s' % rows)
+            logging.warning('faild to insert record: affected rows: %s' % rows) #logging.warn was deprecate
 
 
 class Field(object):
@@ -165,39 +172,8 @@ class StringField(Field):
         super().__init__(name, primary_key, default)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# write by myself
+class IntegerField(Field):
+    def __init__(self, name = None, primary_key = False, default = None, ddl = 'integer'):
+        super().__init__(name, primary_key, default)
 
