@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import orm
-from model import User, Blog, Comment
+from models import User, Blog, Comment
 
 def Modeltest():
     yield from orm.create_pool(user = 'www-data', password = '1', database = 'mypython3webapp')
@@ -12,4 +12,5 @@ def Modeltest():
     yield from u.save()
 
 if __name__ == '__main__':
-    Modeltest()
+    for x in Modeltest():
+        pass
