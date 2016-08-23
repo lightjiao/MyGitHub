@@ -99,7 +99,7 @@ class ModelMetaclass(type):
             attrs.pop(k)
 
         escaped_fields = list(map(lambda f:'`%s`'%f, fields)) # what is this `%s` ???????
-        attrs['__mappings__']    = mappings #保存属性和列的映射关系
+        attrs['__mappings__']    = mappings   #保存属性和列的映射关系
         attrs['__table__']       = tableName
         attrs['__primary_key__'] = primaryKey #主键属性名
         attrs['__fields__']      = fields     #除主键外的属性名
@@ -111,6 +111,12 @@ class ModelMetaclass(type):
         attrs['__delete__'] = 'delete from `%s` where `%s` = ?' % (tableName, primaryKey)
         return type.__new__(cls, name, bases, attrs)
 
+## what is this
+def create_args_string(num):
+    L = []
+    for n in range(num):
+        L.append('?')
+    return ', '.join(L)
 
 class Model(dict, metaclass = ModelMetaclass):
     def __init__(self, **kw):
@@ -169,11 +175,22 @@ class Field(object):
 
 class StringField(Field):
     def __init__(self, name = None, primary_key = False, default = None, ddl = 'varchar(100)'):
-        super().__init__(name, primary_key, default)
+        super().__init__(name, ddl, primary_key, default)
 
 
-# write by myself
+########################### write by myself ###########################
 class IntegerField(Field):
     def __init__(self, name = None, primary_key = False, default = None, ddl = 'integer'):
-        super().__init__(name, primary_key, default)
+        super().__init__(name, ddl, primary_key, default)
 
+class BooleanField(Field):
+    def __init__(self, name = None, primary_key = False, default = None, ddl = 'bool'):
+        super().__init__(name, ddl, primary_key, default)
+
+class FloatField(Field):
+    def __init__(self, name = None, primary_key = False, default = None, ddl = 'float'):
+        super().__init__(name, ddl, primary_key, default)
+
+class TextField(Field):
+    def __init__(self, name = None, primary_key = False, default = None, ddl = 'text'):#????
+        super().__init__(name, ddl, primary_key, default)
