@@ -1,10 +1,12 @@
+#include <iostream>
 #include "stdio.h"
 #include "stdint.h"
 //#include "winsock.h"//htons ntohs
-#include "winsock2.h"//htons ntohs
+//#include "winsock2.h"//htons ntohs
 #include "vector"
 #include "time.h"
 #include "get100.h"
+#include <cmath>
 
 using namespace std;
 
@@ -178,9 +180,28 @@ void vector_test()
     return;
 }
 
+void strangePow_2()
+{
+    double an = 0, sn = 0;//an为通项，sn为和
+    int a, n;
+    cout << "Please enter a,n:" << endl;
+    cin >> a >> n;
+    //cout << pow(10, 2);//这个不是10的2次方吗？为什么输出1000？
+    for (int i = 0; i < n; i++) {
+        cout << an << endl;
+        //	an += a * 10 ^ i;//C++里能不能这样表示指数？
+        an += a*pow(10, i);
+        sn += an;
+    }
+    cout << an << '\t' << sn << endl;
+    cin >> a;
+    return ;
+}
+
 void main()
 {
-    get100();
+    //get100();
+    strangePow_2();
     
     return;
 }
