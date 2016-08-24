@@ -5,9 +5,7 @@ __author__ = 'Lights Jiao'
 
 '''
 JSON API definition
-'''
-'''
-讲真，没看懂这个模块的具体作用 以及必要性
+定义webAPI的错误类型
 '''
 
 import json, logging, inspect, functools
