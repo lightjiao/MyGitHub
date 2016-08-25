@@ -22,13 +22,13 @@ $(function() {
         methods: {
             submit: function(event) {
                 event.preventDefault();
-                var
-                    $form = $('#vm'),
-                    email = this.email.trim().toLowerCase(),
-                    data = {
-                        email: email,
-                        passwd: this.passwd==='' ? '' : CryptoJS.SHA1(email + ':' + this.passwd).toString()
-                    };
+                var $form  = $('#vm');
+                var email  = this.email.trim().toLowerCase();
+                var passwd = CryptoJS.SHA1(email + ':' + this.passwd).toString();
+                data = {
+                    email: email,
+                    passwd: this.passwd==='' ? '' : passwd
+                };
                 $form.postJSON('/api/userSignin', data, function(err, result) {
                     if (! err) {
                         location.assign('/');

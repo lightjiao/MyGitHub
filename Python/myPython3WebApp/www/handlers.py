@@ -111,6 +111,7 @@ async def API_GetUser():
 
 
 #注册的API
+#写一个修饰器 修饰函数调用时候 打印函数名和入参
 @post('/api/userRegister')
 async def API_UserRegister(*, email, name, passwd):
     if not name or not name.strip():
@@ -131,8 +132,8 @@ async def API_UserRegister(*, email, name, passwd):
         id      = uid,
         name    = name.strip(),
         email   = email,
-        passwd  = passwd,#hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
-        image   = 'http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest(), #???
+        passwd  = hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
+        image   = ''#''http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest(), #???
     )
     await user.save()
 
@@ -159,14 +160,13 @@ async def API_UserSignin(*, email, passwd):
     user = users[0]
 
     # check passwd:
-    sha1_passwd = '%s:%s' % (user.id, passwd)
+    sha1 = hashlib.sha1()
+    sha1.update(user.id.encode('utf-8'))
+    sha1.update(b':')
+    sha1.update(passwd.encode('utf-8'))
 
-    # sha1 = hashlib.sha1()
-    # sha1.update(user.id.encode('utf-8'))
-    # sha1.update(b':')
-    # sha1.update(passwd.encode('utf-8'))
-    # if user.passwd != sha1.hexdigest():
-    if user.passwd != hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest():
+    logging.info('API_UserSignin checkParam: email:%s, passwd:%s, sha1:%s' % (user.email, user.passwd, sha1.hexdigest()))
+    if user.passwd != sha1.hexdigest():
         raise APIValueError('passwd', 'Invalid password')
 
     #set cookie
