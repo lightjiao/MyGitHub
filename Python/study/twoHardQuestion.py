@@ -21,6 +21,13 @@ def maxNumCombination(paramlist):
     #补充，其中key = firstnum 改写成了 key = lambda n: float(reduce(lambda x, y: (x if x.find('.') > 0 else (x + '.')) + y, str(n)))
     #是将数字转化成为 1.23 的形式再去比较
 
+#思路二: 直接将数字变成字符串比较排序再拼接
+def maxNumCombination_2(paramlist):
+    if (reduce(lambda x, y: x and y, map(lambda n: (isinstance(n, int)) and (n >= 0) and (n == math.trunc(n)), paramlist))):
+        return int(reduce(lambda x,y: x + y, sorted(map(str, paramlist), reverse=True)))
+    else:
+        raise AttributeError('入参必须是数组，且元素必须是正整数')
+
 #原来的firstnum函数
 def firstnum(n):
     while n > 9:
@@ -112,4 +119,4 @@ def calculate100_2(paramlist):
     pass
 
 if __name__ == '__main__':
-    sumToHundred()
+    print(maxNumCombination_2([50, 2, 1, 9]))

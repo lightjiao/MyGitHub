@@ -21,12 +21,12 @@ class APIError(Exception):
         self.message = message
 
 
-class APIValuError(APIError):
+class APIValueError(APIError):
     '''
     Indicate the input value has error or invalid. the data specifies the error field of input form.
     '''
     def __init__(self, field, message = ''):
-        super(APIValuError, self).__init__('value:invalid', field, message)
+        super(APIValueError, self).__init__('value:invalid', field, message)
 
 
 class APIResourceNotFoundError(APIError):

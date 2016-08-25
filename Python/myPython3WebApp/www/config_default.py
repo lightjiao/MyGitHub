@@ -16,6 +16,6 @@ configs = {
         'database':'myPython3Webapp'
     },
     'session':{
-        'ssecret':'_lightS'
+        'secret':'_lightS'
     }
 }
