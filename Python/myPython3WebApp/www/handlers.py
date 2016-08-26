@@ -82,12 +82,8 @@ async def test(request):
 #示例页面，展示最简单的博客页面
 @get('/')
 async def index(request):
-    summary = '这是一个摘要'
-    blogs = [
-        Blog(id='1', name='Test Blog',     summary=summary, created_at=time.time() - 120),
-        Blog(id='2', name='Something New', summary=summary, created_at=time.time() - 3600),
-        Blog(id='3', name='Learn Swift',   summary=summary, created_at=time.time() - 7200)
-    ]
+    blogs = await Blog.findAll()
+
     return {
         '__template__':'blogs.html',
         'blogs':blogs
@@ -96,7 +92,7 @@ async def index(request):
 
 #注册页面
 @get('/register')
-def register():
+async def register():
     return {
         '__template__':'register.html'
     }
@@ -104,7 +100,7 @@ def register():
 
 #登录页面
 @get('/signin')
-def signin():
+async def signin():
     return {
         '__template__':'signin.html'
     }
@@ -112,7 +108,7 @@ def signin():
 
 #登出操作？
 @get('/signout')
-def signout(request):
+async def signout(request):
     referer = request.heafers.get('Referer')
     r = web.HTTPFound(referer or '/')
     r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
@@ -129,13 +125,14 @@ async def getBlog(id):
         c.heml_content = text2html(c.content)
     blog.html_content = markdown2.markdown(blog.content)
     return {
-        '__template__':'blog.html',
+        '__template__':'manage_blog_edit.html',  # 次数需要替换成真正的html页
         'blog':blog,
         'comments':comments
     }
 
 #创建博客的页面
-def manageCreateBlog():
+@get('/manage/blogs/create')
+async def manageBlogCreate():
     return {
         '__template__':'manage_blog_edit.html',
         'id':'',
@@ -232,7 +229,7 @@ async def API_GetBlog(*, id):
 @post('/api/blogs')
 async def API_CreateBlog(request, *, name, summary, content):
     checkAdmin(request)
-    if not name or name.strip():
+    if not name or not name.strip():
         raise APIValueError('name', 'name cannot be empty.')
     if not summary or not summary.strip():
         raise APIValueError('summary', 'summary cannot be empty.')
