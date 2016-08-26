@@ -7,6 +7,8 @@ __author__ = 'Lights Jiao'
 import time, re, hashlib, json, logging, asyncio
 from aiohttp import web
 
+import markdown2
+
 from coroweb import get, post
 from models  import User, Blog, Comment, next_id
 from apis    import APIError, APIValueError, APIPermissionError, APIResourceNotFoundError
@@ -27,6 +29,7 @@ def user2cookie(user, max_age):
     L = [user.id, expires, hashlib.sha1(s.encode('utf-8')).hexdigest()]
     return '-'.join(L)
 
+#计算解密cookie
 async def cookie2user(cookie_str):
     '''
     Parse cookie and load user if cookie is valid
@@ -53,7 +56,16 @@ async def cookie2user(cookie_str):
         logging.exception(e)
         return None
 
+#检查管理员权限
+def checkAdmin(request):
+    if request.__user__ is None or not request.__user__.admin:
+        raise APIPermissionError()
 
+
+def text2html(text):
+    lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'),filter(lambda s: s.strip() != '', text.split('\n')))
+    #拆分一下？
+    return ''.join(lines) # 这是什么意思，连接list行数据变成一个html？
 
 
 #################### web页面的映射  ####################
@@ -98,6 +110,37 @@ def signin():
     }
 
 
+#登出操作？
+@get('/signout')
+def signout(request):
+    referer = request.heafers.get('Referer')
+    r = web.HTTPFound(referer or '/')
+    r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
+    logging.info('user signed out.')
+    return r
+
+
+#博客页面
+@get('/blog/{id}')
+async def getBlog(id):
+    blog     = await Blog.find(id)
+    comments = await Comment.findAll('blog_id=?', [id], orderby='created_at desc')
+    for c in comments:
+        c.heml_content = text2html(c.content)
+    blog.html_content = markdown2.markdown(blog.content)
+    return {
+        '__template__':'blog.html',
+        'blog':blog,
+        'comments':comments
+    }
+
+#创建博客的页面
+def manageCreateBlog():
+    return {
+        '__template__':'manage_blog_edit.html',
+        'id':'',
+        'action':'/api/blogs'
+    }
 
 
 ####################### 页面的API #######################
@@ -176,6 +219,38 @@ async def API_UserSignin(*, email, passwd):
     r.content_type = 'application/json'
     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
     return r
+
+
+#获取博客的API
+@get('/api/blogs/{id}')
+async def API_GetBlog(*, id):
+    blog = await Blog.find(id)
+    return blog
+
+
+#创建博客的API
+@post('/api/blogs')
+async def API_CreateBlog(request, *, name, summary, content):
+    checkAdmin(request)
+    if not name or name.strip():
+        raise APIValueError('name', 'name cannot be empty.')
+    if not summary or not summary.strip():
+        raise APIValueError('summary', 'summary cannot be empty.')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty.')
+
+    blog = Blog(
+        user_id    = request.__user__.id,
+        user_name  = request.__user__.name,
+        user_image = request.__user__.image,
+        name       = name.strip(),
+        summary    = summary.strip(),
+        content    = content.strip()
+    )
+    await blog.save()
+    return blog
+
+
 
 
 

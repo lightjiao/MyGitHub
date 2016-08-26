@@ -15,6 +15,8 @@ from datetime import datetime
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 
+from config import configs
+
 import orm
 from coroweb import add_routes, add_static
 from handlers import COOKIE_NAME, _COOKIE_KEY, cookie2user
