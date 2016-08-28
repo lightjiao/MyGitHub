@@ -11,7 +11,7 @@ import markdown2
 
 from coroweb import get, post
 from models  import User, Blog, Comment, next_id
-from apis    import APIError, APIValueError, APIPermissionError, APIResourceNotFoundError
+from apis    import APIError, APIValueError, APIPermissionError, APIResourceNotFoundError, Page
 from config  import configs
 
 #################### 一些算法，比如cookie加密 ####################
@@ -56,17 +56,30 @@ async def cookie2user(cookie_str):
         logging.exception(e)
         return None
 
+
 #检查管理员权限
 def checkAdmin(request):
     if request.__user__ is None or not request.__user__.admin:
         raise APIPermissionError()
 
 
+#将评论内容拼接成html格式
 def text2html(text):
     lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'),filter(lambda s: s.strip() != '', text.split('\n')))
     #拆分一下？
     return ''.join(lines) # 这是什么意思，连接list行数据变成一个html？
 
+
+#获取页码
+def getPageIndex(page_str):
+    p = 1
+    try:
+        p = int(page_str)
+    except ValueError as e:
+        pass
+    if p < 1:
+        p = 1
+    return p
 
 #################### web页面的映射  ####################
 #测试页面，展示用户
@@ -79,7 +92,7 @@ async def test(request):
     }
 
 
-#示例页面，展示最简单的博客页面
+#主页面
 @get('/')
 async def index(request):
     blogs = await Blog.findAll()
@@ -114,6 +127,15 @@ async def signout(request):
     r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
     logging.info('user signed out.')
     return r
+
+
+#博客列表
+@get('/manage/blogs')
+def manage_blogs(*, page='1'):
+    return {
+        '__template__': 'manage_blogs.html',
+        'page_index': getPageIndex(page)
+    }
 
 
 #博客页面
@@ -217,6 +239,17 @@ async def API_UserSignin(*, email, passwd):
     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
     return r
 
+
+#查看博客列表, 带分页功能
+@get('/api/blogs')
+async def API_Blogs(*, page = '1'):
+    page_index = getPageIndex(page) # 只是由str转换成int并且判断一下0 而已
+    num = await Blog.findNumber('count(id)')
+    p = Page(num, page_index)
+    if num == 0:
+        return dict(page=p, blogs=())
+    blogs = await Blog.findAll(orderby='created_at desc', limit=(p.offset, p.limit))
+    return dict(page=p, blogs=blogs)
 
 #获取博客的API
 @get('/api/blogs/{id}')
