@@ -84,6 +84,7 @@ async def response_factory(app, handler):
                 resp.content_type = 'application/json;charset=utf-8'
                 return resp
             else:
+                r['__user__'] = request.__user__#这一句话非常重要，决定了页面上是否显示用户登录状态
                 resp = web.Response(body=app['__templating__'].get_template(template).render(**r).encode('utf-8'))
                 resp.content_type = 'text/html;charset=utf-8'
                 return resp
@@ -131,7 +132,7 @@ def datetime_filter(t):
     return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
 
 async def init(loop):
-    await orm.create_pool(loop = loop, host='127.0.0.1', port=3306, user='www-data', password='1', db='myPython3Webapp')
+    await orm.create_pool(loop = loop, **configs.db)
     app = web.Application(loop = loop, middlewares=[
         logger_factory, response_factory, auth_factory
     ])

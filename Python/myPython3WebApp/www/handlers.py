@@ -117,7 +117,7 @@ async def signin():
 #登出操作
 @get('/signout')
 async def signout(request):
-    referer = request.heafers.get('Referer')
+    referer = request.headers.get('Referer')
     r = web.HTTPFound(referer or '/')
     r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
     logging.info('user signed out.')
@@ -347,11 +347,49 @@ async def API_DeleteBlog(request, *, id):
     return dict(id = id) #这里的返回值是做什么用处的？
 
 
+#查看评论列表
+@get('/api/comments')
+async def API_GetComments(*, page='1'):
+    page_index = getPageIndex(page)
+    num = await Comment.findNumber('count(id)')
+    p = Page(num, page_index)
+    if num == 0:
+        return dict(page=p, commentes=())
+    comments = await Comment.findAll(orderby='created_at desc', limit=(p.offset, p.limit))
+    return dict(page=p, comments=comments)
 
 
+#创建评论的API
+@post('/api/blogs/{id}/comments')
+async def API_CreateComments(id, request, *, content):
+    user = request.__user__
+    if user is None:
+        raise APIPermissionError('Please signin first')
+    if not content or content.strip():
+        raise APIValueError('content')
+    blog = await Blog.find(id)
+    if blog is None:
+        raise APIResourceNotFoundError('Blog')
+    comment = Comment(
+        blog_id    = blog.id,
+        user_id    = user.id,
+        user_name  = user.name,
+        user_image = user.image,
+        content    = content.strip()
+    )
+    await comment.save()
+    return comment
 
 
-
+#删除评论
+@post('/api/comments/{id}/delete')
+async def API_DeleteComments(id, request):
+    checkAdmin(request)
+    c = await Comment.find(id)
+    if c is None:
+        raise APIResourceNotFoundError('Comments')
+    await c.remove()
+    return dict(id=id)
 
 
 

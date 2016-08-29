@@ -13,7 +13,7 @@ configs = {
         'port':3306,
         'user':'www-data',
         'password':'1',
-        'database':'myPython3Webapp'
+        'db':'myPython3Webapp'
     },
     'session':{
         'secret':'_lightS'
