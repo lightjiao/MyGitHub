@@ -81,27 +81,24 @@ def getPageIndex(page_str):
         p = 1
     return p
 
-#################### web页面的映射  ####################
-#测试页面，展示用户
-@get('/test')
-async def test(request):
-    users = await User.findAll()
-    return {
-        '__template__':'test.html',
-        'users':users
-    }
 
-
+########################## web页面的映射 ############################
+########################## 用户浏览页面URL ##########################
 #主页面
 @get('/')
-async def index(request):
-    blogs = await Blog.findAll()
-
+async def index(*, page = '1'):
+    page_index = getPageIndex(page)
+    num = await Blog.findNumber('count(id)')
+    page = Page(num)
+    if num == 0:
+        blogs = []
+    else:
+        blogs = await Blog.findAll(orderby='created_at desc', limit=(page.offset, page.limit))
     return {
         '__template__':'blogs.html',
-        'blogs':blogs
+        'blogs':blogs,
+        'page':page
     }
-
 
 #注册页面
 @get('/register')
@@ -110,7 +107,6 @@ async def register():
         '__template__':'register.html'
     }
 
-
 #登录页面
 @get('/signin')
 async def signin():
@@ -118,8 +114,7 @@ async def signin():
         '__template__':'signin.html'
     }
 
-
-#登出操作？
+#登出操作
 @get('/signout')
 async def signout(request):
     referer = request.heafers.get('Referer')
@@ -128,17 +123,7 @@ async def signout(request):
     logging.info('user signed out.')
     return r
 
-
-#博客列表
-@get('/manage/blogs')
-def manage_blogs(*, page='1'):
-    return {
-        '__template__': 'manage_blogs.html',
-        'page_index': getPageIndex(page)
-    }
-
-
-#博客页面
+#博客详情页面
 @get('/blog/{id}')
 async def getBlog(id):
     blog     = await Blog.find(id)
@@ -147,10 +132,35 @@ async def getBlog(id):
         c.heml_content = text2html(c.content)
     blog.html_content = markdown2.markdown(blog.content)
     return {
-        '__template__':'manage_blog_edit.html',  # 次数需要替换成真正的html页
+        '__template__':'blog.html',  # 次数需要替换成真正的html页
         'blog':blog,
         'comments':comments
     }
+
+
+########################## 管理员管理URL ############################
+@get('/manage')
+def manage(*, page= '1'):
+    return 'redirect:/manage/blogs'
+
+
+#评论列表
+@get('/manage/comments')
+def manageComments(*, page='1'):
+    return {
+        '__template__':'manage_comments.html',
+        'page_index':getPageIndex(page)
+    }
+
+
+#博客列表
+@get('/manage/blogs')
+def manageBlogs(*, page='1'):
+    return {
+        '__template__': 'manage_blogs.html',
+        'page_index': getPageIndex(page)
+    }
+
 
 #创建博客的页面
 @get('/manage/blogs/create')
@@ -162,16 +172,30 @@ async def manageBlogCreate():
     }
 
 
+#修改博客的页面
+@get('/manage/blogs/edit')
+async def manageBlogEdit(*, id):
+    return {
+        '__template__':'manage_blog_edit.html',
+        'id':id,
+        'action':'/api/blogs/%s' % id
+    }
+
+
+#用户列表页
+@get('/manage/users')
+async def manageUsers(*, page = '1'):
+    return {
+        '__template__':'manage_users.html',
+        'page_index':getPageIndex(page)
+    }
+
+
+
+
+########################################################
 ####################### 页面的API #######################
-#一个简单的API，获取用户名
-@get('/api/test')
-async def API_GetUser():
-    users = await User.findAll(orderby='created_at desc')
-    for u in users:
-        u.passwd = '******'
-    return dict(users = users)
-
-
+########################################################
 #注册的API
 #写一个修饰器 修饰函数调用时候 打印函数名和入参
 @post('/api/userRegister')
@@ -239,6 +263,19 @@ async def API_UserSignin(*, email, passwd):
     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
     return r
 
+#获取用户列表的API
+@get('/api/users')
+async def API_Users(*, page = '1'):
+    page_index = getPageIndex(page)
+    num = await User.findNumber('count(id)')
+    p = Page(num, page_index)
+    if num == 0:
+        return dict(page=p, users=())
+    users = await User.findAll(orderby='created_at desc', limit=(p.offset, p.limit))
+    for u in users:
+        u.passwd = '******'
+    return dict(page=p, users= users)
+
 
 #查看博客列表, 带分页功能
 @get('/api/blogs')
@@ -250,6 +287,7 @@ async def API_Blogs(*, page = '1'):
         return dict(page=p, blogs=())
     blogs = await Blog.findAll(orderby='created_at desc', limit=(p.offset, p.limit))
     return dict(page=p, blogs=blogs)
+
 
 #获取博客的API
 @get('/api/blogs/{id}')
@@ -278,10 +316,35 @@ async def API_CreateBlog(request, *, name, summary, content):
         content    = content.strip()
     )
     await blog.save()
-    return blog
+    return blog #这里的返回值是做什么用处的？
 
 
+#修改日志的API
+@post('/api/blogs/{id}')
+async def API_UpdateBlog(id, request, *, name, summary, content):
+    checkAdmin(request)
+    blog = await Blog.find(id)
+    if not name or not name.strip():
+        raise APIValueError('name', 'name cannot be empty.')
+    if not summary or not summary.strip():
+        raise APIValueError('summary', 'summary cannot be empty.')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty.')
 
+    blog.name = name.strip()
+    blog.summary = summary.strip()
+    blog.content = content.strip()
+    await blog.update
+    return blog #这里的返回值是做什么用处的？
+
+
+#删除日志的API
+@post('/api/blogs/{id}/delete')
+async def API_DeleteBlog(request, *, id):
+    checkAdmin(request)
+    blog = await Blog.find(id)
+    await blog.remove()
+    return dict(id = id) #这里的返回值是做什么用处的？
 
 
 
