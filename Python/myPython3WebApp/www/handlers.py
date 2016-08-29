@@ -129,10 +129,10 @@ async def getBlog(id):
     blog     = await Blog.find(id)
     comments = await Comment.findAll('blog_id=?', [id], orderby='created_at desc')
     for c in comments:
-        c.heml_content = text2html(c.content)
+        c.html_content = text2html(c.content)
     blog.html_content = markdown2.markdown(blog.content)
     return {
-        '__template__':'blog.html',  # 次数需要替换成真正的html页
+        '__template__':'blog.html',
         'blog':blog,
         'comments':comments
     }
@@ -334,7 +334,7 @@ async def API_UpdateBlog(id, request, *, name, summary, content):
     blog.name = name.strip()
     blog.summary = summary.strip()
     blog.content = content.strip()
-    await blog.update
+    await blog.update()
     return blog #这里的返回值是做什么用处的？
 
 
@@ -365,7 +365,7 @@ async def API_CreateComments(id, request, *, content):
     user = request.__user__
     if user is None:
         raise APIPermissionError('Please signin first')
-    if not content or content.strip():
+    if not content or not content.strip():
         raise APIValueError('content')
     blog = await Blog.find(id)
     if blog is None:
