@@ -89,7 +89,7 @@ def getPageIndex(page_str):
 async def index(*, page = '1'):
     page_index = getPageIndex(page)
     num = await Blog.findNumber('count(id)')
-    page = Page(num)
+    page = Page(num, page_index)
     if num == 0:
         blogs = []
     else:
@@ -219,7 +219,7 @@ async def API_UserRegister(*, email, name, passwd):
         name    = name.strip(),
         email   = email,
         passwd  = hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
-        image   = ''#''http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest(), #???
+        image   = r'E:\Study\Git\Python\myPython3WebApp\www\static\img\user.png'
     )
     await user.save()
 
