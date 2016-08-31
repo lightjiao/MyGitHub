@@ -186,10 +186,9 @@ void strangePow_2()
     int a, n;
     cout << "Please enter a,n:" << endl;
     cin >> a >> n;
-    //cout << pow(10, 2);//这个不是10的2次方吗？为什么输出1000？
+    cout << pow(10, 2); //此处的输出结果没有换行导致显示结果出现1000 而不是100
     for (int i = 0; i < n; i++) {
         cout << an << endl;
-        //	an += a * 10 ^ i;//C++里能不能这样表示指数？
         an += a*pow(10, i);
         sn += an;
     }
