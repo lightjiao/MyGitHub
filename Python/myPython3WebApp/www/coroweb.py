@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import logging, functools, asyncio, inspect, os
-from urllib import parse
+from urllib  import parse
 from aiohttp import web
-from apis import APIError
+from apis    import APIError
 
 ##########
 def get(path):

@@ -3,6 +3,7 @@
 
 __author__ = 'Lights Jiao'
 
+#aiomysql是MySQL的Python异步驱动程序
 import logging, asyncio, aiomysql
 
 def log(sql, args=()):
@@ -45,6 +46,7 @@ async def select(sql, args, size = None):
 #要执行INSERT、UPDATE、DELETE语句，可以定义一个通用的execute()函数，因为这3种SQL的执行都需要相同的参数，以及返回一个整数表示影响的行数：
 async def execute(sql, args, autocommit=True):
     log(sql) # log(sql, args)
+    global __pool
     async with __pool.get() as conn:
         if not autocommit:
             await conn.begin()
@@ -127,14 +129,14 @@ class ModelMetaclass(type):
                 #找到主键
                 if v.primary_key:
                     if primaryKey:
-                        raise StandardError('Duplicate primary key for field: %s' % k)
+                        raise RuntimeError('Duplicate primary key for field: %s' % k)
                     primaryKey = k
 
                 else:
                     fields.append(k)
 
         if not primaryKey:
-            raise StandardError('Primary key not found.')
+            raise RuntimeError('Primary key not found.')
         for k in mappings.keys():
             attrs.pop(k)
 
@@ -178,7 +180,7 @@ class Model(dict, metaclass = ModelMetaclass):
                 setattr(self, key, value)
         return value
 
-
+    #classmethod是用来指定一个类的方法为类方法，没有此参数指定的类的方法为实例方法
     @classmethod
     async def findAll(cls, where = None, args = None, **kw):
         ' find object by where clause. '

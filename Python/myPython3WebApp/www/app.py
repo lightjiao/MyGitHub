@@ -12,13 +12,13 @@ import logging; logging.basicConfig(level=logging.INFO)
 import asyncio, os, json, time
 from datetime import datetime
 
-from aiohttp import web
-from jinja2 import Environment, FileSystemLoader
+from aiohttp import web #异步框架
+from jinja2  import Environment, FileSystemLoader #jinja2前端模板引擎
 
 from config import configs
 
 import orm
-from coroweb import add_routes, add_static
+from coroweb  import add_routes, add_static
 from handlers import COOKIE_NAME, _COOKIE_KEY, cookie2user
 
 def init_jinja2(app, **kw):
