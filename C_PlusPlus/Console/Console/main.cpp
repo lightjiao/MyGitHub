@@ -7,6 +7,15 @@
 #include "time.h"
 #include "get100.h"
 #include <cmath>
+#include "string.h"
+#include "stdlib.h"
+
+#pragma warning(push)
+#pragma warning(disable: 4996)
+#pragma warning(disable: 4305)// “初始化”: 从“int”到“char”截断 33行
+#pragma warning(disable: 4309)// “初始化”: 截断常量值 33 行
+#pragma warning(disable: 4018)// “<”: 有符号/无符号不匹配 240
+
 
 using namespace std;
 
@@ -180,27 +189,85 @@ void vector_test()
     return;
 }
 
-void strangePow_2()
+
+//此splite函数无法区分一种特殊情况, 字符串为 "弢|你好啊|123|弢弢弢|abc" 按照 "|" 为分隔符时 会出错，原因是 汉字 "弢" 与分隔符 "|" 有相同的ACSII码
+int strsplit(const char *str, char *parts[], const char *delimiter)
 {
-    double an = 0, sn = 0;//an为通项，sn为和
-    int a, n;
-    cout << "Please enter a,n:" << endl;
-    cin >> a >> n;
-    cout << pow(10, 2); //此处的输出结果没有换行导致显示结果出现1000 而不是100
-    for (int i = 0; i < n; i++) {
-        cout << an << endl;
-        an += a*pow(10, i);
-        sn += an;
+    char *pch;
+    int i = 0;
+    char *copy = NULL, *tmp = NULL;
+
+    copy = strdup(str);
+    if (!copy)
+        goto bad;
+
+    pch = strtok(copy, delimiter);
+
+    tmp = strdup(pch);
+    if (!tmp)
+        goto bad;
+
+    parts[i++] = tmp;
+
+    while (pch) {
+        pch = strtok(NULL, delimiter);
+        if (NULL == pch) break;
+
+        tmp = strdup(pch);
+        if (!tmp)
+            goto bad;
+
+        parts[i++] = tmp;
     }
-    cout << an << '\t' << sn << endl;
-    cin >> a;
-    return ;
+
+    free(copy);
+    return i;
+
+bad:
+    free(copy);
+    for (int j = 0; j < i; j++)
+        free(parts[j]);
+    return -1;
 }
 
-void main()
+//测试splite函数， 能够按照汉字为分隔符进行分割，但区分不了汉字 "弢" 与分隔符 "|"
+void test004()
 {
-    //get100();
-    strangePow_2();
+    char str[] = "123弢啦啦弢abc弢";
+    char *parts[8];
+    size_t size = strsplit(str, parts, "弢");
+    int i = 0;
+    for (; i < size; ++i) {
+        printf("%s\n", parts[i]);
+    }
+}
+
+void test_strsplit_FromInternet()
+{
+    char* sTestString = "弢|你好啊|123|弢弢弢|abc";
+    char* parts[6] = { 0 };
+
+    int size = strsplit(sTestString, parts, "|");
+
+    if (size == -1)
+    {
+        printf("run error!\n");
+        return;
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        printf("%s\n", parts[i]);
+    }
+
+    return;
+}
+
+void main(void) {
+    //test_strsplit_FromInternet();
+    printf("弢\n");
+    char a;
+    cin >> a;
     
     return;
 }
