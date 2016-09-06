@@ -133,9 +133,20 @@ bad:
     free(copy);
     
     for (int j = 0; j < i; j++)
-    { free(parts[j]); }
+    {
+        free(parts[j]);
+    }
     
     return -1;
+}
+
+
+int MyNewSplit(const char* sSrc, char** lResult, const char* delimiter)
+{
+    int nLen = 0;
+    char* sCopy = strdup(sSrc);
+    free(sCopy);
+    return nLen;
 }
 
 //测试splite函数， 能够按照汉字为分隔符进行分割，但区分不了汉字 "弢" 与分隔符 "|"
@@ -150,6 +161,8 @@ void test004()
     {
         printf("%s\n", parts[i]);
     }
+    
+    return;
 }
 
 
