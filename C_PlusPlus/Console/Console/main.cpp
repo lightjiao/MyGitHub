@@ -165,9 +165,25 @@ void test004()
     return;
 }
 
+//西山居面试题，递归+循环
+int cc(int i)
+{
+    for (;  i < 4; )
+    {
+        std::cout << cc(++i);
+    }
+    return i;
+}
+void testcc()
+{
+    cc(1);
+    return;
+}
+
 
 void main(void)
 {
+    testcc();
     char __TEMP__;
     cin >> __TEMP__;
     return;
