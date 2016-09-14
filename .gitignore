@@ -1,4 +1,4 @@
-######################## my configuration ##################
+######################## my configuration begin ##################
 
 db.ini
 deploy_key_rsa
@@ -13,6 +13,7 @@ Desktop.ini
 *.so
 *.egg
 *.egg-info
+*.spec
 dist
 build
 
@@ -21,10 +22,9 @@ build
 *.vcproj.*
 *.vcxproj
 *.vcxproj.*
-*.VC.db
+*.VC.*
 
-
-######################## my configuration ##################
+######################## my configuration end ##################
 
 
 ### VisualStudio ###
