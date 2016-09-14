@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 class RWFile(object):
     #@filename: TXT文件名， @formatList:格式信息-每个字段长度的List
@@ -24,7 +22,7 @@ class RWFile(object):
     def readlineByFormat(self):
         try:
             sLineContent = self.m_fpFile.readline()
-            #sLineContent = sLineContent.decode('utf-8')
+            sLineContent = sLineContent.encode('gbk')
 
             if len(sLineContent) == 0:
                 return []
@@ -73,7 +71,7 @@ class RWFile(object):
                 nSpaceCount = self.m_lFormatInfoList[i] - len(str(value).encode('gbk'))
                 sAllContent += ' ' * nSpaceCount #追加空格
             sAllContent += '\n'
-            self.m_fpFile.write(str(sAllContent).encode('gbk'))
+            self.m_fpFile.write(sAllContent)
         except Exception as e:
             raise e
 
@@ -83,4 +81,4 @@ if __name__ == '__main__':
     a = '焦鸿彬    123'
     a = a.encode('gbk')
     a = a[0:10].decode('gbk')
-    print a
+    print(a)

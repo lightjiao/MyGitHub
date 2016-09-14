@@ -21,6 +21,7 @@ build
 *.vcproj.*
 *.vcxproj
 *.vcxproj.*
+*.VC.db
 
 
 ######################## my configuration ##################

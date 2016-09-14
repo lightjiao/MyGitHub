@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import *
+from PyQt5 import QtCore, QtGui, QtWidgets
 import xml.dom.minidom
 
 from main_UI import Ui_Form
 from RWFile  import RWFile
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
-class mywindow(QtGui.QWidget, Ui_Form):
+#这两行代码哪里来的？
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
+
+class mywindow(QtWidgets.QWidget, Ui_Form):
     def __init__(self):
         super(mywindow, self).__init__()
         self.setupUi(self)
@@ -19,7 +20,7 @@ class mywindow(QtGui.QWidget, Ui_Form):
         self.toolButton.clicked.connect(self.Getfilename)
         self.pushButton.clicked.connect(self.AnalyseTXT)
         self.pushButton_2.clicked.connect(self.SaveFile)
-        self.ErrorMessageDialog = QtGui.QMessageBox(self)
+        self.ErrorMessageDialog = QtWidgets.QMessageBox(self)
 
     #解析XML配置信息
     def _setComboBoxText(self):
@@ -31,19 +32,19 @@ class mywindow(QtGui.QWidget, Ui_Form):
                 nFilecode = int(n.getAttribute('filecode'))
                 sFiletype = n.getAttribute('filename')
                 self.comboBox.addItem(sFiletype, nFilecode)#此处的filecode 无效
-        except Exception, e:
+        except Exception as e:
             self.ErrorMessageDialog.warning(self, '错误', str(e))
 
 
     #获取金手指文件名
     def Getfilename(self):
         try:
-            self.openFileDialog = QtGui.QFileDialog(self)
+            self.openFileDialog = QtWidgets.QFileDialog(self)
             self.openFileDialog.setObjectName("获取TXT文件")
-            self.m_sFilename = self.openFileDialog.getOpenFileName()
+            self.m_sFilename = self.openFileDialog.getOpenFileName()[0]
             self.lineEdit.setText(self.m_sFilename)
 
-        except Exception, e:
+        except Exception as e:
             self.ErrorMessageDialog.warning(self, '错误', str(e))
 
     #初始化表格
@@ -88,7 +89,7 @@ class mywindow(QtGui.QWidget, Ui_Form):
                 if n >= 20:
                     self.tableView.setColumnWidth(n, 200)
 
-        except Exception, e:
+        except Exception as e:
             self.ErrorMessageDialog.warning(self, '错误', str(e))
 
     #解析TXT文件
@@ -120,8 +121,8 @@ class mywindow(QtGui.QWidget, Ui_Form):
 
             self.m_RWFile.close()
 
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
             self.ErrorMessageDialog.warning(self, '错误', str(e))
 
     #保存TXT文件
@@ -140,13 +141,12 @@ class mywindow(QtGui.QWidget, Ui_Form):
 
             self.m_RWFile.close()
 
-        except Exception, e:
+        except Exception as e:
             self.ErrorMessageDialog.warning(self, '错误', str(e))
 
 
 if __name__ == '__main__':
-    import  sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     myshow = mywindow()
     myshow.show()
     app.exec_()
