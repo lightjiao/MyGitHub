@@ -61,7 +61,7 @@ public:
 	{
 		vector<string> vecResult;
 		int count = MysplitString(cDelimiter, vecResult);
-		for (unsigned i = 0; i < count; i++)
+		for (int i = 0; i < count; i++)
 		{
 			cout << vecResult[i] << endl;
 		}

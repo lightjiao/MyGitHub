@@ -5,8 +5,9 @@ class RWFile(object):
     #@filename: TXT文件名， @formatList:格式信息-每个字段长度的List
     def __init__(self, filename, formatList):
         try:
-            self.m_sFilename = filename
+            self.m_sFilename       = filename
             self.m_lFormatInfoList = formatList
+            self.m_nCurrentlinenum = 0 # 文件指针所在行
         except Exception as e:
             raise e
 
@@ -18,21 +19,42 @@ class RWFile(object):
         except Exception as e:
             raise e
 
-    #按行读文件, 返回数据List
-    def readlineByFormat(self):
+    #读取一行数据, 返回数据List
+    def readOneLineByFormat(self):
         try:
             sLineContent = self.m_fpFile.readline()
             sLineContent = sLineContent.encode('gbk')
 
+            self.m_lOneLineContent = []
+
             if len(sLineContent) == 0:
                 return []
-            self.m_lFormatContentList = []
-            for n in self.m_lFormatInfoList:
-                sContent = sLineContent[0:n].strip().decode('gbk')
-                self.m_lFormatContentList.append(sContent)
-                sLineContent = sLineContent[n:]
+            else:
+                for n in self.m_lFormatInfoList:
+                    sContent = sLineContent[0:n].strip().decode('gbk')
+                    self.m_lOneLineContent.append(sContent)
+                    sLineContent = sLineContent[n:]
 
-            return self.m_lFormatContentList
+            return self.m_lOneLineContent
+
+        except Exception as e:
+            raise e
+
+    #读取多行数据, 返回数据结果集（二维数组）
+    def readContentByFormat(self, startlinenum = 0, limit = 100):
+        try:
+            self.m_lFormatContent = []
+            while True:
+                self.readOneLineByFormat()
+                self.m_nCurrentlinenum += 1
+                if self.m_nCurrentlinenum <= startlinenum:
+                    continue
+                if (self.m_nCurrentlinenum > startlinenum + limit) or len(self.m_lOneLineContent) == 0:
+                    break
+
+                self.m_lFormatContent.append(self.m_lOneLineContent)
+
+            return self.m_lFormatContent
 
         except Exception as e:
             raise e

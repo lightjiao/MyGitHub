@@ -8,12 +8,14 @@
 #include "string.h"
 #include "stdlib.h"
 #include "StringWithMySplitFunc.h"
+#include "charReader.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4996)
-#pragma warning(disable: 4305)// “初始化”: 从“int”到“char”截断 33行
-#pragma warning(disable: 4309)// “初始化”: 截断常量值 33 行
-#pragma warning(disable: 4018)// “<”: 有符号/无符号不匹配 240
+#pragma warning(disable: 4305) // (33)  “初始化”: 从“int”到“char”截断
+#pragma warning(disable: 4309) // (33)  “初始化”: 截断常量值
+#pragma warning(disable: 4018) // (240) “<”: 有符号/无符号不匹配 
+#pragma warning(disable: 4477) // (67)  “printf”: 格式字符串“%x”需要类型“unsigned int”的参数，但可变参数 2 拥有了类型“int *”
 
 
 using namespace std;

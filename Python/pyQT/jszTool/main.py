@@ -109,12 +109,11 @@ class mywindow(QtWidgets.QWidget, Ui_Form):
             #self.model.appendRow()
             #设置数据
             nRow = 0
-            while True:
-                self.m_lContentList = self.m_RWFile.readlineByFormat()
-                if len(self.m_lContentList) == 0:
-                    break
+            Content = self.m_RWFile.readContentByFormat()
 
-                for nCol, value in enumerate(self.m_lContentList):
+            ######需要将 设置结果集 做一个封装 已到达良好的翻页、动态加载的实现
+            for list in Content:
+                for nCol, value in enumerate(list):
                     self.model.setItem(nRow, nCol, QtGui.QStandardItem(value))
 
                 nRow += 1
