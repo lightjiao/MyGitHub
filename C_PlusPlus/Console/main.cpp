@@ -9,76 +9,18 @@
 #include "stdlib.h"
 #include "StringWithMySplitFunc.h"
 #include "charReader.h"
+#include "reserve_resize.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4996)
-#pragma warning(disable: 4305) // (33)  “初始化”: 从“int”到“char”截断
-#pragma warning(disable: 4309) // (33)  “初始化”: 截断常量值
-#pragma warning(disable: 4018) // (240) “<”: 有符号/无符号不匹配 
-#pragma warning(disable: 4477) // (67)  “printf”: 格式字符串“%x”需要类型“unsigned int”的参数，但可变参数 2 拥有了类型“int *”
+// #pragma warning(disable: 4305) // (33)  “初始化”: 从“int”到“char”截断
+// #pragma warning(disable: 4309) // (33)  “初始化”: 截断常量值
+// #pragma warning(disable: 4018) // (240) “<”: 有符号/无符号不匹配 
+// #pragma warning(disable: 4477) // (67)  “printf”: 格式字符串“%x”需要类型“unsigned int”的参数，但可变参数 2 拥有了类型“int *”
 
 
 using namespace std;
 
-void func_1()
-{
-    // 小字节序：0  44  大字节序：1023  44
-    int a[10];
-    int  i = 0;
-    
-    for (i; i < 10; i++)
-    {
-        *(a + i) = i + 1014;
-    }
-    
-    short *p = (short*)(&a + 1);//此处会跳过整个数组a  //a+1是内存地址以[数组元素的长度]加一， &a+1是内存地址[以整个数组的长度]加一
-    short *q = p - 1;
-    char c = 300;
-    char* d = &c - 1;
-    printf("%d %d\n", *q, c);   //大字节序：24,_      小字节序：10,_(0, 44)
-    return;
-}
-
-
-void func_2()
-{
-    int a[3][3]    = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-    int (*x)[3]    = a;
-    int *k         = a[0];
-    int (*y)[3][3] = &a;
-    int (*q)[3]    = &a[0];
-    int *z         = &a[0][0];
-    printf("%d\n", (*(x + 1))[0]);    // 4
-    printf("%d\n", *(k + 1));         // 2
-    printf("%d\n", (*(*(y + 1)))[0]); // _____?
-    printf("%d\n", (*(q + 1))[0]);    // 4
-    printf("%d\n", *(z + 1));         // 2
-    int *p = (int *)(y + 1);
-    printf("%d\n", *(p - 1));         // 9
-    return;                           // good, answer is right!
-}
-
-void test_func_1()
-{
-    short a[5] = { 0, 1, 2, 3, 4 };
-    int   b[5] = { 0, 1, 2, 3, 4 };
-    int* p = (int*)a;
-    p++;
-    printf("&a=%x\n&p=%x\n", &a, p);
-    printf("a[0] = %d\n", a[0]);
-    printf("  *p = %d\n", *p);
-    printf("sizeof(a) = %d\n", sizeof(a));
-    printf("sizeof(short)=%d\nsizeof(int)=%d\n", sizeof(short), sizeof(int));
-    return;
-}
-
-void TrueSwamp(int& a, int& b)
-{
-    int c = a;
-    a = b;
-    b = c;
-    return;
-}
 
 typedef uint32_t uint_32_t;
 
@@ -176,21 +118,8 @@ void testcc()
 
 void main(void)
 {
-	StringWithMySplit("中a|弢一你好一啊一|123|一弢弢弢|一abc").MysplitString('|');
-	//StringWithMySplit().MysplitString('|');
+	//测试STL的reserve、resize方法
+	test_Reserve_Resize_Main();
 
-// 	StringWithMySplit a = StringWithMySplit("a|弢一你好一啊一|123|一弢弢弢|一abc");
-// 
-// 	//cout << a.m_str << endl;
-// 
-//     char* pSrc = "a|弢一你好一啊一|123|一弢弢弢|一abc";
-// 
-// 	char* pDest = new char[strlen(pSrc)];
-// 
-// 	a.g2u(pSrc, strlen(pSrc), pDest, strlen(pSrc));
-// 
-// 	cout << pDest << endl;
-
-	
     return;
 }
