@@ -109,7 +109,7 @@ class mywindow(QtWidgets.QWidget, Ui_Form):
             #self.model.appendRow()
             #设置数据
             nRow = 0
-            Content = self.m_RWFile.readContentByFormat()
+            Content = self.m_RWFile.readContentByFormat(startlinenum=-1, limit=-1)
 
             ######需要将 设置结果集 做一个封装 已到达良好的翻页、动态加载的实现
             for list in Content:

@@ -47,9 +47,12 @@ class RWFile(object):
             while True:
                 self.readOneLineByFormat()
                 self.m_nCurrentlinenum += 1
-                if self.m_nCurrentlinenum <= startlinenum:
-                    continue
-                if (self.m_nCurrentlinenum > startlinenum + limit) or len(self.m_lOneLineContent) == 0:
+                if startlinenum != -1 and limit != -1:
+                    if self.m_nCurrentlinenum <= startlinenum:
+                        continue
+                    if (self.m_nCurrentlinenum > startlinenum + limit) or len(self.m_lOneLineContent) == 0:
+                        break
+                if len(self.m_lOneLineContent) == 0:
                     break
 
                 self.m_lFormatContent.append(self.m_lOneLineContent)
