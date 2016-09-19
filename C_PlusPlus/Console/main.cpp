@@ -115,11 +115,30 @@ void testcc()
     return;
 }
 
+#include <errno.h>
+void test_strtod()
+{
+    const char *p = "111.11 -2.22 0X1.BC70A3D70A3D7P+6  1.18973e+309";
+    printf("Parsing '%s':\n", p);
+    char *end;
+    for (double f = strtod(p, &end); p != end; f = strtod(p, &end))
+    {
+        printf("'%.*s' -> ", (int)(end - p), p);
+        p = end;
+        if (errno == ERANGE) {
+            printf("range error, got ");
+            errno = 0;
+        }
+        printf("%f\n", f);
+    }
+}
 
 void main(void)
 {
 	//²âÊÔSTLµÄreserve¡¢resize·½·¨
-	test_Reserve_Resize_Main();
+	//test_Reserve_Resize_Main();
+
+    test_strtod();
 
     return;
 }
