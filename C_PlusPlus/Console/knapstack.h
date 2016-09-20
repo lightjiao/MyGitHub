@@ -41,7 +41,7 @@ int test_knapstack()
                     {
                         knapstack_d[i][j] = knapstack_d[i - 1][j - knapstack_V[i - 1]] + knapstack_W[i - 1];
                         
-                        //knapstack_X[i-1] = 1;
+                        //knapstack_X[i-1] = 1; //像这样的操作为什么不对呢？
                     }
                     else
                     {
@@ -51,6 +51,18 @@ int test_knapstack()
             }
         }
         printf("最大价值：%d\n", knapstack_d[n][C]); //最终求解的最大值
+        
+        //正确的装袋策略
+        int j = C;
+        for (int i = n; i > 0; i--)
+        {
+            if (knapstack_d[i][j] > knapstack_d[i - 1][j])
+            {
+                knapstack_X[i - 1] = 1;
+                j = j - knapstack_V[i - 1];
+            }
+        }
+
         printf("装袋策略：");
         for (int i = 0; i < n ;i++)
         {
