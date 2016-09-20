@@ -26,36 +26,18 @@ if __name__ == '__main__':
     # opener = urllib.request.build_opener(proxise_support)
     # urllib.request.install_opener(opener)
 
-
-    #伪装报头
+    #伪装浏览器请求
     # headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.113 Safari/537.36'}
     # req = urllib.request.Request(url=weburl, headers=headers)
 
     webpage = urllib.request.urlopen(weburl)
     contentBytes = webpage.read().decode('utf-8')
-    test_contentBytes = "http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u552446_1430186635.jpg?imageView2/1/w/128/h/128'"\
-                   "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u10248201462363342.jpg?imageView2/1/w/128/h/128' />"\
-                   "+<img src='http://www.luoo.net/static/img/avatar.gif' />"\
-                   "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u537417_1419078283.jpg?imageView2/1/w/128/h/128' class='rounded' title='Shinzo'/>"\
-                   "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u553855_1419758975.jpg?imageView2/1/w/128/h/128' class='rounded' title='Young-1996'/>"\
-                   "<img src='http://www.luoo.net/static/img/avatar.gif'/>"\
-                   "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u538890_1419156708.jpg?imageView2/1/w/128/h/128' class='rounded' title='Meepoooooooo'/>"\
-                   "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u689330_1428054958.jpg?imageView2/1/w/128/h/128' class='rounded' title='林锦青'/>"\
-                   "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u8256.jpg?imageView2/1/w/128/h/128' class='rounded' title='crystal'/>"
 
-    test_contentBytes += '\n'\
-                    "<img src='http://7xkszy.com2.z0.glb.qiniucdn.com/pics/avatars/u544811470473414.jpg?imageView2/1/w/128/h/128'"
-
-
-    #print(contentBytes)
-    n = re.search(r'(http:.*^[jpg].*(jpg|png|gif))', str(test_contentBytes))
-    print(n.string)
-    print('**********************************************\n')
-
-    for link in set(re.findall(r'(http:.*^[jpg].*(jpg|png|gif))', str(contentBytes))):
-        print(link)
-        link = link[0]
+    re_srcimg = re.compile(r'(http:([^\"])*(jpg|png|gif))') #原来错误的正则表达式 (http:.*(jpg|png|gif)) 没有判断字符串的合法性
+    for image in set(re_srcimg.findall(contentBytes)):
+        imgfile = image[0]
+        print(imgfile)
         try:
-            urllib.request.urlretrieve(link, destFile(link))
+            urllib.request.urlretrieve(imgfile, destFile(imgfile))
         except:
             print('获取失败...')
