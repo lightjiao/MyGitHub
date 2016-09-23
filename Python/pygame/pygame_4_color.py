@@ -65,6 +65,6 @@ while True:
         pos = (int((color[component] / 255.) * 639), component * 80 + 40)
         pygame.draw.circle(screen, (255, 255, 255), pos, 20)
 
-    pygame.draw.rect(screen, tuple(color), (0, 240, 640, 240))
+    pygame.draw.rect(screen, tuple(color), (0, 240, 640, 240)) #Rect(a, b, c, d) a,b 是起始坐标，cd 是长款
 
     pygame.display.update()
