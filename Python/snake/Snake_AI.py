@@ -193,7 +193,7 @@ def new_food():
         h = randint(1, HEIGHT - 2)
         food = h * WIDTH + w
         cell_free = is_cell_free(food, snake_size, snake)
-    win.addch(food / WIDTH, food % WIDTH, '@')
+    win.addch(int(food / WIDTH), int(food % WIDTH), '@')
 
 
 # 真正的蛇在这个函数中，朝pbest_move走1步
@@ -209,7 +209,7 @@ def make_move(pbest_move):
     if key == 27: return
 
     p = snake[HEAD]
-    win.addch(p / WIDTH, p % WIDTH, '*')
+    win.addch(int(p / WIDTH), int(p % WIDTH), '*')
 
     # 如果新加入的蛇头就是食物的位置
     # 蛇长加1，产生新的食物，重置board(因为原来那些路径长度已经用不上了)
@@ -221,7 +221,7 @@ def make_move(pbest_move):
     else:  # 如果新加入的蛇头不是食物的位置
         board[snake[HEAD]] = SNAKE  # 新的蛇头
         board[snake[snake_size]] = UNDEFINED  # 蛇尾变为空格
-        win.addch(snake[snake_size] / WIDTH, snake[snake_size] % WIDTH, ' ')
+        win.addch(int(snake[snake_size] / WIDTH), int(snake[snake_size] % WIDTH), ' ')
 
 
 # 虚拟地运行一次，然后在调用处检查这次运行可否可行
@@ -272,7 +272,7 @@ curses.noecho()
 curses.curs_set(0)
 win.border(0)
 win.nodelay(1)
-win.addch(food / WIDTH, food % WIDTH, '@')
+win.addch(int(food / WIDTH), int(food % WIDTH), '@')
 
 while key != 27:
     win.border(0)

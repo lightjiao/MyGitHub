@@ -86,7 +86,7 @@ if __name__ == '__main__':
         if snake[0] == foodpos:
             snake = snakegrow(snake, destList[snakedest])
             foodpos = newfoodpos()
-            snakespeed -= 1
+            #snakespeed -= 1
 
         #判断输赢
         if snake[0] in snake[1:] or snake[0][0] < 0 or snake[0][0] > 32 or snake[0][1] < 0 or snake[0][1] > 24:
