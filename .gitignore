@@ -24,6 +24,9 @@ build
 *.vcxproj.*
 *.VC.*
 
+#Java
+*.class
+
 ######################## my configuration end ##################
 
 
