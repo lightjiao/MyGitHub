@@ -58,5 +58,6 @@ while True:
 
     for r, c in s:
         pygame.draw.rect(screen, (255, 0, 0), (c * 20, r * 20, 20, 20))
-        pygame.draw.rect(screen, (0, 255, 0), (food[1] * 20, food[0] * 20, 20, 20))
+
+    pygame.draw.rect(screen, (0, 255, 0), (food[1] * 20, food[0] * 20, 20, 20))
     pygame.display.update()
