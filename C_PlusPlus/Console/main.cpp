@@ -73,9 +73,42 @@ void test_strtod()
     }
 }
 
+void testHuaWeiMianshi()
+{
+    char* str1 = "abc";
+    char* str2 = "abc";
+    //char[] str3 = "abc";
+    //char[] str4 = "abc";
+    const char* str5 = "abc";
+    const char* str6 = "abc";
+    //const char[] str7 = "bac";
+    //const char[] str8 = "bac";
+
+    //cout << (str1 == str2) << endl; //是0 不是false
+    //cout << (str5 == str6) << endl; //是0 不是false
+
+    /*
+    会初始化为数组, 关键是后面的几个0
+    [1, 2,
+     3, 0,
+     0, 0]
+    */
+    int a[3][2] = { 1,2,3 };// 真的会初始化后面所有的空元素为 '0'，略神奇 
+
+    for (int i = 0; i < 3; i++)
+    {
+        //cout << "cout<<a[i] = " << a[i] << endl;
+        for (int j = 0; j < 2; j++)
+        {
+            cout << a[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+}
 
 int main(void)
 {
-    test_knapstack();
+    testHuaWeiMianshi();
     return 0;
 }
