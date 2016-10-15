@@ -130,7 +130,7 @@ int testMemccpy(void)
 
 int main(void)
 {
-    test_Reserve_Resize_Main();
+    testMyStrcpy();
 
     return 0;
 }

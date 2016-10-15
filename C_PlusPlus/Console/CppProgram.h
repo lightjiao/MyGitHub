@@ -2,8 +2,8 @@
 #ifndef __CPP_PROGRAM_H__
 #define __CPP_PROGRAM_H__
 
-#include <stdio.h>  
-#include <tchar.h>  
+#include <stdio.h>
+#include <assert.h>
 #include <iostream>  
 #include <vector>  
 #include <string>  
@@ -23,6 +23,16 @@ unsigned int mystrlen(const char* s)
 //《C++高质量编程指南》中的strcpy
 char* mystrcpy(char* strDest, const char* strSrc)
 {
+    //断言的判断还是很重要的
+    assert((NULL != strSrc) && (NULL != strDest));
+    
+    char* address = strDest;
+    while ((*address++ = *strSrc++) != '\0')
+    {
+        NULL;
+    }
+
+    /* 我自己写的复制方法 复制对了，但是return 的地址不对， 代码也不够简洁
     for (; *strSrc != '\0'; strSrc++)
     {
         *strDest = *strSrc;
@@ -30,8 +40,9 @@ char* mystrcpy(char* strDest, const char* strSrc)
     }
     strDest++;
     *strDest = '\0';
+    */
 
-    return strDest;
+    return strDest; // 此处返回char* 类型 是为了实现链式表达， 例如 int length = strlen(strcpy(strDest, "hello world!"));
 }
 
 void testMyStrcpy()
@@ -60,20 +71,25 @@ private:
     char* m_sData;
     unsigned int m_nCapcity;
     unsigned int m_nSize;
-
-    void _increase(void);
-    void _increase(unsigned int nSize);
 };
 
 //构造函数的时候 一次性分配好所需的 内存地址空间，不需要 一步一步increase，我是不是傻啊
 MyString::MyString(const char* str)
 {
-    m_nSize = mystrlen(str);
-    m_nCapcity = m_nSize + 1;
+    //此处的NULL指针判断是否有必要，因为标准的 string方法 对NULL指针的构造会报错
+    if (NULL == str)
+    {
+        m_sData = (char*)malloc(1);
+        *m_sData = '\0';
+    }
+    else
+    {
+        m_nSize = mystrlen(str);
+        m_nCapcity = m_nSize + 1;
 
-    m_sData = (char*)malloc(m_nCapcity); // new char[m_nCapcity]
-    mystrcpy(m_sData, str);
-
+        m_sData = (char*)malloc(m_nCapcity); // new char[m_nCapcity]
+        mystrcpy(m_sData, str);
+    }
 }
 
 MyString::MyString(const MyString& mystringSrc)
@@ -96,42 +112,22 @@ MyString::~MyString(void)
 
 MyString& MyString::operator =(const MyString& mystringSrc)
 {
-    if (m_nCapcity < mystringSrc.m_nSize + 1)
+    //*重要* 检查自赋值
+    if (this == &mystringSrc)
     {
-        _increase(mystringSrc.m_nSize + 1);
+        return *this;
     }
-    /*
-    while (m_nCapcity < mystringSrc.m_nSize + 1)
-    {
-        _increase();
-    }
-    */
+
+    free(m_sData);
+    m_nSize = mystringSrc.m_nSize;
+    m_nCapcity = m_nSize + 1;
+
+    m_sData = (char*)malloc(m_nCapcity);
 
     mystrcpy(m_sData, mystringSrc.m_sData);
 
-    m_nSize = mystringSrc.m_nSize;
-
-    return *this;   // 为什么不是 “return this”？？
+    return *this;   // 为什么不是 “return this”？？ 返回的是本对象的引用
 }
 
-void MyString::_increase(void)
-{
-    char* p = (char*)malloc(m_nCapcity * 1.5); //此处的浮点运算不知道会不会有问题
-    memcpy(p, m_sData, m_nSize);
-
-    free(m_sData);
-    m_sData = p;
-    m_nCapcity *= 1.5; //此处的浮点运算不知道会不会有问题
-}
-
-void MyString::_increase(unsigned int nCapcity)
-{
-    char* p = (char*)malloc(nCapcity);
-    memcpy(p, m_sData, m_nSize);
-
-    free(m_sData);
-    m_sData = p;
-    m_nCapcity = nCapcity;
-}
 
 #endif

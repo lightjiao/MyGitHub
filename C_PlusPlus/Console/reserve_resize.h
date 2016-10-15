@@ -2,8 +2,7 @@
 #define __TEST_RESERVS_RESIZE_H__
 #pragma once  
 
-#include <stdio.h>  
-#include <tchar.h>  
+#include <stdio.h>
 #include <iostream>  
 #include <vector>  
 #include <string>  
