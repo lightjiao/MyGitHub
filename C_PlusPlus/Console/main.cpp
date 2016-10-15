@@ -9,9 +9,9 @@
 
 #include "get100.h"                 //网传1, 2, ..., 9数字组合结果等于 100
 #include "StringWithMySplitFunc.h"  //split函数处理生僻汉字
-#include "charReader.h"             //没能实现的json解析器
 #include "reserve_resize.h"         //测试STL的reserve & resize 方法
 #include "knapstack.h"              //0-1 背包问题
+#include "CppProgram.h"             //《C++高质量编程》 里的代码
 
 #pragma warning(push)
 #pragma warning(disable: 4996)
@@ -107,8 +107,30 @@ void testHuaWeiMianshi()
 
 }
 
+
+//测试函数memccpy(遇到目标字符串则会停止复制)  似乎可以用于快速地识别一个字符是否在字符串中
+//如果目标字符c 没有被复制，则返回NULL，否则，返回目标字符c 后面紧挨一个字符位置的指针。
+int testMemccpy(void)
+{
+    char *src = "This is the source string !";
+    char dest[80];
+    char *ptr;
+    ptr = (char *)memccpy(dest, src, 'i', strlen(src));
+    //ptr = (char *)memccpy(dest, src, '!', strlen(src));
+    if (ptr)
+    {
+        *ptr = '\0';
+        printf("The character was found: %s\n", dest);
+    }
+    else
+        printf("The character wasn't found\n");
+    return 0;
+}
+
+
 int main(void)
 {
-    testHuaWeiMianshi();
+    test_Reserve_Resize_Main();
+
     return 0;
 }
