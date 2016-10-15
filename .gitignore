@@ -18,10 +18,6 @@ dist
 build
 
 # my_ignore
-*.vcproj
-*.vcproj.*
-*.vcxproj
-*.vcxproj.*
 *.VC.*
 
 #Java
