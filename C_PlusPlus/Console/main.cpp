@@ -12,6 +12,7 @@
 #include "reserve_resize.h"         //测试STL的reserve & resize 方法
 #include "knapstack.h"              //0-1 背包问题
 #include "CppProgram.h"             //《C++高质量编程》 里的代码
+#include "BigNumMultiply.h"         //大数相乘的实现
 
 #pragma warning(push)
 #pragma warning(disable: 4996)
@@ -130,7 +131,7 @@ int testMemccpy(void)
 
 int main(void)
 {
-    testMyStrcpy();
+    BigNumMultiplyMain();
 
     return 0;
 }

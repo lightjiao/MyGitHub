@@ -22,7 +22,7 @@ int test_Reserve_Resize_Main()
 
 	for (int i = 0; i< vecTest.size();i ++)
 	{
-		cout << vecTest[i].m_a << endl;
+		//cout << vecTest[i].m_a << endl;
 	}
 
 	return 0;

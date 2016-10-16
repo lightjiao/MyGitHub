@@ -97,11 +97,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BigNumMultiply.cpp" />
     <ClCompile Include="get100.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="reserve_resize.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BigNumMultiply.h" />
     <ClInclude Include="reserve_resize.h" />
     <ClInclude Include="CppProgram.h" />
     <ClInclude Include="get100.h" />

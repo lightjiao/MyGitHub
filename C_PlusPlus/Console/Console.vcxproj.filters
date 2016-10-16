@@ -20,6 +20,9 @@
     <Filter Include="计算100">
       <UniqueIdentifier>{641e3da5-60dc-4beb-bef4-4c279ee00668}</UniqueIdentifier>
     </Filter>
+    <Filter Include="大数相乘">
+      <UniqueIdentifier>{f6dedba1-3b49-4954-8219-ace2e14ca2e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -28,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="reserve_resize.cpp">
       <Filter>Reserve&amp;resize</Filter>
+    </ClCompile>
+    <ClCompile Include="BigNumMultiply.cpp">
+      <Filter>大数相乘</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="CppProgram.h">
       <Filter>C++高质量编程指南</Filter>
+    </ClInclude>
+    <ClInclude Include="BigNumMultiply.h">
+      <Filter>大数相乘</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
