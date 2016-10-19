@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigNumMultiply.h" />
+    <ClInclude Include="malloc.h" />
     <ClInclude Include="reserve_resize.h" />
     <ClInclude Include="CppProgram.h" />
     <ClInclude Include="get100.h" />

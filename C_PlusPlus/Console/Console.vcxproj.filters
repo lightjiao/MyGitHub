@@ -23,6 +23,9 @@
     <Filter Include="大数相乘">
       <UniqueIdentifier>{f6dedba1-3b49-4954-8219-ace2e14ca2e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="有关内存的思考">
+      <UniqueIdentifier>{99029c86-6431-4035-b05c-cea7f86ff7ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="BigNumMultiply.h">
       <Filter>大数相乘</Filter>
+    </ClInclude>
+    <ClInclude Include="malloc.h">
+      <Filter>有关内存的思考</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
