@@ -8,7 +8,7 @@ import re, sys, os
 targetDir = r'E:/Picture/Python'
 
 weburl = 'http://www.luoo.net/music/679?sid=12942'
-#weburl = 'http://cn.bing.com/'
+weburl = 'http://cn.bing.com/'
 #weburl = 'http://wanimal1983.org'
 
 def destFile(path):
