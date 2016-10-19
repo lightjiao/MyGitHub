@@ -26,6 +26,9 @@
     <Filter Include="有关内存的思考">
       <UniqueIdentifier>{99029c86-6431-4035-b05c-cea7f86ff7ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="牛客网试题">
+      <UniqueIdentifier>{d623080c-7fa4-49e8-9f19-af59dbfabe0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="malloc.h">
       <Filter>有关内存的思考</Filter>
+    </ClInclude>
+    <ClInclude Include="NiuKeWangFirstTest.h">
+      <Filter>牛客网试题</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

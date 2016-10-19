@@ -14,6 +14,7 @@
 #include "CppProgram.h"             //《C++高质量编程》 里的代码
 #include "BigNumMultiply.h"         //大数相乘的实现
 #include "malloc.h"                 //《C++高质量编程》 中对内存的思考的示例
+#include "NiuKeWangFirstTest.h"     //牛客网能礼评估题
 
 #pragma warning(push)
 #pragma warning(disable: 4996)
@@ -132,7 +133,7 @@ int testMemccpy(void)
 
 int main(void)
 {
-
+    NiuKeWangTestMain();
 
     return 0;
 }
