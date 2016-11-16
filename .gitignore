@@ -23,6 +23,10 @@ build
 #Java
 *.class
 
+#PHP
+PHP/vendor
+composer.lock
+
 ######################## my configuration end ##################
 
 
