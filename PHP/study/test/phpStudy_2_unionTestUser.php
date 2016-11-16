@@ -3,52 +3,14 @@
  * Created by IntelliJ IDEA.
  * User: lights
  * Date: 2016/11/16
- * Time: 上午10:37
+ * Time: 下午3:22
  */
 
-class UserStore
-{
-    private $users = array();
+var_dump(__FILE__);
 
-    function addUser($name, $email, $pass)
-    {
-        if (isset($this->users[$email])) {
-            throw new Exception("User {$email} already in the sys!\n");
-        }
+include_once dirname(__DIR__)."/phpStudy_2_unionTest.php";
 
-        if (strlen($pass) < 2) {
-            throw new Exception("pass too short\n");
-        }
-
-        $this->users[$email] = array(
-            'pass' => $pass,
-            'email' => $email,
-            'name' => $name
-        );
-
-        return true;
-    }
-
-    function notifyPasswordFailure($email)
-    {
-        if (isset($this->users[$email])) {
-            $this->users[$email]['failed'] = time(); // what is this ???
-        }
-    }
-
-    function getUser($email)
-    {
-        return ($this->users[$email]); // 为什么要加一个括号？？？
-    }
-}
-
-// 手工执行的测试
-//
-// $store = new UserStore();
-// $store->addUser("jack", "jack@qq.com", "123");
-// $user = $store->getUser("jack@qq.com");
-// print_r($user);
-
+// 用户测试类
 class UserStoreTest extends PHPUnit_Framework_TestCase
 {
     /** @var UserStore */
