@@ -84,4 +84,20 @@ class UserStoreTest extends PHPUnit_Framework_TestCase
         }
         $this->fail("Short passwd exception expected");
     }
+
+    public function testAddUser_duplicate()
+    {
+        try {
+            $ret = $this->store->addUser("jack", "jack@qq.com", "123");
+            $ret = $this->store->addUser("rose", "jack@qq.com", "765");
+            self::fail("Exception should have been thrown");
+        }
+        catch (Exception $e) {
+            $const = $this->logicalAnd(
+                $this->logicalNot($this->contains("rose")),
+                $this->isType('array')
+            );
+            self::assertThat($this->store->getUser("jack@qq.com"), $const);
+        }
+    }
 }
