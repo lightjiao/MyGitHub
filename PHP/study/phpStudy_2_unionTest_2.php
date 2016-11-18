@@ -81,7 +81,7 @@ class StackTest extends PHPUnit_Framework_TestCase
             "adding zeros" => [0, 0, 0],
             "zero plus one" => [0, 1, 1],
             "one plus zero" => [0, 1, 1],
-            "one plus one " => [1, 1, 3]
+            "one plus one " => [1, 1, 2]
         ];
     }
 
@@ -91,5 +91,32 @@ class StackTest extends PHPUnit_Framework_TestCase
     public function testAdd($a, $b, $expected)
     {
         $this->assertEquals($expected, $a + $b);
+    }
+
+
+
+    /*
+     * 单元测试_4 数据供给器 + 依赖 (供给器有限)
+     * 如果测试同时从 @dataProvider 方法和一个或多个 @depends 测试接收数据，
+     * 那么来自于数据供给器的参数将先于来自所依赖的测试的。
+     * 来自于所依赖的测试的参数对于每个数据集都是一样的
+     */
+    public function provider(){
+        // return [['provider1'], ['provider2']];
+        // 这种情况下会返回两次参数给后续的函数，是两次而不是两个
+        return [['provider1']];
+    }
+
+    /**
+     * @depends testProducerOne
+     * @depends testProducerTwo
+     * @dataProvider provider
+     */
+    public function testConsumer_()
+    {
+        $this->assertEquals(
+            ['provider1', 'one', 'two'],
+            func_get_args()
+        );
     }
 }
