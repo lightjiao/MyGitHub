@@ -47,6 +47,7 @@ class UserStoreTest extends PHPUnit_Framework_TestCase
         $this->fail("Short passwd exception expected");
     }
 
+    // 约束 ： 定义自己的断言
     public function testAddUser_duplicate()
     {
         try {
