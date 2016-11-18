@@ -138,14 +138,25 @@ class StackTest extends PHPUnit_Framework_TestCase
         self::throwException(new Exception("aaa"));
     }
 
-
-
-
     /**
      * @expectedException PHPUnit_Framework_Error
      */
     public function testFailingInclude()
     {
         include_once "asdasfbsadfhjadhsdjkansdkshfio";
+    }
+
+
+    /*
+     * 单元测试_6 数据的比较方法
+     */
+    public function testArray()
+    {
+        $this->assertEquals(
+            [1, 2, 3], // 此处的 数字1 和字符 '1' 被视为相等，需要传入额外的入参
+            ['1', 2, 3]
+        );
+
+        $this->assertSame([1, 2, 3], [1, 2, 3]); // 会显示的表示 1 与 '1' 不一样
     }
 }
