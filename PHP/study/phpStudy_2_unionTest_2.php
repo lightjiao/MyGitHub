@@ -119,4 +119,33 @@ class StackTest extends PHPUnit_Framework_TestCase
             func_get_args()
         );
     }
+
+
+
+
+
+    /*
+     * 单元测试_5 对异常进行测试
+     */
+
+    /**
+     * @expectedException
+     */
+    public function testException()
+    {
+        // $this->expectException(self::throwException("aaa")); // 不是很懂这里的语法
+
+        self::throwException(new Exception("aaa"));
+    }
+
+
+
+
+    /**
+     * @expectedException PHPUnit_Framework_Error
+     */
+    public function testFailingInclude()
+    {
+        include_once "asdasfbsadfhjadhsdjkansdkshfio";
+    }
 }
