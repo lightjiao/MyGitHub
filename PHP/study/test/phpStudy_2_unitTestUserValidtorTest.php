@@ -8,7 +8,7 @@
 
 var_dump(__FILE__);
 
-include_once dirname(__DIR__)."/phpStudy_2_unionTest.php";
+include_once dirname(__DIR__)."/phpStudy_2_unitTest.php";
 
 // 用户测试方法测试类
 class ValidatorTest extends PHPUnit_Framework_TestCase
