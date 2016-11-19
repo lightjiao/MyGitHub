@@ -50,7 +50,7 @@ class FixtureTest extends PHPUnit_Framework_TestCase
         fwrite(STDOUT, __METHOD__ . "\n");
     }
 
-    protected function onNotSuccessfulTest(Exception $e)
+    protected function onNotSuccessfulTest($e)
     {
         fwrite(STDOUT, __METHOD__ . "\n");
         throw $e;
