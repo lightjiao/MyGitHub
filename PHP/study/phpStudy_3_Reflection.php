@@ -153,7 +153,31 @@ class ModuleRunner
 
         return true;
     }
+
+    /**
+     * 使用反射批量调用 对象的execute方法
+     */
+    function executeModules()
+    {
+        foreach ($this->configData as $moduleName => $params) {
+
+            $moduleClass = new ReflectionClass($moduleName);
+            $executeMethod = $moduleClass->getMethod('execute');
+            $executeMethod->invoke($moduleClass->newInstance());
+        }
+    }
 }
 
-$test = new ModuleRunner();
-$test->init();
+
+/**
+ * main 函数
+ */
+function main()
+{
+    $test = new ModuleRunner();
+    $test->init();
+    $test->executeModules();
+}
+
+
+main();
