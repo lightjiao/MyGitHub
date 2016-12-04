@@ -55,13 +55,14 @@ def get_img_url_from_html(page_num, html_str):
     for img in soup.find_all('img'):
         img_url = img.get("src")
         if img_url != "" or img_url is not None:
-            thread_pool.apply_async(download_img_from_url, args = (page_num, img_url))
+            thread_pool.apply_async(download_img_from_url, args=(page_num, img_url))
             # download_img_from_url(page_num, img_url)
 
     print('Waiting for all subprocesses done...')
     thread_pool.close()
     thread_pool.join()
     print('All subprocesses done.')
+
 
 def download_img_from_url(page_num, img_url):
     """
@@ -80,5 +81,4 @@ def download_img_from_url(page_num, img_url):
 
 
 if __name__ == '__main__':
-    # 需要解决的问题: 多线程爬虫
     generate_all_page()
