@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="split汉字方法">
+      <UniqueIdentifier>{cb393211-7b6d-46c9-b31a-2af3ee0b671d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reserve&amp;resize">
+      <UniqueIdentifier>{7a55c8c7-4353-4d1c-b053-b43e1e722183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0-1背包">
+      <UniqueIdentifier>{bb52a0e8-7d8b-4ceb-99ea-f0c878c13d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C++高质量编程指南">
+      <UniqueIdentifier>{f0214194-db2e-4ceb-bd8a-d38c539b7f76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="计算100">
+      <UniqueIdentifier>{641e3da5-60dc-4beb-bef4-4c279ee00668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="大数相乘">
+      <UniqueIdentifier>{f6dedba1-3b49-4954-8219-ace2e14ca2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="有关内存的思考">
+      <UniqueIdentifier>{99029c86-6431-4035-b05c-cea7f86ff7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="牛客网试题">
+      <UniqueIdentifier>{d623080c-7fa4-49e8-9f19-af59dbfabe0c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="get100.cpp">
+      <Filter>计算100</Filter>
+    </ClCompile>
+    <ClCompile Include="reserve_resize.cpp">
+      <Filter>Reserve&amp;resize</Filter>
+    </ClCompile>
+    <ClCompile Include="BigNumMultiply.cpp">
+      <Filter>大数相乘</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="testclass.h" />
+    <ClInclude Include="StringWithMySplitFunc.h">
+      <Filter>split汉字方法</Filter>
+    </ClInclude>
+    <ClInclude Include="get100.h">
+      <Filter>计算100</Filter>
+    </ClInclude>
+    <ClInclude Include="reserve_resize.h">
+      <Filter>Reserve&amp;resize</Filter>
+    </ClInclude>
+    <ClInclude Include="iconv.h">
+      <Filter>split汉字方法</Filter>
+    </ClInclude>
+    <ClInclude Include="knapstack.h">
+      <Filter>0-1背包</Filter>
+    </ClInclude>
+    <ClInclude Include="CppProgram.h">
+      <Filter>C++高质量编程指南</Filter>
+    </ClInclude>
+    <ClInclude Include="BigNumMultiply.h">
+      <Filter>大数相乘</Filter>
+    </ClInclude>
+    <ClInclude Include="malloc.h">
+      <Filter>有关内存的思考</Filter>
+    </ClInclude>
+    <ClInclude Include="NiuKeWangFirstTest.h">
+      <Filter>牛客网试题</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data.in">
+      <Filter>0-1背包</Filter>
+    </None>
+  </ItemGroup>
+</Project>
