@@ -24,7 +24,7 @@ build
 *.class
 
 #PHP
-php/vendor
+vendor
 composer.lock
 
 ######################## my configuration end ##################
