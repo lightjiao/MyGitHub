@@ -28,4 +28,12 @@ function test_escapeElasticSearchReservedChars_main()
     echo "\n";
 }
 
-test_escapeElasticSearchReservedChars_main();
+/**
+ * @memo 第一个测试代码入口
+ */
+function test_main_1()
+{
+    test_escapeElasticSearchReservedChars_main();
+}
+
+
