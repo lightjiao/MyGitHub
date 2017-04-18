@@ -16,6 +16,8 @@ def call_back(ch, method, properties, body):
     if nack:# and body.decode()[-1] in ["1", "2", "3"]:
         # print("-------- sleep 10 ----------")
         print("exit with nack")
+
+        """ nack 表示这一条消息被拒绝了 """
         ch.basic_nack(delivery_tag=method.delivery_tag)
         return
 
