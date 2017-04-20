@@ -9,18 +9,34 @@ from bs4 import BeautifulSoup
 from multiprocessing import pool
 
 # targetDir = "/Users/lights/Desktop/pic" # linux目录
-targetDir = "E:/Picture/Python"  # windows目录
+targetDir = "E:/Picture/wanimal"  # windows目录s
 file_name = "./all_img_url.txt"
 # proxies = {'http': 'http://192.168.100.131:8080'} # 公司的代理
 proxies = {'http': 'http://127.0.0.1:1875'}  # lantern代理
 
+# 记录文件是否已经存在的计数，超过一定次数则程序终止
+file_exists_count = 0
 
 def dest_file(path):
+    """
+    生成文件路径并判断文件是否已经存在，超过十个文件存在则返回false
+    :param path:
+    :return:
+    """
+    global file_exists_count
+    print(file_exists_count)
+
     if not os.path.isdir(targetDir):
         os.mkdir(targetDir)
 
     pos = path.rindex('/')
     t = os.path.join(targetDir, path[pos + 1:])
+
+    if os.path.isfile(t) :
+        file_exists_count += 1
+    if file_exists_count > 10:
+        return False
+
     return t
 
 
@@ -74,8 +90,15 @@ def download_img_from_url(page_num, img_url):
     try:
         content = requests.get(url=img_url, proxies=proxies).content
         img = Image.open(BytesIO(content))
-        img.save(dest_file(img_url))
-        print("Page[%s]获取图片成功: %s" % (str(page_num), img_url))
+
+        filename = dest_file(img_url)
+        print(filename)
+        # if filename is not False:
+        #     img.save()
+        # else :
+        #     print("已经存在重复的十个文件，程序终止......")
+        #     return
+        # print("Page[%s]获取图片成功: %s" % (str(page_num), img_url))
     except requests.RequestException:
         print("Page[%s]获取图片失败: %s" % (str(page_num), img_url))
 
