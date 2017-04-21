@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/streadway/amqp"
 )
@@ -10,41 +12,65 @@ import (
 func fadilOnError(err error, msg string) {
 	if err != nil {
 		log.Fatalf("%s: %s", msg, err)
-
 		panic(fmt.Sprintf("%s: %s", msg, err))
 	}
 }
 
+func bodyFrom(args []string) string {
+	var s string
+	if (len(args) < 3) || os.Args[2] == "" {
+		s = "hello"
+	} else {
+		s = strings.Join(args[2:], " ")
+	}
+
+	return s
+}
+
+func serverityFrom(args []string) string {
+	var s string
+	if (len(args) < 2) || os.Args[1] == "" {
+		s = "anonymous.info"
+	} else {
+		s = os.Args[1]
+	}
+
+	return s
+}
+
 func main() {
 
+	// 链接RabbitMQ
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	fadilOnError(err, "Failed to connect to RabbitMQ")
+	fadilOnError(err, "failed to connect to RabbitMQ")
 	defer conn.Close()
 
 	ch, err := conn.Channel()
-	fadilOnError(err, "Failed to open a channel")
+	fadilOnError(err, "failed to open a channel")
 	defer ch.Close()
 
-	q, err := ch.QueueDeclare(
-		"hello", //name
-		false,   // durable
-		false,   // delete when unused,
-		false,   // exclusive
-		false,   // no-wait
-		nil,     // arguments
+	err = ch.ExchangeDeclare(
+		"logs_topic",
+		"topic",
+		true,  // durable
+		false, // auto-deleted
+		false, // internal
+		false, // no-waite
+		nil,   // arguments
 	)
-	fadilOnError(err, "Failed to decalre a queue")
+	fadilOnError(err, "Failed to declare an exchange")
 
-	body := "hello"
-
+	body := bodyFrom(os.Args)
 	err = ch.Publish(
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+		"logs_topic",           // exchange
+		serverityFrom(os.Args), // routing key
+		false, // mandatory
+		false, // immediate
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        []byte(body),
 		})
 	fadilOnError(err, "Failed to publish a message")
+
+	log.Printf(" [x] Sent %s", body)
 }
