@@ -53,7 +53,7 @@ func main() {
 				nil,
 			)
 			if err == nil {
-				fmt.Printf("Decalre queue %s successful.", q.Name)
+				fmt.Printf("Decalre queue %s successful.\n", q.Name)
 				break
 			}
 			time.Sleep(1000 * 1000 * 1000)
@@ -94,8 +94,6 @@ func main() {
 
 	}
 
-	forever := make(chan bool)
-
 	go func() {
 		for d := range msgs {
 			log.Printf(" [x] %s", d.Body)
@@ -104,5 +102,8 @@ func main() {
 
 	log.Print(" [*] Waiting for logs. To exit press CTRL+C")
 
+	// 此处声明一个通道只是为了实现终端保持运行而已，
+	// 返回的msgs 已经是一个消息通道，用协程的形式实现消息的打印
+	forever := make(chan bool)
 	<-forever
 }
