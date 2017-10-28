@@ -3,12 +3,11 @@
  * Created by IntelliJ IDEA.
  * User: lights
  * Date: 2016/11/16
- * Time: 下午3:22
+ * Time: 下午3:22.
  */
-
 var_dump(__FILE__);
 
-include_once dirname(__DIR__)."/phpStudy_2_unitTest.php";
+include_once dirname(__DIR__).'/phpStudy_2_unitTest.php';
 
 // 用户测试类
 class UserStoreTest extends PHPUnit_Framework_TestCase
@@ -29,38 +28,36 @@ class UserStoreTest extends PHPUnit_Framework_TestCase
     //方法名必须以test 开头，通过反射来逐个调用 setUp + test***，并且没有入参
     public function testGetUser()
     {
-        $this->store->addUser("jack", "jack@qq.com", "123");
-        $user = $this->store->getUser("jack@qq.com");
-        $this->assertEquals($user["email"], "jack@qq.com");
-        $this->assertEquals($user["name"], "jack");
-        $this->assertEquals($user["pass"], "123");
+        $this->store->addUser('jack', 'jack@qq.com', '123');
+        $user = $this->store->getUser('jack@qq.com');
+        $this->assertEquals($user['email'], 'jack@qq.com');
+        $this->assertEquals($user['name'], 'jack');
+        $this->assertEquals($user['pass'], '123');
     }
 
     public function testAddUserShortPass()
     {
         try {
-            $this->store->addUser("Mr.Wrong", "Wrong@qq.com", "1");
-        }
-        catch (Exception $e){
+            $this->store->addUser('Mr.Wrong', 'Wrong@qq.com', '1');
+        } catch (Exception $e) {
             return;
         }
-        $this->fail("Short passwd exception expected");
+        $this->fail('Short passwd exception expected');
     }
 
     // 约束 ： 定义自己的断言
     public function testAddUser_duplicate()
     {
         try {
-            $ret = $this->store->addUser("jack", "jack@qq.com", "123");
-            $ret = $this->store->addUser("rose", "jack@qq.com", "765");
-            self::fail("Exception should have been thrown");
-        }
-        catch (Exception $e) {
+            $ret = $this->store->addUser('jack', 'jack@qq.com', '123');
+            $ret = $this->store->addUser('rose', 'jack@qq.com', '765');
+            self::fail('Exception should have been thrown');
+        } catch (Exception $e) {
             $const = $this->logicalAnd(
-                $this->logicalNot($this->contains("rose")),
+                $this->logicalNot($this->contains('rose')),
                 $this->isType('array')
             );
-            self::assertThat($this->store->getUser("jack@qq.com"), $const);
+            self::assertThat($this->store->getUser('jack@qq.com'), $const);
         }
     }
 }

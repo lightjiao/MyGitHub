@@ -3,23 +3,20 @@
  * Created by IntelliJ IDEA.
  * User: lights
  * Date: 2016/11/19
- * Time: 上午11:04
+ * Time: 上午11:04.
  */
-
 class SomeClass
 {
     public function doSomething()
     {
-        //
     }
+
     public function doSomething_2()
     {
-        //
     }
 
     public function doSomething_3()
     {
-        //
     }
 }
 
@@ -38,7 +35,6 @@ class StubTest extends PHPUnit_Framework_TestCase
         // 调用 + 断言
         $this->assertEquals('foo', $stub->doSomething());
 
-
         // 配置mock 2
         $stub->expects($this->any())
             ->method('doSomething_2')
@@ -46,7 +42,6 @@ class StubTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo', $stub->doSomething_2('foo'));
         $this->assertEquals('bar', $stub->doSomething_2('bar'));
-
 
         // 配置mock_3 onConsecutiveCalls
         $stub->expects($this->any())

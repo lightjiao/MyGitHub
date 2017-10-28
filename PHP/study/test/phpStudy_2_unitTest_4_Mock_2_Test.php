@@ -3,9 +3,8 @@
  * Created by IntelliJ IDEA.
  * User: lights
  * Date: 2016/11/19
- * Time: 下午12:57
+ * Time: 下午12:57.
  */
-
 use PHPUnit\Framework\TestCase;
 
 // 测试用类
@@ -71,7 +70,6 @@ class Observer
     // 其他方法。
 }
 
-
 // 测试用特性
 trait TestTrait
 {
@@ -80,10 +78,8 @@ trait TestTrait
         return $this->abstractMethod();
     }
 
-    public abstract function abstractMethod();
+    abstract public function abstractMethod();
 }
-
-
 
 // 单元测试方法
 class SubjectTest extends TestCase
@@ -102,7 +98,6 @@ class SubjectTest extends TestCase
             ->with($this->equalTo('something'));
 
         /**以上为建立测试预测条件，下面的语句才开始正式的测试*/
-
 
         // 创建 Subject 对象，并将模仿的 Observer 对象连接其上。
         $subject = new Subject('My subject');
@@ -131,7 +126,6 @@ class SubjectTest extends TestCase
 
         /**以上为建立测试预测条件，下面的语句才开始正式的测试*/
 
-
         $subject = new Subject('My subject');
         $subject->attach($observer);
 
@@ -139,7 +133,6 @@ class SubjectTest extends TestCase
         // 向observer报告错误.
         $subject->doSomethingBad();
     }
-
 
     public function testFunctionCallTwoTimesWithSpecificArguments()
     {
@@ -159,12 +152,10 @@ class SubjectTest extends TestCase
         $mock->set('foo', 2);
         $mock->set('bar', 3);
         $mock->set('test', 4);
-
     }
 
-
     /**
-     * this is very import
+     * this is very import.
      */
     public function testCallback()
     {
@@ -179,9 +170,8 @@ class SubjectTest extends TestCase
                 $this->greaterThan(0),
                 $this->stringContains('Something'),
                 $this->callback(
-                    function($obj)
-                    {
-                        return is_callable([$obj, 'getName']) && $obj->getName() == 'My subject';
+                    function ($obj) {
+                        return is_callable([$obj, 'getName']) && 'My subject' == $obj->getName();
                     }
                 )
             );
@@ -194,11 +184,10 @@ class SubjectTest extends TestCase
         $subject->doSomethingBad();
     }
 
-
     /**
      * Prophecy
      * Prophecy 是个“极为自我却又非常强大且灵活的 PHP 对象模仿框架。
-     * 虽然一开始是为了满足 phpspec2 的需要而建立的，但它足够灵活，可以用最小代价用于任何测试框架内。”
+     * 虽然一开始是为了满足 phpspec2 的需要而建立的，但它足够灵活，可以用最小代价用于任何测试框架内。”.
      *
      * 更具体可以参考官方文档 https://github.com/phpspec/prophecy#how-to-use-it
      */
@@ -218,9 +207,6 @@ class SubjectTest extends TestCase
         $subject->doSomething();
     }
 
-
-
-
     /**
      * Mock the Trait
      * getMockForTrait() 方法返回一个使用了特定特质(trait)的仿件对象。
@@ -239,4 +225,3 @@ class SubjectTest extends TestCase
         $this->assertTrue($mock->abstractMethod());
     }
 }
-

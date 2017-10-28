@@ -3,7 +3,7 @@
  * Created by IntelliJ IDEA.
  * User: lights
  * Date: 2016/11/30
- * Time: 下午8:22
+ * Time: 下午8:22.
  */
 
 /*
@@ -13,71 +13,71 @@
  * 用户在外部用xml配置文件中列出所有的Module，系统可以使用xml提供的信息来加载一定数目的Module，然后调用execute方法
  */
 
-
 /**
  * 提供其他接口调用的入参的基础类
- * Class Person
+ * Class Person.
  */
 class Person
 {
     public $name;
-    function __construct($name)
+
+    public function __construct($name)
     {
         $this->name = $name;
     }
 }
 
-
 /**
  * 统一的接口
- * Interface Module
+ * Interface Module.
  */
 interface Module
 {
-    function execute();
+    public function execute();
 }
-
 
 /**
  * 第一个类
- * Class FtpModule
+ * Class FtpModule.
  */
 class FtpModule implements Module
 {
-    function setHost($host)
+    public function setHost($host)
     {
-        print "FtpModule::setHost():$host\n";
+        echo "FtpModule::setHost():$host\n";
     }
-    function setUser($user)
+
+    public function setUser($user)
     {
-        print "FtpModule::setUser():$user\n";
+        echo "FtpModule::setUser():$user\n";
     }
-    function execute()
+
+    public function execute()
     {
-        print "FtpModule::execute()..........\n";
+        echo "FtpModule::execute()..........\n";
     }
 }
 
-
 /**
  * 第二个类
- * Class PersonModule
+ * Class PersonModule.
  */
 class PersonModule implements Module
 {
-    function setPerson(Person $person)
+    public function setPerson(Person $person)
     {
-        print "PersonModule::setPerson():$person->name\n";
+        echo "PersonModule::setPerson():$person->name\n";
     }
-    function execute()
+
+    public function execute()
     {
-        print "PersonModule::execute()..........\n";
+        echo "PersonModule::execute()..........\n";
     }
 }
 
 /**
  * 最核心的部分，通过这一个类，使用后反射去调用上面两个类的方法，而不是直接的调用上面的类
- * Class ModuleRunner
+ * Class ModuleRunner.
  */
 class ModuleRunner
 {
@@ -85,23 +85,24 @@ class ModuleRunner
      * @var array 假装是配置信息
      */
     private $configData = [
-        "PersonModule" => ["person" => "bob"],
-        "FtpModule" => [
-            "host" => "www.baidu.com",
-            "user" => "jack"
-        ]
+        'PersonModule' => ['person' => 'bob'],
+        'FtpModule' => [
+            'host' => 'www.baidu.com',
+            'user' => 'jack',
+        ],
     ];
 
     /**
-     * @var array  保存各个Module
+     * @var array 保存各个Module
      */
     private $modules = [];
 
     /**
-     * 逐个的调用配置中的类 及其 所有方法
+     * 逐个的调用配置中的类 及其 所有方法.
+     *
      * @throws Exception
      */
-    function init()
+    public function init()
     {
         $interface = new ReflectionClass('Module');
 
@@ -122,19 +123,22 @@ class ModuleRunner
     }
 
     /**
-     * 具体的方法的调用
+     * 具体的方法的调用.
+     *
      * @param $instance Module
      * @param $method   ReflectionMethod
      * @param $params   array
+     *
      * @return bool
+     *
      * @throws Exception
      */
-    function handleMethod($instance, $method, $params)
+    public function handleMethod($instance, $method, $params)
     {
         $methodName = $method->getName();
         $expectArgs = $method->getParameters();
 
-        if (count($expectArgs) != 1 || substr($methodName, 0, 3) != "set") {
+        if (1 != count($expectArgs) || 'set' != substr($methodName, 0, 3)) {
             return false;
         }
 
@@ -146,8 +150,7 @@ class ModuleRunner
         $argClass = $expectArgs[0]->getClass();
         if (empty($argClass)) {
             $method->invoke($instance, $params[$property]);
-        }
-        else {
+        } else {
             $method->invoke($instance, $argClass->newInstance($params[$property]));
         }
 
@@ -155,12 +158,11 @@ class ModuleRunner
     }
 
     /**
-     * 使用反射批量调用 对象的execute方法
+     * 使用反射批量调用 对象的execute方法.
      */
-    function executeModules()
+    public function executeModules()
     {
         foreach ($this->configData as $moduleName => $params) {
-
             $moduleClass = new ReflectionClass($moduleName);
             $executeMethod = $moduleClass->getMethod('execute');
             $executeMethod->invoke($moduleClass->newInstance());
@@ -168,9 +170,8 @@ class ModuleRunner
     }
 }
 
-
 /**
- * main 函数
+ * main 函数.
  */
 function main()
 {
@@ -178,6 +179,5 @@ function main()
     $test->init();
     $test->executeModules();
 }
-
 
 main();

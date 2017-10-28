@@ -3,14 +3,13 @@
  * Created by IntelliJ IDEA.
  * User: lights
  * Date: 2016/11/16
- * Time: 上午10:37
+ * Time: 上午10:37.
  */
-
 class UserStore
 {
     private $users = array();
 
-    function addUser($name, $email, $pass)
+    public function addUser($name, $email, $pass)
     {
         if (isset($this->users[$email])) {
             throw new Exception("User {$email} already in the sys!\n");
@@ -23,22 +22,22 @@ class UserStore
         $this->users[$email] = array(
             'pass' => $pass,
             'email' => $email,
-            'name' => $name
+            'name' => $name,
         );
 
         return true;
     }
 
-    function notifyPasswordFailure($email)
+    public function notifyPasswordFailure($email)
     {
         if (isset($this->users[$email])) {
             $this->users[$email]['failed'] = time(); // what is this ???
         }
     }
 
-    function getUser($email)
+    public function getUser($email)
     {
-        return ($this->users[$email]); // 为什么要加一个括号？？？
+        return $this->users[$email]; // 为什么要加一个括号？？？
     }
 }
 
@@ -65,11 +64,12 @@ class Validator
             return false;
         }
 
-        if ($user["pass"] == $pass) {
+        if ($user['pass'] == $pass) {
             return true;
         }
 
         $this->store->notifyPasswordFailure($email);
+
         return false;
     }
 }
