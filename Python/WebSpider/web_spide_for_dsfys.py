@@ -1,5 +1,5 @@
 # !/usr/local/easyops/python/bin/python
-# !-*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import datetime
 import json
@@ -91,14 +91,14 @@ def request_cmdb(method, uri, data=None):
     """
     cmdb_header = {
         "host": "cmdb.easyops-only.com",
-        "user": "lightjiao",
-        "org": "1573353097"
+        "user": "easyops",
+        "org": "8887"
     }
     if data is None:
         data = {}
 
     uri = uri.lstrip("/ ")
-    url = "http://easyops.cn/%s" % uri
+    url = "http://192.168.100.122/%s" % uri
     response = requests.request(method, url=url, json=data, headers=cmdb_header)
     if response.status_code != 200:
         if "code" in response.json():
@@ -137,7 +137,10 @@ def send_email(instance_data, email_address="lightjiao@easyops.cn"):
     """
     message = ""
     for k, v in instance_data.items():
-        message += "%-10s:%s" % (str(k), str(v))
+        if isinstance(v, (int, float)):
+            v = str(v)
+        message += v.encode("utf-8")
+        # message += "%-10s:%s" % (str(k).encode(), str(v).encode())
         message += "\n\n"
 
     body = {
@@ -147,7 +150,7 @@ def send_email(instance_data, email_address="lightjiao@easyops.cn"):
     }
 
     response = request_cmdb("POST", "/message/email", body)
-    print(response.json)
+    print(response)
 
 
 def discovery(content_list):
