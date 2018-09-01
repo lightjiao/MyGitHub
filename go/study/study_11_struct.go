@@ -73,6 +73,10 @@ func (car *Car) stop() {
 	return
 }
 
+func (_ *Car) sayHiToMerkel(){
+	fmt.Print("hi car")
+}
+
 type Mercedes struct {
 	Car
 }
@@ -87,4 +91,7 @@ func main() {
 	mercedes.start()
 	mercedes.stop()
 	fmt.Print(mercedes.numberOfWheels())
+
+	car := new(Car)
+	car.sayHiToMerkel()
 }
