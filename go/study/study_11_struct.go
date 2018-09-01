@@ -38,8 +38,53 @@ func (employee *employee) giveRaise(percent float32) float32 {
 	return employee.salary * (float32(1) + percent)
 }
 
-func main() {
+func main_2() {
 	employee := new(employee)
 	employee.salary = 100
 	fmt.Print(employee.giveRaise(0.1))
+}
+
+
+
+//练习 10.8 inheritance_car.go - 练习go 的继承
+//创建一个上面 Car 和 Engine 可运行的例子，并且给 Car 类型一个 wheelCount 字段和一个 numberOfWheels() 方法。
+//创建一个 Mercedes 类型，它内嵌 Car，并新建 Mercedes 的一个实例，然后调用它的方法。
+//然后仅在 Mercedes 类型上创建方法 sayHiToMerkel() 并调用它。
+
+type Engine interface {
+	start()
+	stop()
+}
+
+type Car struct {
+	Engine
+	wheelCount int
+}
+
+func (car *Car) numberOfWheels() int {
+	return car.wheelCount
+}
+
+func (car *Car) start() {
+	return
+}
+
+func (car *Car) stop() {
+	return
+}
+
+type Mercedes struct {
+	Car
+}
+
+func (_ *Mercedes) sayHiToMerkel(){
+	fmt.Print("hi")
+}
+
+func main() {
+	mercedes := new(Mercedes)
+	mercedes.sayHiToMerkel()
+	mercedes.start()
+	mercedes.stop()
+	fmt.Print(mercedes.numberOfWheels())
 }
