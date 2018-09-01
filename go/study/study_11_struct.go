@@ -85,7 +85,7 @@ func (_ *Mercedes) sayHiToMerkel(){
 	fmt.Print("hi")
 }
 
-func main() {
+func main_3() {
 	mercedes := new(Mercedes)
 	mercedes.sayHiToMerkel()
 	mercedes.start()
@@ -94,4 +94,32 @@ func main() {
 
 	car := new(Car)
 	car.sayHiToMerkel()
+}
+
+
+//练习 10.11 magic.go：
+//首先预测一下下面程序的结果，然后动手实验下：
+type Base struct{}
+
+func (*Base) Magic() {
+	fmt.Println("base magic")
+}
+
+func (self *Base) MoreMagic() {
+	self.Magic()
+	self.Magic()
+}
+
+type Voodoo struct {
+	Base
+}
+
+func (*Voodoo) Magic() {
+	fmt.Println("voodoo magic")
+}
+
+func main() {
+	v := new(Voodoo)
+	v.Magic() // voodoo magic
+	v.MoreMagic()  // base magic *2, TODO how can make it print voodoo magic ???
 }
