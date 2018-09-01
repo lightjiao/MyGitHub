@@ -118,8 +118,30 @@ func (*Voodoo) Magic() {
 	fmt.Println("voodoo magic")
 }
 
-func main() {
+func main_4() {
 	v := new(Voodoo)
 	v.Magic() // voodoo magic
 	v.MoreMagic()  // base magic *2, TODO how can make it print voodoo magic ???
+}
+
+
+type OneHello struct{}
+func (_ *OneHello) sayHello() {
+	fmt.Println("one hello")
+}
+
+type TwoHello struct {}
+func (_ *TwoHello) sayHello() {
+	fmt.Println("two hello")
+}
+
+
+type Hello struct {
+	//OneHello
+	TwoHello
+}
+
+func main()  {
+	hello := new(Hello)
+	hello.sayHello() // 如果同时存在两个引用的话会编译错误:  ambiguous selector hello.sayHello
 }
