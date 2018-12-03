@@ -124,11 +124,11 @@ func generateV2() chan int {
 	return ch
 }
 
-func filterV2(chIn chan int, perime int) chan int {
+func filterV2(chIn chan int, prime int) chan int {
 	chOut := make(chan int)
 	go func() {
 		for {
-			if i := <-chIn; i%perime != 0 {
+			if i := <-chIn; i%prime != 0 {
 				chOut <- i
 			}
 		}
@@ -141,9 +141,9 @@ func sieveV2() chan int {
 	go func() {
 		ch := generateV2()
 		for {
-			perime := <-ch
-			ch = filterV2(ch, perime)
-			out <- perime
+			prime := <-ch
+			ch = filterV2(ch, prime)
+			out <- prime
 		}
 	}()
 
