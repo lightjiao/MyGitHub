@@ -3,6 +3,7 @@ using System.IO;
 
 // --
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace AsyncWPF
@@ -17,14 +18,18 @@ namespace AsyncWPF
             InitializeComponent();
         }
 
-        private void startButton_Click(object sender, RoutedEventArgs e)
+        private async void startButton_Click(object sender, RoutedEventArgs e)
         {
+            startButton.IsEnabled = false;
+
             resultsTextBox.Clear();
-            SumPageSizes();
+            await SumPageSizesAsync();
             resultsTextBox.Text += "\r\nControl returned to startButton_Click.";
+
+            startButton.IsEnabled = true;
         }
 
-        private void SumPageSizes()
+        private async Task SumPageSizesAsync()
         {
             // Make a list of web addresses.
             List<string> urlList = SetUpURLList();
@@ -33,7 +38,7 @@ namespace AsyncWPF
             foreach (var url in urlList)
             {
                 // GetURLContents returns the contents of url as a byte array.
-                byte[] urlContents = GetURLContents(url);
+                byte[] urlContents = await GetURLContentsAsync(url);
 
                 DisplayResults(url, urlContents);
 
@@ -58,7 +63,7 @@ namespace AsyncWPF
             return urls;
         }
 
-        private byte[] GetURLContents(string url)
+        private async Task<byte[]> GetURLContentsAsync(string url)
         {
             // The downloaded resource ends up in the variable named content.
             var content = new MemoryStream();
@@ -69,13 +74,13 @@ namespace AsyncWPF
             // Send the request to the Internet resource and wait for
             // the response.
             // Note: you can't use HttpWebRequest.GetResponse in a Windows Store app.
-            using (WebResponse response = webReq.GetResponse())
+            using (var response = await webReq.GetResponseAsync())
             {
                 // Get the data stream that is associated with the specified URL.
                 using (Stream responseStream = response.GetResponseStream())
                 {
                     // Read the bytes in responseStream and copy them to content.
-                    responseStream.CopyTo(content);
+                    await responseStream.CopyToAsync(content);
                 }
             }
 
