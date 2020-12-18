@@ -1,3 +1,7 @@
+# custom
+# ignore control freak 2
+/CF2-Data 
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/unity,windows,linux,macos,vs,vscode
 # Edit at https://www.toptal.com/developers/gitignore?templates=unity,windows,linux,macos,vs,vscode
