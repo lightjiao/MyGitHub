@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ControlFreak2;
+using UnityEngine;
 
 public class SimpleController : MonoBehaviour
 {
@@ -17,9 +18,12 @@ public class SimpleController : MonoBehaviour
     private void Update()
     {
         var deltaPos = new Vector3();
-
-        deltaPos += new Vector3(ControlFreak2.CF2Input.GetAxis("Horizontal"), 0, ControlFreak2.CF2Input.GetAxis("Vertical"));
-
+        deltaPos += new Vector3(CF2Input.GetAxis("Horizontal"), 0, CF2Input.GetAxis("Vertical"));
         transform.localPosition += deltaPos * Time.fixedDeltaTime * m_Speed;
+
+        if (CF2Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Hello space button.");
+        }
     }
 }
