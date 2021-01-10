@@ -1,6 +1,6 @@
-﻿public class TutorialSystems : Feature
+﻿public class TutorialFeature : Feature
 {
-    public TutorialSystems(Contexts contexts) : base("TutorialSystems")
+    public TutorialFeature(Contexts contexts) : base("TutorialSystems")
     {
         // Add 的顺序就是执行的顺序
         Add(new HelloWorldSystem(contexts));

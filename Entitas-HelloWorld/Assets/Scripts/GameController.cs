@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
         var contexts = Contexts.sharedInstance;
 
         // create the systems by creating individual features
-        _systems = new Feature("Systems").Add(new TutorialSystems(contexts));
+        _systems = new Feature("Systems").Add(new TutorialFeature(contexts));
 
         // call
         _systems.Initialize();
