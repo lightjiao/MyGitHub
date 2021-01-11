@@ -18,7 +18,7 @@ public class DirectionComponent : IComponent
 [Game]
 public class ViewComponent : IComponent
 {
-    public GameObject gameobject;
+    public GameObject gameObject;
 }
 
 // 存储Sprite
