@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RenderSpriteSystem : ReactiveSystem<GameEntity>
 {
-    public RenderSpriteSystem(Contexts context) : base(context)
+    public RenderSpriteSystem(Contexts contexts) : base(contexts.game)
     {
     }
 
