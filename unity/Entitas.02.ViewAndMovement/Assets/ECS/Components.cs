@@ -55,7 +55,9 @@ public class MoveCompleteComponent : IComponent
 
 #region 输入相关的Component
 
-// Unique表示只有一个
+/// <summary>
+/// Unique的含义表示全局唯一，可以直接在Context中访问（即Singleton类型的Component）
+/// </summary>
 [Input, Unique]
 public class LeftMouseComponent : IComponent
 {
@@ -83,5 +85,6 @@ public class MousePositionComponent : IComponent
 {
     public Vector2 position;
 }
+
 
 #endregion 输入相关的Component
