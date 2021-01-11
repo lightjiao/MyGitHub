@@ -1,6 +1,5 @@
 ﻿using Entitas;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class CommandMoveSystem : ReactiveSystem<InputEntity>
 {
@@ -28,7 +27,15 @@ public class CommandMoveSystem : ReactiveSystem<InputEntity>
         {
             GameEntity[] movers = _movers.GetEntities();
             if (movers.Length <= 0) return;
-            movers[Random.Range(0, movers.Length)].ReplaceMove(e.mouseDown.position);
+
+            for (int i = 0; i < movers.Length; i++)
+            {
+                // 原来的实现是随机选一个Mover跟随
+                //movers[Random.Range(0, movers.Length)].ReplaceMove(e.mouseDown.position);
+
+                // 现在的实现是所有的mover都跟随
+                movers[i].ReplaceMove(e.mouseDown.position);
+            }
         }
     }
 }
