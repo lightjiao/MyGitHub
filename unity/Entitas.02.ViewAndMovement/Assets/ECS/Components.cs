@@ -41,7 +41,13 @@ public class MoveComponent : IComponent
     public Vector2 target;
 }
 
-// 表示Entity移动结束
+/// <summary>
+/// 表示Entity移动结束
+/// 不是单纯的将MoveComponent移除掉来表示移动停止，移动停止有可能是因为移动被其他系统终止了，
+/// 比如换了一个移动目标，或者单纯的将移动取消掉
+/// 所以需要有一个表示移动Complete的组件
+/// </summary>
+
 [Game]
 public class MoveCompleteComponent : IComponent
 {
