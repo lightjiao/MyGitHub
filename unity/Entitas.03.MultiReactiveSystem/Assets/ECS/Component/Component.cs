@@ -9,9 +9,16 @@ public class DestroyedComponent : IComponent
 {
 }
 
-
 [Game, Input, Ui]
 public class ViewComponent : IComponent
 {
     public GameObject gameObject;
+}
+
+/// <summary>
+/// 表示即将要添加一个view component
+/// </summary>
+[Game, Input, Ui]
+public class AssignViewComponent : IComponent
+{
 }
