@@ -9,3 +9,9 @@ public class DestroyedComponent : IComponent
 {
 }
 
+
+[Game, Input, Ui]
+public class ViewComponent : IComponent
+{
+    public GameObject gameObject;
+}
