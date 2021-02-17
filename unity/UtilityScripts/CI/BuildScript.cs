@@ -51,23 +51,6 @@ namespace TPS.Editor.Build
             return levels.ToArray();
         }
 
-        /// <summary>
-        /// 由于暂时无法直接build apk包，于是先构建成gradle中间包，再由流水线从gradle构建apk
-        /// </summary>
-        /// <see cref="https://discuss.gradle.org/t/com-android-builder-internal-aapt-v2-aapt2internalexception-aapt2-aapt2-3-4-0-5326820-windows-daemon-daemon-startup-failed/33584"/>
-        /// <returns></returns>
-        private static string _GetAndroidGradleOutputDir()
-        {
-            var env = GetJenkinsEnv();
-            var dir = $"{env.Workspace}/Pkg/GradleTemp";
-
-            if (Directory.Exists(dir))
-            {
-                Directory.Delete(dir);
-            }
-            return dir;
-        }
-
         private static string _GetAndroidApkName(string name)
         {
             var env = GetJenkinsEnv();
