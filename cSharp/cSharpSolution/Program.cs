@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace cSharpSolution
@@ -8,8 +9,75 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            TestDelegate();
+            TestLinqAggregate();
         }
+
+        /// <summary>
+        /// 只能返回与元素类型相同的数据类型
+        /// </summary>
+        private static void TestLinqAggregate()
+        {
+            var acc = Enumerable.Range(1, 10).Aggregate(0, (acc, x) =>
+            {
+                if (acc > x) return acc;
+                else return x;
+            });
+            Console.WriteLine(acc);
+        }
+
+        # region 测试位运算
+
+        [Flags]
+        private enum TestFlag
+        {
+            A = 1,
+            B = 1 << 1,
+            C = 1 << 2,
+            D = 1 << 3,
+        }
+
+        /// <summary>
+        /// 测试Enum的位运算
+        /// </summary>
+        /// <remarks>
+        ///
+        /// 枚举叠加
+        /// 0001 | 0010 --> 0011
+        ///
+        /// 判断是否包含
+        /// 0011 & 0001 --> 0001 != 0 包含
+        /// 0011 & 0010 --> 0010 != 0 包含
+        /// 0011 & 0100 --> 0000 == 0 不包含
+        ///
+        /// </remarks>
+        private static void TestEnumFlag()
+        {
+            PrintTestFlag(TestFlag.A);
+            PrintTestFlag(TestFlag.B);
+            //PrintTestFlag(TestFlag.C);
+            //PrintTestFlag(TestFlag.D);
+
+            var x = TestFlag.A | TestFlag.B;
+            PrintTestFlag(x);
+            Console.WriteLine(x & TestFlag.A);
+        }
+
+        private static void PrintTestFlag(TestFlag flag)
+        {
+            Console.Write(flag);
+            Console.Write(": ");
+            //var bytes = BitConverter.GetBytes((int)flag);
+            //if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
+            //var bytes = ((int)flag).ToString();
+            var bytes = Convert.ToString((int)flag, 2);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                Console.Write(bytes[i]);
+            }
+            Console.WriteLine();
+        }
+
+        # endregion 测试位运算
 
         /// <summary>
         /// 测试委托的声明是何时初始化为一个object的
