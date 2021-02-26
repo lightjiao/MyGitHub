@@ -9,7 +9,19 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            TestLinqAggregate();
+            TestLinqSkipTake();
+        }
+
+        /// <summary>
+        /// 结论是哪怕skip超出了上限，也不会造成exception ( 因为结果是一个IEnumerate呀 )
+        /// </summary>
+        private static void TestLinqSkipTake()
+        {
+            var acc = Enumerable.Range(1, 5).Skip(100).Take(1);
+            foreach (var item in acc)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         /// <summary>
