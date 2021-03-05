@@ -73,21 +73,32 @@ public class Bezier : MonoBehaviour
         for (int i = 1; i <= segmentNum; i++)
         {
             var t = i / (float)segmentNum;
-            Vector3 pixel = CalculateCubicBezierPoint(t, p0, p1, p2);
+            Vector3 pixel = BezierLerp(t, new Vector3[]{p0, p1, p2});
             yield return pixel;
         }
     }
- 
-    Vector3 CalculateCubicBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+
+    /// <summary>
+    /// 递归的求贝塞尔曲线插值点
+    /// </summary>
+    /// <param name="t"></param>
+    /// <param name="pointList"></param>
+    /// <returns></returns>
+    private Vector3 BezierLerp(float t, Vector3[] pointList)
     {
-        float u = 1 - t;
-        float tt = t * t;
-        float uu = u * u;
- 
-        Vector3 p = uu * p0;
-        p += 2 * u * t * p1;
-        p += tt * p2;
- 
-        return p;
+        Debug.Log("Hello");
+        if (pointList.Length == 1)
+        {
+            return pointList[0];
+        }
+        
+        var tempPoints = new Vector3[pointList.Length - 1];
+        
+        for (var i = 0; i < pointList.Length - 1; i++)
+        {
+            tempPoints[i] = Vector3.Lerp(pointList[i], pointList[i + 1], t);
+        }
+
+        return BezierLerp(t, tempPoints);
     }
 }
