@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace cSharpSolution
 {
@@ -9,7 +11,23 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            TestLinqSkipTake();
+            Task.WaitAll(ConfigureAwait());
+        }
+
+        private static async Task ConfigureAwait()
+        {
+            Console.WriteLine($"main Thread id: {Thread.CurrentThread.ManagedThreadId}");
+            await PrintAsync("ConfigureAwait(true)").ConfigureAwait(true);
+            await PrintAsync("ConfigureAwait(false)").ConfigureAwait(false);
+        }
+
+        private static async Task PrintAsync(string str)
+        {
+            Console.WriteLine($"{str} :await thread {Thread.CurrentThread.ManagedThreadId}");
+
+            // 有一个空的await，才会让编译器认为这个函数真的是一个异步函数，会使得ConfigureAwait的设置生效
+            // 如果没有空的await，那么整个异步调用会被编译器优化为同步调用函数，ConfigureAwait的设置当然不论怎么设置都不会生效
+            await Task.Run(() => { });
         }
 
         /// <summary>
