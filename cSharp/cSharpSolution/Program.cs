@@ -11,11 +11,32 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            Task.WaitAll(ConfigureAwait());
+            MapperCaller();
         }
 
+        private static void MapperCaller()
+        {
+            Mapper((x) => { Console.WriteLine($"hello {x}"); }, 1);
+            Mapper((x) => { Console.WriteLine($"hello"); }, 1);
+            Mapper(delegate { Console.WriteLine("hello"); }, 1);
+        }
+
+        private static void Mapper(Action<int> func, int a)
+        {
+            func(a);
+        }
+
+        /// <summary>
+        /// 输出结果
+        /// main Thread id: 1
+        /// ConfigureAwait(true) :await thread 1
+        /// ConfigureAwait(false) :await thread 4
+        /// </summary>
+        /// <returns></returns>
         private static async Task ConfigureAwait()
         {
+            // Task.WaitAll(ConfigureAwait()); // run this line in Main()
+
             Console.WriteLine($"main Thread id: {Thread.CurrentThread.ManagedThreadId}");
             await PrintAsync("ConfigureAwait(true)").ConfigureAwait(true);
             await PrintAsync("ConfigureAwait(false)").ConfigureAwait(false);
