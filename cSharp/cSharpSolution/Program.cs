@@ -11,15 +11,19 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            MapperCaller();
+            TestDelegateOperator();
         }
 
-        private static void MapperCaller()
+        #region 测试delegate关键字写法
+
+        private static void TestDelegateOperator()
         {
             Mapper((x) => { Console.WriteLine($"hello {x}"); }, 1);
             Mapper((x) => { Console.WriteLine($"hello"); }, 1);
             Mapper(delegate { Console.WriteLine("hello"); }, 1);
         }
+
+        #endregion 测试delegate关键字写法
 
         private static void Mapper(Action<int> func, int a)
         {
