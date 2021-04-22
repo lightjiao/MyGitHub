@@ -11,7 +11,23 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            TestDelegateOperator();
+            
+        }
+
+        private static void TestByteOperator()
+        {
+            var intMax = int.MaxValue;
+            var midIntMax = int.MaxValue >> 1;
+
+            Console.WriteLine(intMax);
+            Console.WriteLine(midIntMax);
+
+            Console.WriteLine(midIntMax + midIntMax);
+
+            var a = midIntMax + 100;
+
+            Console.WriteLine(midIntMax - 101 > int.MaxValue - a);
+            Console.WriteLine(midIntMax + a);
         }
 
         #region 测试delegate关键字写法
@@ -23,12 +39,12 @@ namespace cSharpSolution
             Mapper(delegate { Console.WriteLine("hello"); }, 1);
         }
 
-        #endregion 测试delegate关键字写法
-
         private static void Mapper(Action<int> func, int a)
         {
             func(a);
         }
+
+        #endregion 测试delegate关键字写法
 
         /// <summary>
         /// 输出结果
@@ -44,6 +60,9 @@ namespace cSharpSolution
             Console.WriteLine($"main Thread id: {Thread.CurrentThread.ManagedThreadId}");
             await PrintAsync("ConfigureAwait(true)").ConfigureAwait(true);
             await PrintAsync("ConfigureAwait(false)").ConfigureAwait(false);
+
+
+            TaskScheduler.FromCurrentSynchronizationContext();
         }
 
         private static async Task PrintAsync(string str)
