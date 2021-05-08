@@ -24,7 +24,6 @@ public class CircleMove : MonoBehaviour
     private float m_rx, m_ry; // 相对于中心的x位置
     [SerializeField]
     private float m_vx, m_vy; // 分速度
-    private bool m_IsFall; // 是否在往下掉落
 
     private void Start()
     {
@@ -37,9 +36,6 @@ public class CircleMove : MonoBehaviour
         m_Angle_Vel = 2.0f * PI / (m_CircleTime * 60); // 一秒60帧
         m_rx = curPos.x - centerPos.x;
         m_ry = curPos.y - centerPos.y;
-
-        m_Angle_Vel *= 2;
-
 
         m_vx = m_R * -m_Angle_Vel;
         m_vy = 0f;
