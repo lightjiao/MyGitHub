@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Center: {fileID: 1438271543}
   m_R: 4
   m_CircleTime: 2
-  m_Gravity: 0
+  m_Gravity: 3.9
 --- !u!1 &1405179989
 GameObject:
   m_ObjectHideFlags: 0
