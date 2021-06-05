@@ -9,7 +9,7 @@ public class MoveForwardSystem : SystemBase
     {
         var deltaTime = Time.DeltaTime;
         Entities
-            .WithAll<AsteriodTag>()
+            .WithAny<AsteriodTag, ChaserTag>()
             .WithNone<PlayerTag>()
             .ForEach((ref Translation pos, in MoveData moveData, in Rotation rot) =>
         {
