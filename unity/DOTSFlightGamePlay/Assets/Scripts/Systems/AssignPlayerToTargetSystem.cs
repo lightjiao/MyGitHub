@@ -1,8 +1,19 @@
 using Unity.Entities;
 
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateBefore(typeof(TargetToDirectionSystem))]
 public class AssignPlayerToTargetSystem : SystemBase
 {
+    protected override void OnStartRunning()
+    {
+        AssignPlayer();
+    }
+
     protected override void OnUpdate()
+    {
+    }
+
+    private void AssignPlayer()
     {
         //var playerQuery = GetEntityQuery(typeof(PlayerTag));
         var playerQuery = GetEntityQuery(ComponentType.ReadOnly<PlayerTag>());
