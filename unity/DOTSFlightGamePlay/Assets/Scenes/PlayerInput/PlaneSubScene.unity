@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 64894974655605438}
   - component: {fileID: 1300688300169542}
   - component: {fileID: 1300688300169541}
+  - component: {fileID: 1300688300169543}
   m_Layer: 0
   m_Name: SpaceFighter
   m_TagString: Untagged
@@ -178,6 +179,18 @@ MonoBehaviour:
   downKey: 274
   rightKey: 275
   leftKey: 276
+--- !u!114 &1300688300169543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300688300169540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af3e102293985549bf6a45239f8bcb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4194826479592562
 Transform:
   m_ObjectHideFlags: 0
@@ -186,7 +199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300688300169540}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25260147, z: 0.06685939}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}

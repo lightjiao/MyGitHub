@@ -17,7 +17,9 @@ public class PlayerInputSystem : SystemBase
         // Translation and Rotation components. Change it to process the component
         // types you want.
 
-        Entities.ForEach((ref MoveData moveData, in InputData inputData) =>
+        Entities
+            .WithAny<PlayerTag>()
+            .ForEach((ref MoveData moveData, in InputData inputData) =>
         {
             // Implement the work to perform for each entity here.
             // You should only access data that is local or that is a
