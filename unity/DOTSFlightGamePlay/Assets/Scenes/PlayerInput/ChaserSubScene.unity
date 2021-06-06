@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 13058939}
   - component: {fileID: 13058938}
   - component: {fileID: 13058937}
+  - component: {fileID: 13058941}
   m_Layer: 0
   m_Name: Chaser (6)
   m_TagString: Untagged
@@ -200,6 +201,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &13058941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13058936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!1 &137055333
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +227,7 @@ GameObject:
   - component: {fileID: 137055336}
   - component: {fileID: 137055335}
   - component: {fileID: 137055334}
+  - component: {fileID: 137055338}
   m_Layer: 0
   m_Name: Chaser (1)
   m_TagString: Untagged
@@ -277,6 +293,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &137055338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137055333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!1 &217136140
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +319,7 @@ GameObject:
   - component: {fileID: 217136143}
   - component: {fileID: 217136142}
   - component: {fileID: 217136141}
+  - component: {fileID: 217136145}
   m_Layer: 0
   m_Name: Chaser (5)
   m_TagString: Untagged
@@ -354,6 +385,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &217136145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217136140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!1 &259968501
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,6 +795,7 @@ GameObject:
   - component: {fileID: 1056040162}
   - component: {fileID: 1056040161}
   - component: {fileID: 1056040160}
+  - component: {fileID: 1056040164}
   m_Layer: 0
   m_Name: Chaser (3)
   m_TagString: Untagged
@@ -815,6 +861,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1056040164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056040159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!1 &1251968386
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +983,7 @@ GameObject:
   - component: {fileID: 1542346428}
   - component: {fileID: 1542346427}
   - component: {fileID: 1542346426}
+  - component: {fileID: 1542346430}
   m_Layer: 0
   m_Name: Chaser (2)
   m_TagString: Untagged
@@ -988,6 +1049,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1542346430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542346425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!1 &1570316627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1075,7 @@ GameObject:
   - component: {fileID: 1570316629}
   - component: {fileID: 1570316631}
   - component: {fileID: 1570316630}
+  - component: {fileID: 1570316632}
   m_Layer: 0
   m_Name: Chaser
   m_TagString: Untagged
@@ -1065,6 +1141,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetEntity: {fileID: 0}
+--- !u!114 &1570316632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570316627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!1 &1980112596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,6 +1263,7 @@ GameObject:
   - component: {fileID: 2116137421}
   - component: {fileID: 2116137420}
   - component: {fileID: 2116137419}
+  - component: {fileID: 2116137423}
   m_Layer: 0
   m_Name: Chaser (4)
   m_TagString: Untagged
@@ -1238,6 +1329,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2116137423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116137418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!23 &3104705152009938031
 MeshRenderer:
   m_ObjectHideFlags: 0

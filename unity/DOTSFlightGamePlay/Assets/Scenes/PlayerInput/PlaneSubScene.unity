@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 1300688300169543}
   - component: {fileID: 1300688300169545}
   - component: {fileID: 1300688300169544}
+  - component: {fileID: 1300688300169546}
   m_Layer: 0
   m_Name: SpaceFighter
   m_TagString: Untagged
@@ -385,6 +386,20 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
+--- !u!114 &1300688300169546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300688300169540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd006e4928b7747ae7d729cce59148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentValue: 100
+  isDead: 0
 --- !u!4 &4194826479592562
 Transform:
   m_ObjectHideFlags: 0
