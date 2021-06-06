@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 292206334}
   - component: {fileID: 292206333}
   - component: {fileID: 292206332}
+  - component: {fileID: 292206335}
   m_Layer: 0
   m_Name: AsteriodMesh
   m_TagString: Untagged
@@ -282,6 +283,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292206330}
   m_Mesh: {fileID: 4300002, guid: 08746d293fd827e429733f5c209aee54, type: 3}
+--- !u!114 &292206335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292206330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea0ca2f06a5a084a98b915f87814395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &326054912
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +433,7 @@ GameObject:
   - component: {fileID: 445547132}
   - component: {fileID: 445547131}
   - component: {fileID: 445547130}
+  - component: {fileID: 445547133}
   m_Layer: 0
   m_Name: AsteriodMesh
   m_TagString: Untagged
@@ -504,6 +518,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445547128}
   m_Mesh: {fileID: 4300002, guid: 08746d293fd827e429733f5c209aee54, type: 3}
+--- !u!114 &445547133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445547128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea0ca2f06a5a084a98b915f87814395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &651538456
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,6 +542,7 @@ GameObject:
   - component: {fileID: 651538460}
   - component: {fileID: 651538459}
   - component: {fileID: 651538458}
+  - component: {fileID: 651538461}
   m_Layer: 0
   m_Name: AsteriodMesh
   m_TagString: Untagged
@@ -600,6 +627,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651538456}
   m_Mesh: {fileID: 4300002, guid: 08746d293fd827e429733f5c209aee54, type: 3}
+--- !u!114 &651538461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651538456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea0ca2f06a5a084a98b915f87814395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1068561530
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,6 +840,7 @@ GameObject:
   - component: {fileID: 1339173866}
   - component: {fileID: 1339173865}
   - component: {fileID: 1339173864}
+  - component: {fileID: 1339173867}
   m_Layer: 0
   m_Name: AsteriodMesh
   m_TagString: Untagged
@@ -885,6 +925,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339173862}
   m_Mesh: {fileID: 4300002, guid: 08746d293fd827e429733f5c209aee54, type: 3}
+--- !u!114 &1339173867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339173862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea0ca2f06a5a084a98b915f87814395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1691838831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,6 +1075,7 @@ GameObject:
   - component: {fileID: 1833540187}
   - component: {fileID: 1833540184}
   - component: {fileID: 1833540185}
+  - component: {fileID: 1833540183}
   m_Layer: 0
   m_Name: AsteriodMesh
   m_TagString: Untagged
@@ -1030,6 +1083,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1833540183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833540182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea0ca2f06a5a084a98b915f87814395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &1833540184
 MeshRenderer:
   m_ObjectHideFlags: 0
