@@ -11,8 +11,47 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            
+            TestRefKeyword();
         }
+
+
+        private static void TestRefKeyword()
+        {
+            // 注意这两行写法的不同
+            // var refInt = GetRefIntValue(1); // 这种写法就还是和普通的写法没区别，只是将变量copy一份
+            // ref var refInt = ref GetRefIntValue(1); // 这种写法才会使得变量的ref生效
+            ref var refInt = ref IntList[1]; // var refInt = IntList[1]; // 这种写法不行
+            Console.WriteLine($"IntValue: {IntList[1]}, refInt {refInt}");
+            refInt = 100;
+            Console.WriteLine($"IntValue: {IntList[1]}, refInt {refInt}");
+            
+            // 如果是一个reference类型，ref keyword 就没那么有必要了，因为class本身就是reference类型
+            var c = new TestRefKeywordClass {Value = 1};
+            ValueList = new[] {c};
+            
+            var anotherC = ValueList[0];
+            Console.WriteLine($"IntValue: {ValueList[0].Value}, refInt {anotherC.Value}");
+            anotherC.Value = 99;
+            Console.WriteLine($"IntValue: {ValueList[0].Value}, refInt {anotherC.Value}");
+            
+            ref var refC = ref ValueList[0];
+            refC.Value = 101;
+            Console.WriteLine($"IntValue: {ValueList[0].Value}, refInt {refC.Value}");
+        }
+
+        private static ref int GetRefIntValue(int idx)
+        {
+            return ref IntList[idx];
+        }
+
+        private static readonly int[] IntList = new[] {1, 2, 3};
+        private static TestRefKeywordClass[] ValueList;
+
+        private class TestRefKeywordClass
+        {
+            public int Value = 10;
+        }
+
 
         private static void TestByteOperator()
         {
@@ -143,11 +182,12 @@ namespace cSharpSolution
             //var bytes = BitConverter.GetBytes((int)flag);
             //if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
             //var bytes = ((int)flag).ToString();
-            var bytes = Convert.ToString((int)flag, 2);
+            var bytes = Convert.ToString((int) flag, 2);
             for (int i = 0; i < bytes.Length; i++)
             {
                 Console.Write(bytes[i]);
             }
+
             Console.WriteLine();
         }
 
@@ -173,7 +213,7 @@ namespace cSharpSolution
         private static void TestDictionary()
         {
             var testMap = new Dictionary<int, HashSet<int>>();
-            testMap[1] = new HashSet<int> { 1, 1, 1, 1 };
+            testMap[1] = new HashSet<int> {1, 1, 1, 1};
 
             Console.WriteLine(testMap[1]);
 
