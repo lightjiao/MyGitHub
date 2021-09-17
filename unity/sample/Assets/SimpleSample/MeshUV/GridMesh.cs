@@ -24,15 +24,26 @@ public class GridMesh : MonoBehaviour
         mesh.name = "Procedural Grid";
 
         vertices = new Vector3[(xSize + 1) * (ySize + 1)];
+        var uv = new Vector2[vertices.Length];
+        var tangents = new Vector4[vertices.Length];
+        var tangent = new Vector4(1f, 0f, 0f, -1f);
         for (int i = 0, y = 0; y <= ySize; y++)
         {
             for (int x = 0; x <= xSize; x++, i++)
             {
                 vertices[i] = new Vector3(x, y);
+                uv[i] = new Vector2((float) x / xSize, (float) y / ySize);
+                // uv[i] = new Vector2(Random.value, Random.value);
+                tangents[i] = tangent;
             }
         }
 
         mesh.vertices = vertices;
+
+        // 虽然我们设置了Mesh的材质，但不指定UV坐标的话，贴图材质找不到合适的方式“贴”在模型上
+        mesh.uv = uv;
+
+        mesh.tangents = tangents;
 
         int[] triangles = new int[xSize * ySize * 6];
         for (int ti = 0, vi = 0, y = 0; y < ySize; y++, vi++)
@@ -47,6 +58,10 @@ public class GridMesh : MonoBehaviour
         }
 
         mesh.triangles = triangles;
+
+        // 重新计算顶点的法线
+        // 通过计算与顶点连接的三角形的法线，对它们求平均并归一化，即为当前顶点的法线
+        mesh.RecalculateNormals();
     }
 
     private void OnDrawGizmos()
