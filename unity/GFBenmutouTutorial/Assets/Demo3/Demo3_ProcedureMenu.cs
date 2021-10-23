@@ -1,4 +1,5 @@
-﻿using GameFramework.Procedure;
+﻿using GameFramework.Event;
+using GameFramework.Procedure;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -8,8 +9,32 @@ public class Demo3_ProcedureMenu : ProcedureBase
     {
         base.OnEnter(procedureOwner);
 
-        var ui = GameEntry.GetComponent<UIComponent>();
+        var gfEvent = GameEntry.GetComponent<EventComponent>();
+        gfEvent.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
 
-        ui.OpenUIForm("Assets/Demo3/UI_Menu.prefab", "DefaultGroup");
+        var ui = GameEntry.GetComponent<UIComponent>();
+        ui.OpenUIForm("Assets/Demo3/UI_Menu.prefab", "DefaultGroup", this);
+
+        Log.Info("ProcedureMenu OnEnter last");
+        
+        /*
+         * 预期的 async/await 写法：
+         * var result = await ui.OpenUIForm()
+         * if (result.success)
+         * {
+         *      OnOpenUIFormSuccess
+         * }
+         */
+    }
+
+    private void OnOpenUIFormSuccess(object sender, GameEventArgs e)
+    {
+        var ne = (OpenUIFormSuccessEventArgs) e;
+        if (ne.UserData != this)
+        {
+            return;
+        }
+
+        Log.Info("UI Menu: 打开UI成功的事件");
     }
 }
