@@ -25,6 +25,9 @@ public class Demo3_ProcedureMenu : ProcedureBase
          *      OnOpenUIFormSuccess
          * }
          */
+
+        var entity = GameEntry.GetComponent<EntityComponent>();
+        entity.ShowEntity<HeroLogic>(1, "Assets/Demo3/HeroCube.prefab", "EntityGroup");
     }
 
     private void OnOpenUIFormSuccess(object sender, GameEventArgs e)
