@@ -21,7 +21,7 @@ public class Demo3_ProcedureLaunch : ProcedureBase
         gfEvent.Subscribe(LoadDataTableSuccessEventArgs.EventId, OnLoadDataTableSuccess);
 
         var dataTable = GameEntry.GetComponent<DataTableComponent>();
-        var heroDt = (DataTableBase) dataTable.CreateDataTable<DRHero>("DRHero");
+        var heroDt = (DataTableBase) dataTable.CreateDataTable<DRHero>();
         heroDt.ReadData("Assets/Demo3/Hero.csv", this);
     }
 
