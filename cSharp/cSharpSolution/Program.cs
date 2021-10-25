@@ -11,8 +11,45 @@ namespace cSharpSolution
     {
         private static void Main(string[] args)
         {
-            TestRefKeyword();
+            TestEnumFlagV2();
         }
+
+        [Flags]
+        public enum StateFlag
+        {
+            None = 0,
+
+            //---
+            Squat = 0x1,
+            Stand = 0x2,
+
+            //---
+            NotFight = 0x10,
+            Fight = 0x20,
+        }
+
+        private static void TestEnumFlagV2()
+        {
+            bool StateCheck(StateFlag state, StateFlag check)
+            {
+                return (state & check) == check;
+            }
+
+            var state = StateFlag.Stand | StateFlag.NotFight;
+
+            Console.WriteLine($"Should true: {StateCheck(state, StateFlag.Stand)}");
+            Console.WriteLine($"Should true: {StateCheck(state, StateFlag.NotFight)}");
+            Console.WriteLine($"Should false: {StateCheck(state, StateFlag.Squat)}");
+            Console.WriteLine($"Should false: {StateCheck(state, StateFlag.Fight)}");
+
+            state = StateFlag.Stand | StateFlag.Fight;
+            Console.WriteLine($"Should true: {StateCheck(state, StateFlag.Stand)}");
+            Console.WriteLine($"Should false: {StateCheck(state, StateFlag.NotFight)}");
+            Console.WriteLine($"Should false: {StateCheck(state, StateFlag.Squat)}");
+            Console.WriteLine($"Should true: {StateCheck(state, StateFlag.Fight)}");
+        }
+
+
 
 
         private static void TestRefKeyword()
@@ -24,16 +61,16 @@ namespace cSharpSolution
             Console.WriteLine($"IntValue: {IntList[1]}, refInt {refInt}");
             refInt = 100;
             Console.WriteLine($"IntValue: {IntList[1]}, refInt {refInt}");
-            
+
             // 如果是一个reference类型，ref keyword 就没那么有必要了，因为class本身就是reference类型
-            var c = new TestRefKeywordClass {Value = 1};
-            ValueList = new[] {c};
-            
+            var c = new TestRefKeywordClass { Value = 1 };
+            ValueList = new[] { c };
+
             var anotherC = ValueList[0];
             Console.WriteLine($"IntValue: {ValueList[0].Value}, refInt {anotherC.Value}");
             anotherC.Value = 99;
             Console.WriteLine($"IntValue: {ValueList[0].Value}, refInt {anotherC.Value}");
-            
+
             ref var refC = ref ValueList[0];
             refC.Value = 101;
             Console.WriteLine($"IntValue: {ValueList[0].Value}, refInt {refC.Value}");
@@ -44,7 +81,7 @@ namespace cSharpSolution
             return ref IntList[idx];
         }
 
-        private static readonly int[] IntList = new[] {1, 2, 3};
+        private static readonly int[] IntList = new[] { 1, 2, 3 };
         private static TestRefKeywordClass[] ValueList;
 
         private class TestRefKeywordClass
@@ -182,7 +219,7 @@ namespace cSharpSolution
             //var bytes = BitConverter.GetBytes((int)flag);
             //if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
             //var bytes = ((int)flag).ToString();
-            var bytes = Convert.ToString((int) flag, 2);
+            var bytes = Convert.ToString((int)flag, 2);
             for (int i = 0; i < bytes.Length; i++)
             {
                 Console.Write(bytes[i]);
@@ -213,7 +250,7 @@ namespace cSharpSolution
         private static void TestDictionary()
         {
             var testMap = new Dictionary<int, HashSet<int>>();
-            testMap[1] = new HashSet<int> {1, 1, 1, 1};
+            testMap[1] = new HashSet<int> { 1, 1, 1, 1 };
 
             Console.WriteLine(testMap[1]);
 
