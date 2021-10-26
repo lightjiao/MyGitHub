@@ -234,7 +234,18 @@ MonoBehaviour:
   m_Value: 0.154
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 33146941}
+        m_MethodName: OnSoundSettingValueChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5688380252614748849
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +612,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5688380252968352728}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 33146941}
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 33146941}
+        m_MethodName: PlayUISound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5688380253100874537
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +720,18 @@ MonoBehaviour:
   m_Value: 0.454
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 33146941}
+        m_MethodName: OnMusicSettingValueChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5688380253121781405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,6 +1113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5688380254107767972}
   - component: {fileID: 5688380254107767974}
+  - component: {fileID: 33146941}
   m_Layer: 5
   m_Name: SettingForm
   m_TagString: Untagged
@@ -1107,6 +1152,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5688380254107767973}
   m_CullTransparentMesh: 0
+--- !u!114 &33146941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688380254107767973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b255cf685b4cb6a48e2ce5ccf3b08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5688380254192441747
 GameObject:
   m_ObjectHideFlags: 0

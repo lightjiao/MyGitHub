@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace GDT.Editor
+namespace FlappyBird.Editor
 {
     public static class ProjectSaver
     {
