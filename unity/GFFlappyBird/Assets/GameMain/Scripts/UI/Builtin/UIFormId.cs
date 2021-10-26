@@ -6,5 +6,13 @@
     public enum UIFormId
     {
         Undefined = 0,
+        
+        MenuForm = 1,
+        
+        SettingForm = 2,
+        
+        ScoreForm = 3,
+        
+        GameOverForm = 4,
     }
 }
