@@ -21,6 +21,7 @@ namespace FlappyBird
             base.OnEnter(procedureOwner);
 
             GameEntry.Entity.ShowBg(new BgData(GameEntry.Entity.GenerateSerialId(), 1, 1f, 0));
+            GameEntry.Entity.ShowBird(new BirdData(GameEntry.Entity.GenerateSerialId(), 3, 5f));
 
             m_PipeSpawnTime = Random.Range(3f, 5f);
         }

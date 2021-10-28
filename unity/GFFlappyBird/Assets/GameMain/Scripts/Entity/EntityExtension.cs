@@ -94,6 +94,16 @@ namespace FlappyBird
             entityComponent.ShowEntity(typeof(Pipe), "Pipe", pipeData);
         }
 
+        public static void ShowBullet(this EntityComponent entityComponent, BulletData data)
+        {
+            entityComponent.ShowEntity(typeof(Bullet), "Bird", data);
+        }
+
+        public static void ShowBird(this EntityComponent entityComponent, BirdData data)
+        {
+            entityComponent.ShowEntity(typeof(Bird), "Bird", data);
+        }
+
         public static int GenerateSerialId(this EntityComponent entityComponent)
         {
             return --s_SerialId;
