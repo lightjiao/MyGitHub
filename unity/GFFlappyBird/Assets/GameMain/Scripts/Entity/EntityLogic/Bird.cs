@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameFramework;
+using GameMain.Scripts.Event;
 using UnityEngine;
 
 namespace FlappyBird
@@ -10,7 +11,7 @@ namespace FlappyBird
         /// <summary>
         /// 射击间隔
         /// </summary>
-        private float m_ShootTime = 10f;
+        private float m_ShootTime = 0.5f;
 
         /// <summary>
         /// 射击计时器
@@ -44,16 +45,16 @@ namespace FlappyBird
                 GameEntry.Sound.PlaySound(2);
                 m_Rigidbody.velocity = new Vector2(0, m_BirdData.FlyForce);
             }
-            
+
             // 射击
             m_ShootTimer += elapseSeconds;
             if (m_ShootTimer > m_ShootTime && Input.GetKeyDown(KeyCode.J))
             {
                 m_ShootTimer = 0f;
                 GameEntry.Sound.PlaySound(3);
-                GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(), 
-                    4, 
-                    CachedTransform.position + CachedTransform.right, 
+                GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(),
+                    4,
+                    CachedTransform.position + CachedTransform.right,
                     6));
             }
         }
@@ -62,6 +63,9 @@ namespace FlappyBird
         {
             GameEntry.Sound.PlaySound(1);
             GameEntry.Entity.HideEntity(this);
+
+            // 小鸟死亡事件
+            GameEntry.Event.Fire(this, ReferencePool.Acquire<BirdDeadEventArgs>());
         }
     }
 }

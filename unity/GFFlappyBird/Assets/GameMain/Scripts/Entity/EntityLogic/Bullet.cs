@@ -1,4 +1,6 @@
 ﻿using System;
+using GameFramework.Event;
+using GameMain.Scripts.Event;
 using UnityEngine;
 
 namespace FlappyBird
@@ -14,6 +16,9 @@ namespace FlappyBird
             
             CachedTransform.SetLocalScaleX(1.8f);
             CachedTransform.position = m_BulletData.ShootPosition;
+            
+            // 监听小鸟死亡事件
+            GameEntry.Event.Subscribe(BirdDeadEventArgs.EventId, OnBirdDead);
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -27,6 +32,20 @@ namespace FlappyBird
             {
                 GameEntry.Entity.HideEntity(this);
             }
+        }
+
+        protected override void OnHide(object userData)
+        {
+            base.OnHide(userData);
+            // 取消监听
+            GameEntry.Event.Unsubscribe(BirdDeadEventArgs.EventId, OnBirdDead);
+        }
+        
+        
+        private void OnBirdDead(object sender, GameEventArgs e)
+        {
+            // 小鸟死亡后隐藏自身（子弹）
+            GameEntry.Entity.HideEntity(this);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
