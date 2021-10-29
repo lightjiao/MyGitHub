@@ -1,6 +1,9 @@
-﻿using GameFramework.Fsm;
+﻿using GameFramework.Event;
+using GameFramework.Fsm;
 using GameFramework.Procedure;
+using GameMain.Scripts.Event;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace FlappyBird
 {
@@ -21,6 +24,11 @@ namespace FlappyBird
         /// </summary>
         private int m_ScoreFormId = -1;
 
+        /// <summary>
+        /// 是否返回主菜单
+        /// </summary>
+        private bool m_IsReturnMenu;
+
         protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -30,6 +38,8 @@ namespace FlappyBird
             GameEntry.Entity.ShowBird(new BirdData(GameEntry.Entity.GenerateSerialId(), 3, 5f));
 
             m_PipeSpawnTime = Random.Range(3f, 5f);
+
+            GameEntry.Event.Subscribe(ReturnMenuEventArgs.EventId, OnReturnMenu);
         }
 
         protected override void OnUpdate(IFsm<IProcedureManager> procedureOwner, float elapseSeconds,
@@ -46,12 +56,25 @@ namespace FlappyBird
 
                 GameEntry.Entity.ShowPipe(new PipeData(GameEntry.Entity.GenerateSerialId(), 2, 1f));
             }
+
+            if (m_IsReturnMenu)
+            {
+                m_IsReturnMenu = false;
+                procedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId,
+                    GameEntry.Config.GetInt("Scene.Menu"));
+                ChangeState<ProcedureChangeScene>(procedureOwner);
+            }
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.UI.CloseUIForm(m_ScoreFormId);
+        }
+
+        private void OnReturnMenu(object sender, GameEventArgs e)
+        {
+            m_IsReturnMenu = true;
         }
     }
 }

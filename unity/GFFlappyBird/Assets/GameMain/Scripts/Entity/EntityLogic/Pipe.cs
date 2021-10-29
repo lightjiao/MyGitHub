@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using GameFramework.Event;
+using GameMain.Scripts.Event;
+using UnityEngine;
 
 namespace FlappyBird
 {
@@ -14,7 +16,7 @@ namespace FlappyBird
             base.OnShow(userData);
 
             m_PipeData = (PipeData) userData;
-            
+
             CachedTransform.SetLocalPositionX(10f);
 
             if (m_UpPipe == null || m_DownPipe == null)
@@ -22,15 +24,17 @@ namespace FlappyBird
                 m_UpPipe = transform.Find("UpPipe");
                 m_DownPipe = transform.Find("DownPipe");
             }
-            
+
             m_UpPipe.SetLocalPositionY(m_PipeData.Offsetup);
             m_DownPipe.SetLocalPositionY(m_PipeData.Offsetdown);
+
+            GameEntry.Event.Subscribe(RestartEventArgs.EventId, OnRestart);
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
-            
+
             CachedTransform.Translate(Vector3.left * m_PipeData.MoveSpeed * elapseSeconds, Space.World);
             if (CachedTransform.position.x <= m_PipeData.HideTarget)
             {
@@ -43,6 +47,11 @@ namespace FlappyBird
             base.OnHide(userData);
             m_UpPipe.gameObject.SetActive(true);
             m_DownPipe.gameObject.SetActive(true);
+        }
+
+        private void OnRestart(object sender, GameEventArgs e)
+        {
+            GameEntry.Entity.HideEntity(this);
         }
     }
 }
