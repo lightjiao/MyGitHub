@@ -70,6 +70,7 @@ namespace FlappyBird
         {
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.UI.CloseUIForm(m_ScoreFormId);
+            GameEntry.Event.Unsubscribe(ReturnMenuEventArgs.EventId, OnReturnMenu);
         }
 
         private void OnReturnMenu(object sender, GameEventArgs e)
