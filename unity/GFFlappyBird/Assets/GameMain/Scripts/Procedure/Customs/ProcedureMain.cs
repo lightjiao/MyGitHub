@@ -16,10 +16,16 @@ namespace FlappyBird
         /// </summary>
         private float m_PipeSpawnTimer = 0f;
 
+        /// <summary>
+        /// 积分界面ID
+        /// </summary>
+        private int m_ScoreFormId = -1;
+
         protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
 
+            m_ScoreFormId = GameEntry.UI.OpenUIForm(UIFormId.ScoreForm).GetValueOrDefault(m_ScoreFormId);
             GameEntry.Entity.ShowBg(new BgData(GameEntry.Entity.GenerateSerialId(), 1, 1f, 0));
             GameEntry.Entity.ShowBird(new BirdData(GameEntry.Entity.GenerateSerialId(), 3, 5f));
 
@@ -40,6 +46,12 @@ namespace FlappyBird
 
                 GameEntry.Entity.ShowPipe(new PipeData(GameEntry.Entity.GenerateSerialId(), 2, 1f));
             }
+        }
+
+        protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
+        {
+            base.OnLeave(procedureOwner, isShutdown);
+            GameEntry.UI.CloseUIForm(m_ScoreFormId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using GameFramework;
 using GameFramework.Event;
 using GameMain.Scripts.Event;
 using UnityEngine;
@@ -54,6 +55,10 @@ namespace FlappyBird
             GameEntry.Sound.PlaySound(1);
             other.gameObject.SetActive(false);
             GameEntry.Entity.HideEntity(this);
+            
+            // 加分事件
+            var e = ReferencePool.Acquire<AddScoreEventArgs>();
+            GameEntry.Event.Fire(this, e.Fill(10));
         }
     }
 }
