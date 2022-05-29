@@ -43,14 +43,15 @@ namespace Animancer.Editor
         /// <item>[18] = v6.1: 2021-04-13.</item>
         /// <item>[19] = v7.0: 2021-07-29.</item>
         /// <item>[20] = v7.1: 2021-08-13.</item>
+        /// <item>[21] = v7.2: 2021-10-17.</item>
         /// </list></example>
-        protected virtual int ReleaseNumber => 20;
+        protected virtual int ReleaseNumber => 21;
 
         /// <summary>The display name of this product version.</summary>
-        protected virtual string VersionName => "v7.1";
+        protected virtual string VersionName => "v7.2";
 
         /// <summary>The URL for the change log of this Animancer version.</summary>
-        protected virtual string ChangeLogURL => Strings.DocsURLs.ChangeLogPrefix + "v7-1";
+        protected virtual string ChangeLogURL => Strings.DocsURLs.ChangeLogPrefix + "v7-2";
 
         /// <summary>The key used to save the release number.</summary>
         protected virtual string ReleaseNumberPrefKey => nameof(Animancer) + "." + nameof(ReleaseNumber);
@@ -277,6 +278,7 @@ namespace Animancer.Editor
 
             private void DoWarnings()
             {
+
                 MessageType messageType;
 
                 if (!_Target.HasCorrectName)

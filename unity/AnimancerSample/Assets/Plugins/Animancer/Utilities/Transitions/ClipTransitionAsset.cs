@@ -116,8 +116,8 @@ namespace Animancer
         /// <inheritdoc/>
         public override void Apply(AnimancerState state)
         {
-            base.Apply(state);
             ApplyDetails(state, _Speed, _NormalizedStartTime);
+            base.Apply(state);
         }
 
         /************************************************************************************************************************/

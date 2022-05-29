@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Animancer.Editor
 {
     /// <summary>[Editor-Only] A cache to optimize repeated attribute access.</summary>
-    /// https://kybernetik.com.au/animancer/api/Animancer/AttributeCache_1
+    /// https://kybernetik.com.au/animancer/api/Animancer.Editor/AttributeCache_1
     /// 
     public static class AttributeCache<TAttribute> where TAttribute : class
     {

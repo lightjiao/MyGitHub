@@ -260,7 +260,7 @@ namespace Animancer
                 state.Speed = _Speed;
 
             for (int i = 0; i < _Animations.Length; i++)
-                if (_Animations[i] is Animancer.ITransition transition)
+                if (_Animations[i] is ITransition transition)
                     transition.Apply(state.GetChild(i));
         }
 

@@ -81,8 +81,8 @@ namespace Animancer
         /// <inheritdoc/>
         public override void Apply(AnimancerState state)
         {
-            base.Apply(state);
             State.ExtrapolateSpeed = _ExtrapolateSpeed;
+            base.Apply(state);
         }
 
         /************************************************************************************************************************/

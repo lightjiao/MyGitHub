@@ -167,14 +167,13 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Adds a new port and uses <see cref="AnimancerState.SetParent"/> to connect the `state` to it.
-        /// </summary>
+        /// <summary>Adds a new port and uses <see cref="AnimancerState.SetParent"/> to connect the `state` to it.</summary>
         public void AddChild(AnimancerState state)
         {
             if (state.Parent == this)
                 return;
 
+            // Set the root before expanding the States list in case it throws an exception.
             state.SetRoot(Root);
 
             var index = States.Count;
@@ -617,25 +616,15 @@ namespace Animancer
                     break;
 
                 case FadeMode.FromStart:
-                    {
 #if UNITY_ASSERTIONS
-                        if (!(state is ClipState))
-                            throw new ArgumentException(
-                                $"{nameof(FadeMode)}.{nameof(FadeMode.FromStart)} can only be used on {nameof(ClipState)}s." +
-                                $" State = {state}");
+                    if (!(state is ClipState))
+                        throw new ArgumentException(
+                            $"{nameof(FadeMode)}.{nameof(FadeMode.FromStart)} can only be used on {nameof(ClipState)}s." +
+                            $" State = {state}");
 #endif
 
-                        var previousState = state;
-                        state = GetOrCreateWeightlessState(state);
-                        if (previousState != state)
-                        {
-                            var previousLayer = previousState.Layer;
-                            if (previousLayer != this && previousLayer.CurrentState == previousState)
-                                previousLayer.StartFade(0, fadeDuration);
-                        }
-
-                        break;
-                    }
+                    state = GetOrCreateWeightlessState(state);
+                    break;
 
                 case FadeMode.NormalizedSpeed:
                     fadeDuration *= Math.Abs(1 - state.Weight) * state.Length;
@@ -646,26 +635,16 @@ namespace Animancer
                     break;
 
                 case FadeMode.NormalizedFromStart:
-                    {
 #if UNITY_ASSERTIONS
-                        if (!(state is ClipState))
-                            throw new ArgumentException(
-                                $"{nameof(FadeMode)}.{nameof(FadeMode.NormalizedFromStart)} can only be used on {nameof(ClipState)}s." +
-                                $" State = {state}");
+                    if (!(state is ClipState))
+                        throw new ArgumentException(
+                            $"{nameof(FadeMode)}.{nameof(FadeMode.NormalizedFromStart)} can only be used on {nameof(ClipState)}s." +
+                            $" State = {state}");
 #endif
 
-                        var previousState = state;
-                        state = GetOrCreateWeightlessState(state);
-                        fadeDuration *= state.Length;// This block is identical to FromStart except for this line.
-                        if (previousState != state)
-                        {
-                            var previousLayer = previousState.Layer;
-                            if (previousLayer != this && previousLayer.CurrentState == previousState)
-                                previousLayer.StartFade(0, fadeDuration);
-                        }
-
-                        break;
-                    }
+                    state = GetOrCreateWeightlessState(state);
+                    fadeDuration *= state.Length;
+                    break;
 
                 default:
                     throw new ArgumentException($"Invalid {nameof(FadeMode)}: {mode}", nameof(mode));
@@ -884,7 +863,7 @@ namespace Animancer
         public override string ToString()
         {
 #if UNITY_ASSERTIONS
-            if (DebugName == null)
+            if (string.IsNullOrEmpty(DebugName))
             {
                 if (_Mask != null)
                     return _Mask.name;

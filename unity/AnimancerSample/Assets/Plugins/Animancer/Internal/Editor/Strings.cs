@@ -82,8 +82,8 @@ namespace Animancer
             public const string Docs = Documentation + "/docs/";
 
             public const string AnimancerEvents = Docs + "manual/events/animancer";
-            public const string ClearAutomatically = AnimancerEvents + "#clear-automatically";
-            public const string SharedEventSequences = AnimancerEvents + "#shared-event-sequences";
+            public const string ClearAutomatically = AnimancerEvents + "/behaviour#clear-automatically";
+            public const string SharedEventSequences = AnimancerEvents + "/shared";
             public const string AnimatorControllers = Docs + "manual/animator-controllers";
             public const string AnimatorControllersNative = AnimatorControllers + "#native";
 
@@ -95,6 +95,7 @@ namespace Animancer
 
             public const string Examples = Docs + "examples";
             public const string UnevenGround = Docs + "examples/ik/uneven-ground";
+            public const string OdinInspector = Docs + "examples/integration/odin-inspector";
 
             public const string AnimancerTools = Docs + "manual/tools";
             public const string PackTextures = AnimancerTools + "/pack-textures";

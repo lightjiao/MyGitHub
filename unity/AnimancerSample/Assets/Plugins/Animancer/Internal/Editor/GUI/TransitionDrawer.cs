@@ -138,11 +138,13 @@ namespace Animancer.Editor
                     return;
                 }
 
+                var indent = !string.IsNullOrEmpty(label.text);
+
                 EditorGUI.BeginChangeCheck();
 
                 var mainProperty = GetMainProperty(property);
                 DoHeaderGUI(ref area, property, mainProperty, label, isPreviewing);
-                DoChildPropertiesGUI(area, property, mainProperty);
+                DoChildPropertiesGUI(area, property, mainProperty, indent);
 
                 if (EditorGUI.EndChangeCheck() && isPreviewing)
                     TransitionPreviewWindow.PreviewNormalizedTime = TransitionPreviewWindow.PreviewNormalizedTime;
@@ -226,7 +228,9 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        private void DoMainPropertyGUI(Rect area, out Rect labelArea, SerializedProperty rootProperty, SerializedProperty mainProperty)
+        /// <summary>Draws the GUI the the target transition's main property.</summary>
+        protected virtual void DoMainPropertyGUI(Rect area, out Rect labelArea,
+            SerializedProperty rootProperty, SerializedProperty mainProperty)
         {
             labelArea = area;
             if (mainProperty == null)
@@ -350,7 +354,7 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        private void DoChildPropertiesGUI(Rect area, SerializedProperty rootProperty, SerializedProperty mainProperty)
+        private void DoChildPropertiesGUI(Rect area, SerializedProperty rootProperty, SerializedProperty mainProperty, bool indent)
         {
             if (!rootProperty.isExpanded && _Mode != Mode.AlwaysExpanded)
                 return;
@@ -360,7 +364,8 @@ namespace Animancer.Editor
                 mainProperty != null)
                 AnimancerGUI.NextVerticalArea(ref area);
 
-            EditorGUI.indentLevel++;
+            if (indent)
+                EditorGUI.indentLevel++;
 
             var property = rootProperty.Copy();
 
@@ -411,7 +416,8 @@ namespace Animancer.Editor
                     DoChildPropertyGUI(ref area, rootProperty, eventsProperty, label);
             }
 
-            EditorGUI.indentLevel--;
+            if (indent)
+                EditorGUI.indentLevel--;
         }
 
         /************************************************************************************************************************/

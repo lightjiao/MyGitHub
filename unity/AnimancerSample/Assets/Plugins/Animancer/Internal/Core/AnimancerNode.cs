@@ -180,7 +180,7 @@ namespace Animancer
                 return;
 
             var name = DebugName;
-            if (name == null)
+            if (string.IsNullOrEmpty(name))
             {
                 // ToString will likely throw an exception since finalizers are not run on the main thread.
                 try { name = ToString(); }
@@ -513,10 +513,10 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>[Internal]
+        /// <summary>
         /// Applies the <see cref="Weight"/> to the connection between this node and its <see cref="Parent"/>.
         /// </summary>
-        internal void ApplyWeight()
+        public void ApplyWeight()
         {
             if (!_IsWeightDirty)
                 return;
@@ -937,7 +937,7 @@ namespace Animancer
         public override string ToString()
         {
 #if UNITY_ASSERTIONS
-            if (DebugName != null)
+            if (!string.IsNullOrEmpty(DebugName))
                 return DebugName;
 #endif
 

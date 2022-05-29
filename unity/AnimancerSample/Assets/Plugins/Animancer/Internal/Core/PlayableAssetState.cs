@@ -167,78 +167,99 @@ namespace Animancer
 
         private void InitializeBindings()
         {
-            if (_Bindings == null || Root == null)
+            if (Root == null)
                 return;
 
             _HasInitializedBindings = true;
 
-            var bindingCount = _Bindings.Count;
-            if (bindingCount == 0)
-                return;
-
             var output = _Asset.outputs.GetEnumerator();
             var graph = Root._Graph;
 
-            for (int i = 0; i < bindingCount; i++)
+            var bindingIndex = 0;
+            var bindingCount = _Bindings != null ? _Bindings.Count : 0;
+
+            while (output.MoveNext())
             {
-                if (!output.MoveNext())
-                    return;
+                GetBindingDetails(output.Current, out var name, out var type, out var isMarkers);
 
-                if (ShouldSkipBinding(output.Current, out var name, out var type))
-                {
-                    i--;
-                    continue;
-                }
-
-                var binding = _Bindings[i];
-                if (binding == null && type != null)
-                    continue;
+                var binding = bindingIndex < bindingCount ? _Bindings[bindingIndex] : null;
 
 #if UNITY_ASSERTIONS
-                if (type != null && !type.IsAssignableFrom(binding.GetType()))
+                if (type != null && !(binding is null) && !type.IsAssignableFrom(binding.GetType()))
                 {
                     Debug.LogError(
-                        $"Binding Type Mismatch: bindings[{i}] is '{binding}' but should be a {type.FullName} for {name}",
-                        Root?.Component as Object);
+                        $"Binding Type Mismatch: bindings[{bindingIndex}] is '{binding}' but should be a {type.FullName} for {name}",
+                        Root.Component as Object);
+                    bindingIndex++;
                     continue;
                 }
 
                 Validate.AssertPlayable(this);
 #endif
 
-                var playable = _Playable.GetInput(i);
+                var playable = _Playable.GetInput(bindingIndex);
 
-                if (type == typeof(Animator))
+                if (type == typeof(Animator))// AnimationTrack.
                 {
-                    var playableOutput = AnimationPlayableOutput.Create(graph, name, (Animator)binding);
-                    playableOutput.SetSourcePlayable(playable);
+                    if (binding != null)
+                    {
+#if UNITY_ASSERTIONS
+                        if (binding == Root.Component?.Animator)
+                            Debug.LogError(
+                                $"{nameof(PlayableAsset)} tracks should not be bound to the same {nameof(Animator)} as" +
+                                $" Animancer. Leaving binding {bindingIndex} empty will automatically apply its animation" +
+                                $" to the object being controlled by Animancer.",
+                                Root.Component as Object);
+#endif
+
+                        var playableOutput = AnimationPlayableOutput.Create(graph, name, (Animator)binding);
+                        playableOutput.SetSourcePlayable(playable);
+                        playableOutput.SetWeight(1);
+                    }
                 }
-                else if (type == typeof(AudioSource))
+                else if (type == typeof(AudioSource))// AudioTrack.
                 {
-                    var playableOutput = AudioPlayableOutput.Create(graph, name, (AudioSource)binding);
-                    playableOutput.SetSourcePlayable(playable);
+                    if (binding != null)
+                    {
+                        var playableOutput = AudioPlayableOutput.Create(graph, name, (AudioSource)binding);
+                        playableOutput.SetSourcePlayable(playable);
+                        playableOutput.SetWeight(1);
+                    }
                 }
-                else// ActivationTrack, SignalTrack, ControlTrack, PlayableTrack.
+                else if (isMarkers)// Markers.
+                {
+                    var animancer = Root.Component as Component;
+                    var playableOutput = ScriptPlayableOutput.Create(graph, name);
+                    playableOutput.SetUserData(animancer);
+                    playableOutput.SetSourcePlayable(playable);
+                    playableOutput.SetWeight(1);
+                    foreach (var receiver in animancer.GetComponents<INotificationReceiver>())
+                    {
+                        playableOutput.AddNotificationReceiver(receiver);
+                    }
+
+                    continue;// Don't increment the bindingIndex.
+                }
+                else// ActivationTrack, ControlTrack, PlayableTrack, SignalTrack.
                 {
                     var playableOutput = ScriptPlayableOutput.Create(graph, name);
                     playableOutput.SetUserData(binding);
                     playableOutput.SetSourcePlayable(playable);
+                    playableOutput.SetWeight(1);
                 }
+
+                bindingIndex++;
             }
         }
 
         /************************************************************************************************************************/
 
         /// <summary>Should the `binding` be skipped when determining how to map the <see cref="Bindings"/>?</summary>
-        public static bool ShouldSkipBinding(PlayableBinding binding, out string name, out Type type)
+        public static void GetBindingDetails(PlayableBinding binding, out string name, out Type type, out bool isMarkers)
         {
             name = binding.streamName;
             type = binding.outputTargetType;
-
-            if (type == typeof(GameObject) && name == "Markers")
-                return true;
-
-            return false;
+            isMarkers = type == typeof(GameObject) && name == "Markers";
         }
 
         /************************************************************************************************************************/

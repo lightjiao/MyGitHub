@@ -5,7 +5,6 @@
 using Animancer.Units;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -45,10 +44,32 @@ namespace Animancer.Editor
         [NonSerialized]
         private bool _HasBeenModified;
 
+        [NonSerialized]
+        private Target[] _Targets;
+
+        private readonly struct Target
+        {
+            public readonly Sprite Sprite;
+            public readonly string AssetPath;
+            public readonly TextureImporter Importer;
+
+            public Target(Object target)
+            {
+                Sprite = (Sprite)target;
+                AssetPath = AssetDatabase.GetAssetPath(target);
+                Importer = (TextureImporter)AssetImporter.GetAtPath(AssetPath);
+            }
+        }
+
         /************************************************************************************************************************/
 
         private void OnEnable()
         {
+            var targets = this.targets;
+            _Targets = new Target[targets.Length];
+            for (int i = 0; i < targets.Length; i++)
+                _Targets[i] = new Target(targets[i]);
+
             InitializePreview();
 
             _Name = serializedObject.FindProperty($"m{nameof(_Name)}");
@@ -121,15 +142,38 @@ namespace Animancer.Editor
         #region Inspector
         /************************************************************************************************************************/
 
+        /// <summary>Are all targets set to <see cref="SpriteImportMode.Multiple"/>?</summary>
+        private bool AllSpriteModeMultiple
+        {
+            get
+            {
+                for (int i = 0; i < _Targets.Length; i++)
+                    if (_Targets[i].Importer.spriteImportMode != SpriteImportMode.Multiple)
+                        return false;
+
+                return true;
+            }
+        }
+
+        /************************************************************************************************************************/
+
         /// <summary>Called by the Unity editor to draw the custom Inspector GUI elements.</summary>
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginChangeCheck();
 
             DoNameGUI();
+
+            // If any target isn't set to Multiple, disable the GUI because only renaming will work.
+            var enabled = GUI.enabled;
+            if (!AllSpriteModeMultiple)
+                GUI.enabled = false;
+
             DoRectGUI();
             DoPivotGUI();
             DoBorderGUI();
+
+            GUI.enabled = enabled;
 
             if (EditorGUI.EndChangeCheck())
                 _HasBeenModified = true;
@@ -240,19 +284,20 @@ namespace Animancer.Editor
             _HasBeenModified = false;
             var targets = this.targets;
 
-            var path = AssetDatabase.GetAssetPath(targets[0]);
-            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
-            var spriteSheet = importer.spritesheet;
             var hasError = false;
 
-            for (int i = 0; i < targets.Length; i++)
-                Apply((Sprite)targets[i], spriteSheet, ref hasError);
-
-            if (!hasError)
+            for (int i = 0; i < _Targets.Length; i++)
             {
-                importer.spritesheet = spriteSheet;
-                EditorUtility.SetDirty(importer);
-                importer.SaveAndReimport();
+                var target = _Targets[i];
+                var spriteSheet = target.Importer.spritesheet;
+                Apply(target.Sprite, spriteSheet, ref hasError);
+
+                if (!hasError)
+                {
+                    target.Importer.spritesheet = spriteSheet;
+                    EditorUtility.SetDirty(target.Importer);
+                    target.Importer.SaveAndReimport();
+                }
             }
 
             for (int i = 0; i < targets.Length; i++)
@@ -266,39 +311,41 @@ namespace Animancer.Editor
 
         private void Apply(Sprite sprite, SpriteMetaData[] spriteSheet, ref bool hasError)
         {
-            for (int i = 0; i < spriteSheet.Length; i++)
+            if (spriteSheet.Length == 0)
             {
-                ref var spriteData = ref spriteSheet[i];
-                if (spriteData.name == sprite.name &&
-                    spriteData.rect == sprite.rect)
+                if (!_Name.hasMultipleDifferentValues)
                 {
-                    if (!_Name.hasMultipleDifferentValues)
-                        spriteData.name = _Name.stringValue;
-
-                    if (!_Rect.hasMultipleDifferentValues)
-                        spriteData.rect = _Rect.rectValue;
-
-                    if (!_Pivot.hasMultipleDifferentValues)
-                        spriteData.pivot = _Pivot.vector2Value;
-
-                    if (!_Border.hasMultipleDifferentValues)
-                        spriteData.border = _Border.vector4Value;
-
-                    if (spriteData.rect.xMin < 0 ||
-                        spriteData.rect.yMin < 0 ||
-                        spriteData.rect.xMax > sprite.texture.width ||
-                        spriteData.rect.yMax > sprite.texture.height)
+                    var path = AssetDatabase.GetAssetPath(sprite);
+                    if (path != null)
                     {
-                        hasError = true;
-                        Debug.LogError($"This modification would have put '{sprite.name}' out of bounds" +
-                            $" so these modifications were not applied.");
+                        AssetDatabase.RenameAsset(path, _Name.stringValue);
+                        hasError = true;// Don't apply the importer.
                     }
-
-                    return;
                 }
+
+                return;
             }
 
-            Debug.LogError($"Unable to find data for {sprite.name}", sprite);
+            var dataIndex = AnimancerToolsWindow.SpriteModifierPanel.GetDataIndex(spriteSheet, sprite);
+            if (dataIndex < 0)
+                return;
+
+            ref var spriteData = ref spriteSheet[dataIndex];
+
+            if (!_Name.hasMultipleDifferentValues)
+                spriteData.name = _Name.stringValue;
+
+            if (!_Rect.hasMultipleDifferentValues)
+                spriteData.rect = _Rect.rectValue;
+
+            if (!_Pivot.hasMultipleDifferentValues)
+                spriteData.pivot = _Pivot.vector2Value;
+
+            if (!_Border.hasMultipleDifferentValues)
+                spriteData.border = _Border.vector4Value;
+
+            if (!AnimancerToolsWindow.SpriteModifierPanel.ValidateBounds(spriteData, sprite))
+                hasError = true;
         }
 
         /************************************************************************************************************************/

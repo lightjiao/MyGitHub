@@ -138,7 +138,7 @@ namespace Animancer
                     if (timeCount == 0)
                         return null;
 
-                    var callbackCount = _Callbacks.Length;
+                    var callbackCount = _Callbacks != null ? _Callbacks.Length : 0;
 
                     var callback = callbackCount >= timeCount-- ?
                         GetInvoker(_Callbacks[timeCount]) :

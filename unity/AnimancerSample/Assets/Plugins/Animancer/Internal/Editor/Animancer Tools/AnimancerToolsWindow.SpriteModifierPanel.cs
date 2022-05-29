@@ -91,31 +91,20 @@ namespace Animancer.Editor
                 var spriteSheet = importer.spritesheet;
                 var hasError = false;
 
-                for (int iSprite = 0; iSprite < sprites.Count; iSprite++)
+                for (int i = 0; i < sprites.Count; i++)
                 {
-                    var sprite = sprites[iSprite];
-                    for (int iSpriteData = 0; iSpriteData < spriteSheet.Length; iSpriteData++)
-                    {
-                        ref var spriteData = ref spriteSheet[iSpriteData];
-                        if (spriteData.name == sprite.name &&
-                            spriteData.rect == sprite.rect)
-                        {
-                            Modify(ref spriteData, sprite);
-                            sprites.RemoveAt(iSprite--);
+                    var sprite = sprites[i];
+                    var dataIndex = GetDataIndex(spriteSheet, sprite);
 
-                            if (spriteData.rect.xMin < 0 ||
-                                spriteData.rect.yMin < 0 ||
-                                spriteData.rect.xMax > sprite.texture.width ||
-                                spriteData.rect.yMax > sprite.texture.height)
-                            {
-                                hasError = true;
-                                Debug.LogError($"This modification would have put '{sprite.name}' out of bounds" +
-                                    $" so '{importer.assetPath}' was not modified.");
-                            }
+                    if (dataIndex < 0)
+                        continue;
 
-                            break;
-                        }
-                    }
+                    ref var spriteData = ref spriteSheet[dataIndex];
+                    Modify(ref spriteData, sprite);
+                    sprites.RemoveAt(i--);
+
+                    if (!ValidateBounds(spriteData, sprite))
+                        hasError = true;
                 }
 
                 if (!hasError)
@@ -124,6 +113,73 @@ namespace Animancer.Editor
                     EditorUtility.SetDirty(importer);
                     importer.SaveAndReimport();
                 }
+            }
+
+            /************************************************************************************************************************/
+
+            /// <summary>
+            /// Tries to find the index of the <see cref="SpriteMetaData"/> matching the <see cref="Object.name"/> and
+            /// <see cref="Sprite.rect"/>. Or if that fails, just the <see cref="Object.name"/>.
+            /// </summary>
+            /// <remarks>
+            /// Returns -1 if there is no data matching the <see cref="Object.name"/>.
+            /// <para></para>
+            /// Returns -2 if there is more than one data matching the <see cref="Object.name"/> but no
+            /// <see cref="Sprite.rect"/> match.
+            /// </remarks>
+            public static int GetDataIndex(SpriteMetaData[] spriteSheet, Sprite sprite)
+            {
+                var nameMatchIndex = -1;
+
+                for (int i = 0; i < spriteSheet.Length; i++)
+                {
+                    ref var spriteData = ref spriteSheet[i];
+                    if (spriteData.name == sprite.name)
+                    {
+                        if (spriteData.rect == sprite.rect)
+                            return i;
+
+                        if (nameMatchIndex == -1)// First name match.
+                            nameMatchIndex = i;
+                        else
+                            nameMatchIndex = -2;// Already found 2 name matches.
+                    }
+                }
+
+                if (nameMatchIndex == -1)
+                {
+                    Debug.LogError($"No {nameof(SpriteMetaData)} for '{sprite.name}' was found.", sprite);
+                }
+                else if (nameMatchIndex == -2)
+                {
+                    Debug.LogError($"More than one {nameof(SpriteMetaData)} for '{sprite.name}' was found" +
+                        $" but none of them matched the {nameof(Sprite)}.{nameof(Sprite.rect)}." +
+                        $" If the texture's Max Size is smaller than its actual size, increase the Max Size before performing this" +
+                        $" operation so that the {nameof(Rect)}s can be used to identify the correct data.", sprite);
+                }
+
+                return nameMatchIndex;
+            }
+
+            /************************************************************************************************************************/
+
+            public static bool ValidateBounds(SpriteMetaData data, Sprite sprite)
+            {
+                var widthScale = data.rect.width / sprite.rect.width;
+                var heightScale = data.rect.height / sprite.rect.height;
+                if (data.rect.xMin < 0 ||
+                    data.rect.yMin < 0 ||
+                    data.rect.xMax > sprite.texture.width * widthScale ||
+                    data.rect.yMax > sprite.texture.height * heightScale)
+                {
+                    var path = AssetDatabase.GetAssetPath(sprite);
+                    Debug.LogError($"This modification would have put '{sprite.name}' out of bounds" +
+                        $" so '{path}' was not modified.", sprite);
+
+                    return false;
+                }
+
+                return true;
             }
 
             /************************************************************************************************************************/
@@ -164,7 +220,7 @@ namespace Animancer.Editor
                     if (asset.Value.Count > 0)
                     {
                         var message = ObjectPool.AcquireStringBuilder()
-                            .Append("Unable to find data at '")
+                            .Append("Modification failed: unable to find data in '")
                             .Append(asset.Key)
                             .Append("' for ")
                             .Append(asset.Value.Count)

@@ -50,7 +50,6 @@ namespace Animancer
                 {
                     EventDispatcher.Acquire(this);
                     _EventDispatcher.Events = value;
-                    _EventDispatcher.OnTimeChanged();
                 }
                 else if (_EventDispatcher != null)
                 {
@@ -160,7 +159,6 @@ namespace Animancer
                 _State = null;
 
                 Events = null;
-                _NextEventIndex = RecalculateEventIndex;
 
                 ObjectPool.Release(this);
             }
@@ -236,6 +234,7 @@ namespace Animancer
                     }
 
                     _Events = value;
+                    _NextEventIndex = RecalculateEventIndex;
                 }
             }
 
@@ -277,8 +276,9 @@ namespace Animancer
 
                     if (currentTime > _PreviousTime)// Playing Forwards.
                     {
-                        var eventTime = float.IsNaN(endEvent.normalizedTime) ?
-                            1 : endEvent.normalizedTime;
+                        var eventTime = float.IsNaN(endEvent.normalizedTime)
+                            ? 1
+                            : endEvent.normalizedTime;
 
                         if (currentTime > eventTime)
                         {
@@ -289,8 +289,9 @@ namespace Animancer
                     }
                     else// Playing Backwards.
                     {
-                        var eventTime = float.IsNaN(endEvent.normalizedTime) ?
-                            0 : endEvent.normalizedTime;
+                        var eventTime = float.IsNaN(endEvent.normalizedTime)
+                            ? 0
+                            : endEvent.normalizedTime;
 
                         if (currentTime < eventTime)
                         {
@@ -352,26 +353,19 @@ namespace Animancer
             private void ValidateAfterEndEvent(Action callback)
             {
 #if UNITY_ASSERTIONS
-                if (!_LoggedEndEventInterrupt &&
-                    _Events != null)
+                if (ShouldLogEndEventInterrupt(callback))
                 {
-                    var layer = _State.Layer;
-                    if (_BeforeEndLayer == layer &&
-                        _BeforeEndCommandCount == layer.CommandCount &&
-                       _State.Root.IsGraphPlaying &&
-                       _State.IsPlaying &&
-                       _State.EffectiveSpeed != 0)
-                    {
-                        _LoggedEndEventInterrupt = true;
-                        if (OptionalWarning.EndEventInterrupt.IsEnabled())
-                            OptionalWarning.EndEventInterrupt.Log(
-                                "An End Event did not actually end the animation:" +
-                                $"\n - State: {_State}" +
-                                $"\n - Callback: {callback.Method.DeclaringType.Name}.{callback.Method.Name}" +
-                                "\n\nEnd Events are triggered every frame after their time has passed, so if that is not desired behaviour" +
-                                " then it might be necessary to explicitly clear the event or simply use a regular event instead.",
-                                _State.Root?.Component);
-                    }
+                    _LoggedEndEventInterrupt = true;
+                    if (OptionalWarning.EndEventInterrupt.IsEnabled())
+                        OptionalWarning.EndEventInterrupt.Log(
+                            "An End Event did not actually end the animation:" +
+                            $"\n - State: {_State}" +
+                            $"\n - Callback: {callback.Method.DeclaringType.Name}.{callback.Method.Name}" +
+                            "\n\nEnd Events are triggered every frame after their time has passed," +
+                            " so if that is not desired behaviour then it might be necessary to explicitly set the" +
+                            $" state.{nameof(AnimancerState.Events)}.{nameof(AnimancerEvent.Sequence.OnEnd)} = null" +
+                            " or simply use a regular event instead.",
+                            _State.Root?.Component);
                 }
 
                 if (OptionalWarning.DuplicateEvent.IsDisabled())
@@ -417,6 +411,36 @@ namespace Animancer
 #endif
             }
 
+            /************************************************************************************************************************/
+
+#if UNITY_ASSERTIONS
+            /// <summary>Should <see cref="OptionalWarning.EndEventInterrupt"/> be logged?</summary>
+            private bool ShouldLogEndEventInterrupt(Action callback)
+            {
+                if (_LoggedEndEventInterrupt ||
+                    _Events == null ||
+                    _Events.OnEnd != callback)
+                    return false;
+
+                var layer = _State.Layer;
+                if (_BeforeEndLayer != layer ||
+                    _BeforeEndCommandCount != layer.CommandCount ||
+                    !_State.Root.IsGraphPlaying ||
+                    !_State.IsPlaying)
+                    return false;
+
+                var speed = _State.EffectiveSpeed;
+                if (speed > 0)
+                {
+                    return _State.NormalizedTime > _State.NormalizedEndTime;
+                }
+                else if (speed < 0)
+                {
+                    return _State.NormalizedTime < _State.NormalizedEndTime;
+                }
+                else return false;// Speed 0.
+            }
+#endif
             /************************************************************************************************************************/
             #endregion
             /************************************************************************************************************************/
@@ -482,7 +506,10 @@ namespace Animancer
             {
                 var count = _Events.Count;
                 if (count == 0)
+                {
+                    _NextEventIndex = 0;
                     return;
+                }
 
                 ValidateNextEventIndex(ref currentTime, out var playDirectionFloat, out var playDirectionInt);
 

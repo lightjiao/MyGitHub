@@ -31,7 +31,7 @@ namespace Animancer.Editor
 
         /// <summary>Determines whether the <see cref="AnimancerState.MainObject"/> field can occupy the whole line.</summary>
         private bool IsAssetUsedAsKey =>
-            Target.DebugName == null &&
+            string.IsNullOrEmpty(Target.DebugName) &&
             (Target.Key == null || ReferenceEquals(Target.Key, Target.MainObject));
 
         /************************************************************************************************************************/
@@ -50,7 +50,7 @@ namespace Animancer.Editor
         protected override void DoLabelGUI(Rect area)
         {
             string label;
-            if (Target.DebugName != null)
+            if (!string.IsNullOrEmpty(Target.DebugName))
             {
                 label = Target.DebugName;
             }
@@ -83,7 +83,7 @@ namespace Animancer.Editor
                 if (EditorGUI.EndChangeCheck())
                     Target.MainObject = mainObject;
             }
-            else if (Target.DebugName != null)
+            else if (!string.IsNullOrEmpty(Target.DebugName))
             {
                 EditorGUI.LabelField(area, Target.DebugName);
             }

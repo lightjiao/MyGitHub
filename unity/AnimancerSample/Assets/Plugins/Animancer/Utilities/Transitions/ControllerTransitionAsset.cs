@@ -122,8 +122,6 @@ namespace Animancer
         /// <inheritdoc/>
         public override void Apply(AnimancerState state)
         {
-            base.Apply(state);
-
             var controllerState = State;
             if (controllerState != null)
             {
@@ -146,6 +144,8 @@ namespace Animancer
                 if (!float.IsNaN(_NormalizedStartTime))
                     state.NormalizedTime = _NormalizedStartTime;
             }
+
+            base.Apply(state);
         }
 
         /************************************************************************************************************************/

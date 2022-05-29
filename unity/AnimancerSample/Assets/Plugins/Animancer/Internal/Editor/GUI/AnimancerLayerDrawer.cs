@@ -55,7 +55,7 @@ namespace Animancer.Editor
                     editor = editors[i];
                 }
 
-                editor.GatherStates(animancer.Layers._Layers[i]);
+                editor.GatherStates(animancer.Layers[i]);
             }
         }
 
@@ -221,7 +221,10 @@ namespace Animancer.Editor
 
             // Additive.
             EditorGUIUtility.labelWidth = AnimancerGUI.CalculateLabelWidth(additiveLabel);
-            Target.IsAdditive = EditorGUI.Toggle(area, additiveLabel, Target.IsAdditive);
+            EditorGUI.BeginChangeCheck();
+            var isAdditive = EditorGUI.Toggle(area, additiveLabel, Target.IsAdditive);
+            if (EditorGUI.EndChangeCheck())
+                Target.IsAdditive = isAdditive;
 
             // Mask.
             using (ObjectPool.Disposable.AcquireContent(out var label, "Mask"))

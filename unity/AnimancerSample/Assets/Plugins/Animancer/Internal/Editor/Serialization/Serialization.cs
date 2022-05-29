@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-// Shared File Last Modified: 2021-07-07
+// Shared File Last Modified: 2021-10-02
 namespace Animancer.Editor
 // namespace InspectorGadgets.Editor
 // namespace UltEvents.Editor
@@ -1019,7 +1019,8 @@ namespace Animancer.Editor
             /// <summary>
             /// Returns the <see cref="Field"/> if there is one, otherwise calls <see cref="GetField(ref object)"/>.
             /// </summary>
-            public FieldInfo GetField(object obj) => Field ?? GetField(ref obj);
+            public FieldInfo GetField(object obj)
+                => Field ?? GetField(ref obj);
 
             /// <summary>
             /// Calls <see cref="GetField(object)"/> with the <see cref="SerializedObject.targetObject"/>.
@@ -1040,7 +1041,8 @@ namespace Animancer.Editor
             /// Returns the <see cref="FieldElementType"/> if there is one, otherwise calls <see cref="GetField(ref object)"/>
             /// and returns its <see cref="FieldInfo.FieldType"/>.
             /// </summary>
-            public virtual Type GetFieldElementType(object obj) => FieldElementType ?? GetField(ref obj)?.FieldType;
+            public virtual Type GetFieldElementType(object obj)
+                => FieldElementType ?? GetField(ref obj)?.FieldType;
 
             /// <summary>
             /// Calls <see cref="GetFieldElementType(object)"/> with the
@@ -1063,7 +1065,14 @@ namespace Animancer.Editor
             /// the value of the <see cref="Field"/>.
             /// </summary>
             public virtual object GetValue(object obj)
-                => GetField(ref obj)?.GetValue(obj);
+            {
+                var field = GetField(ref obj);
+                if (field is null ||
+                    (obj is null && !field.IsStatic))
+                    return null;
+
+                return field.GetValue(obj);
+            }
 
             /// <summary>
             /// Gets the value of the from the <see cref="Parent"/> (if there is one), then uses it to get and return
@@ -1077,7 +1086,7 @@ namespace Animancer.Editor
             /// the value of the <see cref="Field"/>.
             /// </summary>
             public object GetValue(SerializedProperty serializedProperty)
-                => serializedProperty != null ? GetValue(serializedProperty.serializedObject) : null;
+                => serializedProperty != null ? GetValue(serializedProperty.serializedObject.targetObject) : null;
 
             /************************************************************************************************************************/
 
@@ -1089,7 +1098,8 @@ namespace Animancer.Editor
             {
                 var field = GetField(ref obj);
 
-                if (obj is null)
+                if (field is null ||
+                    obj is null)
                     return;
 
                 field.SetValue(obj, value);

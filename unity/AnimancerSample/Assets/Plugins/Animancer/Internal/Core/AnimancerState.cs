@@ -67,10 +67,11 @@ namespace Animancer
                 GC.SuppressFinalize(this);
 #endif
 
+                root.States.Register(this);
+
                 if (_EventDispatcher != null)
                     root.RequirePostUpdate(_EventDispatcher);
 
-                root.States.Register(_Key, this);
                 CreatePlayable();
             }
 
@@ -171,8 +172,16 @@ namespace Animancer
             get => _Key;
             set
             {
-                Root.States.Unregister(this);
-                Root.States.Register(value, this);
+                if (Root == null)
+                {
+                    _Key = value;
+                }
+                else
+                {
+                    Root.States.Unregister(this);
+                    _Key = value;
+                    Root.States.Register(this);
+                }
             }
         }
 
@@ -862,7 +871,7 @@ namespace Animancer
         public override string ToString()
         {
 #if UNITY_ASSERTIONS
-            if (DebugName != null)
+            if (!string.IsNullOrEmpty(DebugName))
                 return DebugName;
 #endif
 

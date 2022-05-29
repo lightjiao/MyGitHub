@@ -227,13 +227,21 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <inheritdoc/>
+#if UNITY_2021_2_OR_NEWER
+        protected override void OnSceneGUI()
+#else
         protected override void OnGUI()
+#endif
         {
             _Instance = this;
 
             var activeObject = Selection.activeObject;
 
+#if UNITY_2021_2_OR_NEWER
+            base.OnSceneGUI();
+#else
             base.OnGUI();
+#endif
 
             // Don't allow clicks in this window to select objects in the preview scene.
             if (activeObject != Selection.activeObject)
@@ -377,7 +385,7 @@ namespace Animancer.Editor
         #endregion
         /************************************************************************************************************************/
         #region Error Intercepts
-#if ! UNITY_2020_1_OR_NEWER
+#if !UNITY_2020_1_OR_NEWER
         /************************************************************************************************************************/
 
         /// <summary>Prevents log messages between <see cref="Activate"/> and <see cref="IDisposable.Dispose"/>.</summary>

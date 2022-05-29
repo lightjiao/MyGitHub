@@ -548,6 +548,8 @@ namespace Animancer
                 if (index < 0 || index > CurrentAnimations.arraySize)
                     return;
 
+                area.height = AnimancerGUI.LineHeight;
+
                 var state = CurrentAnimations.GetArrayElementAtIndex(index);
                 var speed = CurrentSpeeds.arraySize > 0 ? CurrentSpeeds.GetArrayElementAtIndex(index) : null;
                 DoElementGUI(area, index, state, speed);

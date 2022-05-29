@@ -84,14 +84,9 @@ namespace Animancer
         /// </summary>
         public void SetThresholds(params TParameter[] thresholds)
         {
-#if UNITY_ASSERTIONS
-            if (thresholds == null)
-                throw new ArgumentNullException(nameof(thresholds));
-#endif
-
             if (thresholds.Length != ChildCount)
-                throw new ArgumentOutOfRangeException(nameof(thresholds), "Incorrect threshold count. There are " + ChildCount +
-                    " states, but the specified thresholds array contains " + thresholds.Length + " elements.");
+                throw new ArgumentOutOfRangeException(nameof(thresholds),
+                    $"Threshold count ({thresholds.Length}) doesn't match child count ({ChildCount}).");
 
             _Thresholds = thresholds;
             OnThresholdsChanged();

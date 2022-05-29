@@ -159,12 +159,14 @@ namespace Animancer
                 var weight = CalculateWeight(_Time);
 
                 _Target.Node.SetWeight(Mathf.LerpUnclamped(_Target.StartingWeight, _Target.Node.TargetWeight, weight));
+                _Target.Node.ApplyWeight();
 
                 weight = 1 - weight;
                 for (int i = FadeOutNodes.Count - 1; i >= 0; i--)
                 {
                     var node = FadeOutNodes[i];
                     node.Node.SetWeight(node.StartingWeight * weight);
+                    node.Node.ApplyWeight();
                 }
             }
             else// End.
@@ -187,6 +189,7 @@ namespace Animancer
         {
             var weight = node.TargetWeight;
             node.SetWeight(weight);
+            node.ApplyWeight();
             if (weight == 0)
                 node.Stop();
         }

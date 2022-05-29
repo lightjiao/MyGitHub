@@ -109,7 +109,7 @@ namespace Animancer.Editor
                         {
                             AnimancerPlayable.SetNextGraphName($"{animator.name} (Animancer Preview)");
                             _Animancer = AnimancerPlayable.Create();
-                            _Animancer.SetOutput(
+                            _Animancer.CreateOutput(
                                 new AnimancerEditorUtilities.DummyAnimancerComponent(animator, _Animancer));
                             _Animancer.RequirePostUpdate(Animations.WindowMatchStateTime.Instance);
                             _Instance._Animations.NormalizedTime = _Instance._Animations.NormalizedTime;
@@ -437,7 +437,7 @@ namespace Animancer.Editor
                     return;
 
                 _Animancer.CancelPostUpdate(Animations.WindowMatchStateTime.Instance);
-                _Animancer.Destroy();
+                _Animancer.DestroyGraph();
                 _Animancer = null;
             }
 

@@ -285,7 +285,11 @@ namespace Animancer
         /// <summary>Creates and assigns the <see cref="AnimationMixerPlayable"/> managed by this state.</summary>
         protected override void CreatePlayable(out Playable playable)
         {
+#if UNITY_2021_2_OR_NEWER
+            playable = AnimationMixerPlayable.Create(Root._Graph, ChildStates.Count);
+#else
             playable = AnimationMixerPlayable.Create(Root._Graph, ChildStates.Count, false);
+#endif
             RecalculateWeights();
         }
 
@@ -305,7 +309,7 @@ namespace Animancer
         /// <summary>
         /// Calls <see cref="AnimancerUtilities.CreateStateAndApply"/> and sets this mixer as the state's parent.
         /// </summary>
-        public AnimancerState CreateChild(int index, Animancer.ITransition transition)
+        public AnimancerState CreateChild(int index, ITransition transition)
         {
             var state = transition.CreateStateAndApply(Root);
             state.SetParent(this, index);
@@ -313,7 +317,7 @@ namespace Animancer
             return state;
         }
 
-        /// <summary>Calls <see cref="CreateChild(int, AnimationClip)"/> or <see cref="CreateChild(int, Animancer.ITransition)"/>.</summary>
+        /// <summary>Calls <see cref="CreateChild(int, AnimationClip)"/> or <see cref="CreateChild(int, ITransition)"/>.</summary>
         public AnimancerState CreateChild(int index, Object state)
         {
             if (state is AnimationClip clip)
@@ -409,20 +413,27 @@ namespace Animancer
         /// <see cref="AnimationMixerPlayable"/>.
         /// </summary>
         /// <example><code>
+        /// AnimancerComponent animancer = ...;
         /// var job = new MyJob();// A struct that implements IAnimationJob.
-        /// var mixer = new WhateverMixerType();
+        /// var mixer = new WhateverMixerState();// e.g. LinearMixerState.
         /// mixer.CreatePlayable(animancer, job);
-        /// // Use mixer.Initialize and CreateState to make the children as normal.
+        /// // Use mixer.Initialize, CreateChild, and SetChild to configure the children as normal.
         /// </code>
         /// See also: <seealso cref="CreatePlayable{T}(out Playable, T, bool)"/>
         /// </example>
         public AnimationScriptPlayable CreatePlayable<T>(AnimancerPlayable root, T job, bool processInputs = false)
             where T : struct, IAnimationJob
         {
+            // Can't just use SetRoot normally because it would call the regular CreatePlayable method.
             SetRoot(null);
 
             Root = root;
-            root.States.Register(Key, this);
+            root.States.Register(this);
+
+#if UNITY_ASSERTIONS
+            if (HasEvents)
+                Debug.LogWarning($"{nameof(CreatePlayable)} should be called before configuring any Animancer Events on this state.");
+#endif
 
             var playable = AnimationScriptPlayable.Create(root._Graph, job, ChildCount);
 
@@ -687,7 +698,8 @@ namespace Animancer
         {
             var synchronizer = GetParentMixer();
             if (synchronizer._SynchronizedChildren != null &&
-                synchronizer._SynchronizedChildren.Remove(state))
+                synchronizer._SynchronizedChildren.Remove(state) &&
+                state._Playable.IsValid())
                 state._Playable.SetSpeed(state.Speed);
         }
 
@@ -706,7 +718,8 @@ namespace Animancer
                 for (int i = SynchronizedChildren.Count - 1; i >= 0; i--)
                 {
                     var state = SynchronizedChildren[i];
-                    state._Playable.SetSpeed(state.Speed);
+                    if (state._Playable.IsValid())
+                        state._Playable.SetSpeed(state.Speed);
                 }
 
                 SynchronizedChildren.Clear();
@@ -718,7 +731,8 @@ namespace Animancer
                     var state = SynchronizedChildren[i];
                     if (IsChildOf(state, this))
                     {
-                        state._Playable.SetSpeed(state.Speed);
+                        if (state._Playable.IsValid())
+                            state._Playable.SetSpeed(state.Speed);
                         SynchronizedChildren.RemoveAt(i);
                     }
                 }
@@ -923,7 +937,7 @@ namespace Animancer
         /// </remarks>
         public float CalculateRealEffectiveSpeed()
         {
-            var speed = _Playable.GetSpeed() * Root.Speed;
+            var speed = _Playable.GetSpeed();
 
             var parent = Parent;
             while (parent != null)
@@ -1151,7 +1165,7 @@ namespace Animancer
         public override string ToString()
         {
 #if UNITY_ASSERTIONS
-            if (DebugName != null)
+            if (!string.IsNullOrEmpty(DebugName))
                 return DebugName;
 #endif
 

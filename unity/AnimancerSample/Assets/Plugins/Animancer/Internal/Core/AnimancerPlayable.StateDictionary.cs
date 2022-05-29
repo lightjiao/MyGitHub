@@ -233,7 +233,8 @@ namespace Animancer
                 {
                     state = transition.CreateState();
                     state.SetRoot(Root);
-                    Register(key, state);
+                    state._Key = key;
+                    Register(state);
                 }
 
                 return state;
@@ -286,12 +287,14 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>[Internal]
-            /// Registers the `state` in this dictionary so the `key` can be used to get it later on using
-            /// any of the lookup methods such as <see cref="this[object]"/>.
+            /// Registers the `state` in this dictionary so the <see cref="AnimancerState.Key"/> can be used to get it
+            /// later on using any of the lookup methods such as <see cref="this[object]"/> or
+            /// <see cref="TryGet(object, out AnimancerState)"/>.
             /// </summary>
-            /// <remarks>The `key` can be <c>null</c>.</remarks>
-            internal void Register(object key, AnimancerState state)
+            /// <remarks>Does nothing if the <see cref="AnimancerState.Key"/> is <c>null</c>.</remarks>
+            internal void Register(AnimancerState state)
             {
+                var key = state._Key;
                 if (key != null)
                 {
 #if UNITY_ASSERTIONS
@@ -302,18 +305,14 @@ namespace Animancer
 
                     States.Add(key, state);
                 }
-
-                state._Key = key;
             }
 
             /// <summary>[Internal] Removes the `state` from this dictionary (the opposite of <see cref="Register"/>).</summary>
             internal void Unregister(AnimancerState state)
             {
-                if (state._Key == null)
-                    return;
-
-                States.Remove(state._Key);
-                state._Key = null;
+                var key = state._Key;
+                if (key != null)
+                    States.Remove(key);
             }
 
             /************************************************************************************************************************/
@@ -442,21 +441,6 @@ namespace Animancer
                 source.GatherAnimationClips(clips);
                 DestroyAll(clips);
                 ObjectPool.Release(clips);
-            }
-
-            /************************************************************************************************************************/
-
-            /// <summary>
-            /// Destroys all states connected to all layers (regardless of whether they are actually registered in this
-            /// dictionary).
-            /// </summary>
-            public void DestroyAll()
-            {
-                var count = Root.Layers.Count;
-                while (--count >= 0)
-                    Root.Layers._Layers[count].DestroyStates();
-
-                States.Clear();
             }
 
             /************************************************************************************************************************/
