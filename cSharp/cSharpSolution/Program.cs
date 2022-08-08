@@ -22,19 +22,6 @@ namespace cSharpSolution
             Console.WriteLine($"(ThreadId: {Thread.CurrentThread.ManagedThreadId}): {str}");
         }
 
-        private static async Task<int> ConsumeAsyncSumSequence(IAsyncEnumerable<int> sequence)
-        {
-            ConsoleWriteEx("ConsumeAsyncSumSequence called");
-
-            var sum = 0;
-            await foreach (var item in sequence)
-            {
-                sum += item;
-            }
-
-            return sum;
-        }
-
         private static async IAsyncEnumerable<int> ProduceAsyncSumSequence(int count)
         {
             ConsoleWriteEx("ProduceAsyncSumSequence start");

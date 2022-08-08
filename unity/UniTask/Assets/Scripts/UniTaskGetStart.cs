@@ -7,13 +7,23 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UniTaskGetStart : MonoBehaviour
 {
+    [SerializeField] private Button button;
+
     private void Start()
     {
-        DemoAsync().Forget();
-        TestAsync().Forget();
+        button.OnClickAsAsyncEnumerable().Subscribe(async x =>
+        {
+            Debug.Log("Button click");
+            button.interactable = false;
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
+            button.interactable = true;
+        });
+        // DemoAsync().Forget();
+        // TestAsync().Forget();
     }
 
     private async UniTaskVoid TestAsync()
