@@ -1,7 +1,0 @@
-#	测试配置文件		
-#	注释第二行		
-# 	注释第三行		
-#	ID	名称	攻击力
-#	int	string	int
-	1	Jack	1
-	2	Rose	2
