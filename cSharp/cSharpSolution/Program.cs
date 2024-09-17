@@ -9,9 +9,16 @@ namespace cSharpSolution
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            TestEnumFlagV2();
+            var sd = new SortedDictionary<int, string>();
+            sd[3] = "3333";
+            sd[1] = "1111";
+            sd[2] = "2222";
+            foreach (var item in sd)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         [Flags]
